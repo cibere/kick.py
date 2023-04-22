@@ -1,3 +1,12 @@
+__all__ = (
+    "KickException",
+    "HTTPException",
+    "Forbidden",
+    "NotFound",
+    "InternalKickException",
+)
+
+
 class KickException(Exception):
     pass
 
