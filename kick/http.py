@@ -7,7 +7,6 @@ from typing import TYPE_CHECKING, Any, Coroutine, TypeVar, Union
 
 import pyppeteer
 from aiohttp import ClientSession
-from aiohttp import ClientWebSocketResponse as WebSocket
 from pyppeteer.browser import Browser
 from pyppeteer.network_manager import Response as BrowserResponse
 from pyppeteer.page import Page as BrowserPage
@@ -17,7 +16,8 @@ from .chatroom import ChatroomWebSocket
 from .errors import Forbidden, HTTPException, InternalKickException, NotFound
 
 if TYPE_CHECKING:
-    from types.user import ChatterPayload, UserPayload
+    from .client import Client
+    from .types.user import ChatterPayload, UserPayload
 
     T = TypeVar("T")
     Response = Coroutine[Any, Any, T]
@@ -65,38 +65,33 @@ class Route:
 
 
 class HTTPClient:
-    def __init__(self, token: str):
+    def __init__(self, token: str, client: Client):
         self.__browser: Browser | None = None
         self.__session: ClientSession | None = None
         self.token: str = token
+        self.ws: ChatroomWebSocket | None = None
+        self.client = client
 
         self.user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/112.0"
-        self.chatrooms: list[ChatroomWebSocket] = []
+        # self.chatrooms: list[ChatroomWebSocket] = []
 
     async def close(self) -> None:
         print("Closing HTTPClient...")
         if self.__browser is not None:
             await self.__browser.close()
         if self.__session is not None:
-            for chatroom in self.chatrooms:
-                await chatroom.ws.close()
             await self.__session.close()
+        if self.ws is not None:
+            await self.ws.close()
 
-    async def connect_to_chatroom(
-        self, chatroom_id: int, wait: bool = False
-    ) -> ChatroomWebSocket:
-        ws = await self.create_ws(
-            f"wss://ws-us2.pusher.com/app/eb1d5f283081a78b932c?protocol=7&client=js&version=7.6.0&flash=false"
-        )
-        chatroom = ChatroomWebSocket(ws, client=self, chatroom_id=chatroom_id)
-        await chatroom.connect(wait)
-        self.chatrooms.append(chatroom)
-        return chatroom
-
-    async def create_ws(self, url: str, **kwargs) -> WebSocket:
+    async def create_ws(self) -> ChatroomWebSocket:
         if self.__session is None:
             self.__session = ClientSession()
-        return await self.__session.ws_connect(url, **kwargs)
+        actual_ws = await self.__session.ws_connect(
+            f"wss://ws-us2.pusher.com/app/eb1d5f283081a78b932c?protocol=7&client=js&version=7.6.0&flash=false"
+        )
+        self.ws = ChatroomWebSocket(actual_ws, client=self)
+        return self.ws
 
     async def request(self, route: Route, **kwargs) -> Any:
         if self.__browser is None:

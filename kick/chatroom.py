@@ -19,11 +19,12 @@ __all__ = ("Chatroom",)
 
 
 class ChatroomWebSocket:
-    def __init__(self, ws: WebSocketResponse, *, client, chatroom_id):
+    def __init__(self, ws: WebSocketResponse, *, client):
         self.ws = ws
         self.client = client
         self.send_json = ws.send_json
-        self.chatroom_id = chatroom_id
+        self.close = ws.close
+        # self.chatroom_id = chatroom_id
         self._receive_msgs_task: asyncio.Task | None = None
 
     async def poll_event(self) -> None:
@@ -35,21 +36,17 @@ class ChatroomWebSocket:
             msg = Message(data=data)
             await self.client.dispatch("message", msg)
 
-    async def _receive_msgs(self) -> None:
+    async def start(self) -> None:
         while not self.ws.closed:
             await self.poll_event()
 
-    async def connect(self, wait: bool = False) -> None:
-        if wait is False:
-            self._receive_msgs_task = asyncio.create_task(self._receive_msgs())
+    async def subscribe(self, chatroom_id: int) -> None:
         await self.send_json(
             {
                 "event": "pusher:subscribe",
-                "data": {"auth": "", "channel": f"chatrooms.{self.chatroom_id}.v2"},
+                "data": {"auth": "", "channel": f"chatrooms.{chatroom_id}.v2"},
             }
         )
-        if wait is True:
-            await self._receive_msgs()
 
 
 class Chatroom(BaseDataclass["ChatroomPayload"]):
@@ -111,4 +108,4 @@ class Chatroom(BaseDataclass["ChatroomPayload"]):
         return self.__data["following_min_duration"]
 
     async def connect(self, wait: bool = False) -> None:
-        self._ws = await self.http.connect_to_chatroom(self.id, wait)
+        ...
