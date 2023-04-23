@@ -22,3 +22,14 @@ class MessagePayload(TypedDict):
     type: Literal["message"]
     created_at: str
     sender: AuthorPayload
+
+
+class MessageStatusPayload(TypedDict):
+    error: bool
+    code: int
+    message: str
+
+
+class MessageSentPayload(TypedDict):
+    status: MessageStatusPayload
+    data: MessagePayload
