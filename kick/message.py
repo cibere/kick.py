@@ -11,23 +11,23 @@ if TYPE_CHECKING:
 __all__ = ("Author", "Message")
 
 
-class Author(BaseDataclass[AuthorPayload]):
+class Author(BaseDataclass["AuthorPayload"]):
     @property
     def id(self) -> int:
-        return self.__data["id"]
+        return self._data["id"]
 
     @property
     def username(self) -> str:
-        return self.__data["slug"]
+        return self._data["slug"]
 
     @property
     def color(self) -> str:
-        return self.__data["identity"]["color"]
+        return self._data["identity"]["color"]
 
     @property
     def badges(self) -> list:
         """THIS IS RAW DATA"""
-        return self.__data["identity"]["badges"]
+        return self._data["identity"]["badges"]
 
     def __eq__(self, other: object) -> bool:
         if isinstance(other, Author):
@@ -36,32 +36,32 @@ class Author(BaseDataclass[AuthorPayload]):
             return False
 
 
-class Message(BaseDataclass[MessagePayload]):
+class Message(BaseDataclass["MessagePayload"]):
     _author: Author | None = None
     _timestamp: datetime | None
 
     @property
     def id(self) -> str:
-        return self.__data["id"]
+        return self._data["id"]
 
     @property
     def chatroom_id(self) -> int:
-        return self.__data["chatroom_id"]
+        return self._data["chatroom_id"]
 
     @property
     def content(self) -> str:
-        return self.__data["content"]
+        return self._data["content"]
 
     @property
     def created_at(self) -> datetime:
         if self._timestamp is None:
-            self._timestamp = datetime.fromisoformat(self.__data["created_at"])
+            self._timestamp = datetime.fromisoformat(self._data["created_at"])
         return self._timestamp
 
     @property
     def author(self) -> Author:
         if self._author is None:
-            self._author = Author(data=self.__data["sender"])
+            self._author = Author(data=self._data["sender"])
         return self._author
 
     def __eq__(self, other: object) -> bool:
