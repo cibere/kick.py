@@ -6,7 +6,7 @@ import logging
 from typing import TYPE_CHECKING, Any, Coroutine, TypeVar, Union
 
 import pyppeteer
-from aiohttp import ClientSession
+from aiohttp import ClientResponse, ClientSession
 from pyppeteer.browser import Browser
 from pyppeteer.network_manager import Response as BrowserResponse
 from pyppeteer.page import Page as BrowserPage
@@ -14,10 +14,12 @@ from pyppeteer.page import Page as BrowserPage
 from . import __version__
 from .chatroom import ChatroomWebSocket
 from .errors import Forbidden, HTTPException, InternalKickException, NotFound
+from .utils import MISSING
 
 if TYPE_CHECKING:
     from .client import Client
-    from .types.user import ChatterPayload, UserPayload
+    from .types.message import MessageSentPayload
+    from .types.user import UserPayload
 
     T = TypeVar("T")
     Response = Coroutine[Any, Any, T]
@@ -29,14 +31,15 @@ class="w-64 lg:w-[526px]"
 """.strip()
 
 
-async def json_or_text(response: BrowserResponse, /) -> Union[dict[str, Any], str]:
+async def json_or_text(
+    response: BrowserResponse | ClientResponse, /
+) -> Union[dict[str, Any], str]:
     text = await response.text()
     try:
-        if response.headers["content-type"] == "application/json":
-            try:
-                return json.loads(text)
-            except json.JSONDecodeError:
-                pass
+        try:
+            return json.loads(text)
+        except json.JSONDecodeError:
+            pass
     except KeyError:
         pass
 
@@ -65,15 +68,31 @@ class Route:
 
 
 class HTTPClient:
+    post_javascript = """
+    const url = 'URL_HERE';
+    const payload = PAYLOAD_HERE;
+
+    var form = document.createElement('form');
+    form.action = url;
+    form.method = "post";
+
+    for (const [key, value] of Object.entries(payload)) {
+        let el = document.createElement('input');
+        el.id = key;
+        el.name = key;
+        el.value = value;
+        form.appendChild(el);
+    }
+    document.body.appendChild(form);
+    form.submit()
+    """
+
     def __init__(self, token: str, client: Client):
         self.__browser: Browser | None = None
         self.__session: ClientSession | None = None
         self.token: str = token
-        self.ws: ChatroomWebSocket | None = None
+        self.ws: ChatroomWebSocket = MISSING
         self.client = client
-
-        self.user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/112.0"
-        # self.chatrooms: list[ChatroomWebSocket] = []
 
     async def close(self) -> None:
         print("Closing HTTPClient...")
@@ -81,34 +100,39 @@ class HTTPClient:
             await self.__browser.close()
         if self.__session is not None:
             await self.__session.close()
-        if self.ws is not None:
+        if self.ws is not MISSING:
             await self.ws.close()
 
-    async def create_ws(self) -> ChatroomWebSocket:
+    async def start(self) -> None:
         if self.__session is None:
             self.__session = ClientSession()
         actual_ws = await self.__session.ws_connect(
             f"wss://ws-us2.pusher.com/app/eb1d5f283081a78b932c?protocol=7&client=js&version=7.6.0&flash=false"
         )
-        self.ws = ChatroomWebSocket(actual_ws, client=self)
-        return self.ws
+        self.ws = ChatroomWebSocket(actual_ws, http=self)
+        self.client.dispatch("ready")
+        await self.ws.start()
 
     async def request(self, route: Route, **kwargs) -> Any:
         if self.__browser is None:
             self.__browser = await pyppeteer.launch()
 
         headers = kwargs.pop("headers", {})
-        headers["User-Agent"] = self.user_agent
         headers["Accept"] = "application/json"
         headers["Authorization"] = f"Bearer {self.token}"
         headers["Connection"] = "keep-alive"
+        headers[
+            "User-Agent"
+        ] = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/112.0"
+        headers["referer"] = "kick.com"
+
         url = route.url
         endpoint = f"/{route.method.split('/')[-1]}"
 
         if "json" in kwargs:
             headers["Content-Type"] = "application/json"
 
-        res: BrowserResponse | None = None
+        res: BrowserResponse | ClientResponse | None = None
         data: str | dict | None = None
         page: BrowserPage | None = None
         try:
@@ -119,6 +143,7 @@ class HTTPClient:
                 page = await self.__browser.newPage()
                 await page.setExtraHTTPHeaders(headers)
                 res = await page.goto(url)
+
                 if res is not None:
                     data = await json_or_text(res)
 
@@ -174,9 +199,12 @@ class HTTPClient:
 
             raise HTTPException(txt)
 
-        raise RuntimeError("Unreachable situation occured in http handling")
+        raise RuntimeError(
+            f"Unreachable situation occured in http handling. Res: {res}, data: {data}"
+        )
+        # raise RuntimeError("Unreachable situation occured in http handling")
 
-    def send_message(self, chatroom: int, content: str) -> Response:
+    def send_message(self, chatroom: int, content: str) -> Response[MessageSentPayload]:
         return self.request(
             Route(method="POST", path=f"/messages/send/{chatroom}"),
             json={"content": content, "type": "message"},
@@ -184,10 +212,3 @@ class HTTPClient:
 
     def get_user(self, streamer: str) -> Response[UserPayload]:
         return self.request(Route(method="GET", path=f"/channels/{streamer}"))
-
-    def get_user_chatroom_info(
-        self, streamer: str, chatter: str
-    ) -> Response[ChatterPayload]:
-        return self.request(
-            Route(method="GET", path=f"/channels/{streamer}/users/{chatter}")
-        )
