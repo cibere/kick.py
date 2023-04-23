@@ -19,12 +19,11 @@ __all__ = ("Chatroom",)
 
 
 class ChatroomWebSocket:
-    def __init__(self, ws: WebSocketResponse, *, client):
+    def __init__(self, ws: WebSocketResponse, *, http: HTTPClient):
         self.ws = ws
-        self.client = client
+        self.http = http
         self.send_json = ws.send_json
         self.close = ws.close
-        # self.chatroom_id = chatroom_id
         self._receive_msgs_task: asyncio.Task | None = None
 
     async def poll_event(self) -> None:
@@ -32,9 +31,9 @@ class ChatroomWebSocket:
         msg = raw_msg.json()["data"]
         data = json.loads(msg)
 
-        if data["type"] == "message":
+        if data.get("type") == "message":
             msg = Message(data=data)
-            await self.client.dispatch("message", msg)
+            self.http.client.dispatch("message", msg)
 
     async def start(self) -> None:
         while not self.ws.closed:
@@ -57,55 +56,58 @@ class Chatroom(BaseDataclass["ChatroomPayload"]):
 
     @property
     def id(self) -> int:
-        return self.__data["id"]
+        return self._data["id"]
 
     @property
     def chatable_type(self) -> str:
-        return self.__data["chatable_type"]
-
-    @property
-    def channel_id(self) -> int:
-        return self.__data["channel_id"]
+        return self._data["chatable_type"]
 
     @property
     def created_at(self) -> datetime:
         if self._created_at is None:
-            self._created_at = datetime.fromisoformat(self.__data["created_at"])
+            self._created_at = datetime.fromisoformat(self._data["created_at"])
         return self._created_at
 
     @property
     def updated_at(self) -> datetime:
         if self._updated_at is None:
-            self._updated_at = datetime.fromisoformat(self.__data["updated_at"])
+            self._updated_at = datetime.fromisoformat(self._data["updated_at"])
         return self._updated_at
 
     @property
     def chat_mode(self) -> ChatroomChatMode:
-        return ChatroomChatMode(self.__data["chat_mode"])
+        return ChatroomChatMode(self._data["chat_mode"])
 
     @property
     def slowmode(self) -> bool:
-        return self.__data["slow_mode"]
+        return self._data["slow_mode"]
 
     @property
     def followers_mode(self) -> bool:
-        return self.__data["followers_mode"]
+        return self._data["followers_mode"]
 
     @property
     def subscribers_mode(self) -> bool:
-        return self.__data["subscribers_mode"]
+        return self._data["subscribers_mode"]
 
     @property
     def emotes_mode(self) -> bool:
-        return self.__data["emotes_mode"]
+        return self._data["emotes_mode"]
 
     @property
     def message_interval(self) -> int:
-        return self.__data["message_interval"]
+        return self._data["message_interval"]
 
     @property
     def following_min_duration(self) -> int:
-        return self.__data["following_min_duration"]
+        return self._data["following_min_duration"]
 
-    async def connect(self, wait: bool = False) -> None:
-        ...
+    async def connect(self) -> None:
+        await self.http.ws.subscribe(self.id)
+
+    async def send(self, content: str, /):
+        print(self.id)
+        data = await self.http.send_message(self.id, content)
+        with open("output.html", "w") as f:
+            f.write(data)
+        print("sent")
