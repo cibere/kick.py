@@ -17,7 +17,8 @@ class HTTPException(KickException):
 
 
 class Forbidden(HTTPException):
-    pass
+    def __init__(self) -> None:
+        super().__init__("")
 
 
 class NotFound(HTTPException):

@@ -14,11 +14,12 @@ EventT = TypeVar("EventT", bound=Callable[..., Coroutine[Any, Any, None]])
 
 
 class Client:
-    def __init__(self, token: str) -> None:
-        self.http = HTTPClient(token, self)
+    def __init__(self) -> None:
+        self.http = HTTPClient(self)
 
     async def fetch_user(self, streamer: str) -> User:
         data = await self.http.get_user(streamer)
+        print("making user object...")
         user = User(data=data)
         user.http = self.http
         return user
@@ -36,7 +37,9 @@ class Client:
         setattr(self, coro.__name__, coro)
         return coro
 
-    async def start(self) -> None:
+    async def start(self, username: str, password: str) -> None:
+        await self.http.login(username, password)
+        print("starting...")
         await self.http.start()
 
     async def close(self) -> None:
