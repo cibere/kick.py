@@ -7,9 +7,11 @@ from typing import TYPE_CHECKING
 
 from aiohttp import ClientWebSocketResponse as WebSocketResponse
 
+from .chatter import Chatter
 from .enums import ChatroomChatMode
 from .message import Message
 from .object import BaseDataclass
+from .user import User
 
 if TYPE_CHECKING:
     from .http import HTTPClient
@@ -53,6 +55,7 @@ class Chatroom(BaseDataclass["ChatroomPayload"]):
     _updated_at: datetime | None = None
     _ws: ChatroomWebSocket | None = None
     http: HTTPClient
+    streamer: User
 
     @property
     def id(self) -> int:
@@ -105,9 +108,13 @@ class Chatroom(BaseDataclass["ChatroomPayload"]):
     async def connect(self) -> None:
         await self.http.ws.subscribe(self.id)
 
-    async def send(self, content: str, /):
-        print(self.id)
+    async def send(self, content: str, /) -> Message:
         data = await self.http.send_message(self.id, content)
-        with open("output.html", "w") as f:
-            f.write(data)
-        print("sent")
+        msg = Message(data=data["data"])
+        return msg
+
+    async def get_chatter(self, chatter_name: str, /) -> Chatter:
+        data = await self.http.get_chatter(self.streamer.slug, chatter_name)
+        chatter = Chatter(data=data)
+        chatter.http = self.http
+        return chatter
