@@ -124,6 +124,7 @@ class User(BaseDataclass["UserPayload"]):
         if self._chatroom is None:
             self._chatroom = Chatroom(data=self._data["chatroom"])
             self._chatroom.http = self.http
+            self._chatroom.streamer = self
         return self._chatroom
 
     def __eq__(self, other: object) -> bool:
