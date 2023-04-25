@@ -21,7 +21,17 @@ if TYPE_CHECKING:
     T = TypeVar("T")
     Response = Coroutine[Any, Any, T]
 
-KickResponse = ClientResponse | playwright.Response | playwright.APIResponse
+
+class FetchResponse:
+    def __init__(self, *, data: dict) -> None:
+        self._text: str = data["text"]
+        self.status: int = int(data["status"])
+
+    async def text(self) -> str:
+        return self._text
+
+
+KickResponse = ClientResponse | playwright.Response | FetchResponse
 
 LOGGER = logging.getLogger(__name__)
 
@@ -54,21 +64,34 @@ class Route:
     DOMAIN: str = "https://kick.com"
     BASE: str = f"{DOMAIN}/api/v2"
 
-    def __init__(
-        self,
-        method: str,
-        path: str,
-    ) -> None:
+    def __init__(self, method: str, path: str, referrer: str = "/") -> None:
         self.path: str = path
         self.method: str = method
         self.url = self.BASE + self.path
+        self.referrer = self.DOMAIN + referrer
 
 
 class HTTPClient:
+    post_javascript = """
+    async () => {
+        const res = await fetch('URL', {
+            credentials: 'include',
+            headers: HEADERS,
+            method: 'POST',
+            body: DATA
+        })
+        return {
+            text: await res.text(),
+            status: res.status
+        }
+    }
+    """
+
     def __init__(self, client: Client):
         self.__session: ClientSession = MISSING
         self.__browser: playwright.ChromiumBrowserContext = MISSING
         self.__chromium: playwright.Browser = MISSING
+        self.__kick_page: playwright.Page = MISSING
         self.ws: ChatroomWebSocket = MISSING
         self.client = client
 
@@ -93,20 +116,19 @@ class HTTPClient:
     async def login(self, username: str, password: str) -> None:
         await self.populate_browser()
 
-        page = await self.__browser.new_page()
+        self.__kick_page = await self.__browser.new_page()
         url = Route.DOMAIN
         headers = {}
         # headers["host"] = "kick.com"
-        await page.set_extra_http_headers(headers)
-        res = await page.goto(url)
+        await self.__kick_page.set_extra_http_headers(headers)
+        res = await self.__kick_page.goto(url)
         if res:
             with open("content.html", "w") as f:
                 f.write(await res.text())
-        await page.click("#login-button")
-        await page.type("#email", username)
-        await page.type("#password", password)
-        await page.click("#signin-modal button[type=submit]")
-        # await page.close()
+        await self.__kick_page.click("#login-button")
+        await self.__kick_page.type("#email", username)
+        await self.__kick_page.type("#password", password)
+        await self.__kick_page.click("#signin-modal button[type=submit]")
         print("Logged in.")
         await self.update_tokens()
 
@@ -140,22 +162,20 @@ class HTTPClient:
 
         headers = kwargs.pop("headers", {})
         headers["Authorization"] = f"Bearer {self.token}"
-        headers["referrer"] = "kick.com"
+        headers["Referrer"] = route.referrer
         headers["Connection"] = "keep-alive"
         headers["Alt-Used"] = "kick.com"
-        # headers["Host"] = "kick.com"
-        headers["Sec-Fetch-Dest"] = "document"
-        headers["Sec-Fetch-Mode"] = "navigate"
-        headers["Sec-Fetch-Site"] = "none"
-        headers["Sec-Fetch-User"] = "?1"
-        headers["Sec-GPC"] = "1"
-        # headers["TE"] = "trailers"
+        # headers["Sec-Fetch-Dest"] = "document"
+        # headers["Sec-Fetch-Mode"] = "navigate"
+        # headers["Sec-Fetch-Site"] = "none"
+        # headers["Sec-Fetch-User"] = "?1"
+        # headers["Sec-GPC"] = "1"
         headers["X-XSRF-TOKEN"] = self.xsrf_token
-        headers["Accept-Language"] = "en-CA,en-US;q=0.7,en;q=0.3"
-        headers["Accept-Encoding"] = "gzip, deflate, br"
-        headers[
-            "Accept"
-        ] = "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8"
+        # headers["Accept-Language"] = "en-CA,en-US;q=0.7,en;q=0.3"
+        # headers["Accept-Encoding"] = "gzip, deflate, br"
+        # headers[
+        #     "Accept"
+        # ] = "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8"
 
         url = route.url
         endpoint = f"/{route.method.split('/')[-1]}"
@@ -171,21 +191,27 @@ class HTTPClient:
             LOGGER.debug(
                 f"Making request to {url}. headers: {headers}, params: {kwargs.get('params', None)}, json: {kwargs.get('json', None)}"
             )
-            page = await self.__browser.new_page()
-            print("new page made")
             match route.method:
                 case "GET":
+                    page = await self.__chromium.new_page()
                     print("making get...")
                     await page.set_extra_http_headers(headers)
                     print("Headers set")
                     res = await page.goto(url)
                     print("get request made")
                 case "POST":
-                    print("making post...")
-                    res = await self.__browser.request.post(
-                        url, headers=headers, **kwargs
+                    script = (
+                        self.post_javascript.replace(
+                            "DATA", json.dumps(kwargs.pop("data", {}))
+                        )
+                        .replace("HEADERS", json.dumps(headers))
+                        .replace("URL", url)
                     )
+                    print(script)
+                    print("making post...")
+                    res = FetchResponse(data=await self.__kick_page.evaluate(script))
                     print("post request made")
+                    print(res)
                 case other:
                     raise NotImplementedError(
                         f"Implimentation for the {route.method} http method is not set"
@@ -194,29 +220,34 @@ class HTTPClient:
             if res is not None:
                 print("response found")
                 data = await json_or_text(res)
+                print("Got data")
                 with open("data", "w") as f:
                     f.write(f"{data}")
 
-                LOGGER.debug(
-                    f"Received Response w/ code {res.status}. headers: {res.headers}, data: {data}"
-                )
                 if NOTFOUND_SIGNATURE in data:
                     error = await error_or_text(data)
+                    print("404")
                     raise NotFound(error)
 
                 if 300 > res.status >= 200:
                     print("returning data...")
                     return data
+                print("matching status...")
                 match res.status:
                     case 400:
+                        print("400")
                         error = await error_or_text(data)
                         raise HTTPException(error)
                     case 403:
+                        print("403")
+                        print(data)
                         raise Forbidden()
                     case 404:
+                        print("404")
                         error = await error_or_text(data)
                         raise NotFound(error)
                     case 429:
+                        print("429")
                         LOGGER.warning(
                             "We have been ratelimited. Waiting five seconds before trying again...",
                             endpoint,
@@ -236,13 +267,14 @@ class HTTPClient:
                         txt = await error_or_text(data)
                         raise InternalKickException(txt)
                     case other:
+                        print("other")
                         raise RuntimeError(f"Unknown status reached: {other}")
         # finally:
         #     print("finally triggered")
         #     if page is not None:
         #         print("Closing page...")
         #         await page.close()
-
+        print("Done2")
         if res is not None and data is not None:
             txt = await error_or_text(data)
 
@@ -257,10 +289,16 @@ class HTTPClient:
         # raise RuntimeError("Unreachable situation occured in http handling")
 
     def send_message(self, chatroom: int, content: str) -> Response[MessageSentPayload]:
+        raise RuntimeError("This is broky")
         return self.request(
-            Route(method="POST", path=f"/messages/send/{chatroom}"),
-            json={"content": content, "type": "message"},
+            Route(
+                method="POST",
+                path=f"/messages/send/{chatroom}",
+            ),
+            data={"content": content, "type": "message"},
         )
 
     def get_user(self, streamer: str) -> Response[UserPayload]:
-        return self.request(Route(method="GET", path=f"/channels/{streamer}"))
+        return self.request(
+            Route(method="GET", path=f"/channels/{streamer}", referrer=f"/{streamer}")
+        )
