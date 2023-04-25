@@ -115,11 +115,11 @@ class ChatterPayload(TypedDict):
     id: int
     username: str
     slug: str
-    profile_pic: None  # NEED TO FIGURE THIS OUT
+    profile_pic: None | str
     is_staff: bool
     is_channel_owner: bool
     is_moderator: bool
     badges: list  # NEED TO FIGURE THIS OUT
-    following_since: None  # NEED TO FIGURE THIS OUT
-    susbribed_for: int  # NEED TO FIGURE THIS OUT
+    following_since: None | str
+    subscribed_for: int  # NEED TO FIGURE THIS OUT
     banned: None  # NEED TO FIGURE THIS OUT

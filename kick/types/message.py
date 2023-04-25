@@ -1,4 +1,4 @@
-from typing import Literal
+from typing import Any, Literal
 
 from typing_extensions import TypedDict
 
@@ -33,3 +33,12 @@ class MessageStatusPayload(TypedDict):
 class MessageSentPayload(TypedDict):
     status: MessageStatusPayload
     data: MessagePayload
+
+
+class FetchMessagesDataPayload(TypedDict):
+    messages: list[MessagePayload]
+    cursor: str
+
+
+class FetchMessagesPayload(TypedDict):
+    status: MessageStatusPayload
