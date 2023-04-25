@@ -16,7 +16,7 @@ from .utils import MISSING
 if TYPE_CHECKING:
     from .client import Client
     from .types.message import MessageSentPayload
-    from .types.user import UserPayload
+    from .types.user import ChatterPayload, UserPayload
 
     T = TypeVar("T")
     Response = Coroutine[Any, Any, T]
@@ -301,4 +301,13 @@ class HTTPClient:
     def get_user(self, streamer: str) -> Response[UserPayload]:
         return self.request(
             Route(method="GET", path=f"/channels/{streamer}", referrer=f"/{streamer}")
+        )
+
+    def get_chatter(self, streamer: str, chatter: str) -> Response[ChatterPayload]:
+        return self.request(
+            Route(
+                method="GET",
+                path=f"/channels/{streamer}/users/{chatter}",
+                referrer=f"https://kick.com/{streamer}",
+            )
         )
