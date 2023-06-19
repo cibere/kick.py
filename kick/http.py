@@ -97,6 +97,8 @@ class HTTPClient:
 
         self.token: str = MISSING
         self.xsrf_token: str = MISSING
+        self.user_agent = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3"
+        self.cookie_url = "https://kick.com"
 
     async def close(self) -> None:
         print("Closing HTTPClient...")
@@ -126,16 +128,16 @@ class HTTPClient:
             with open("content.html", "w") as f:
                 f.write(await res.text())
         await self.__kick_page.click("#login-button")
-        await self.__kick_page.type("#email", username)
-        await self.__kick_page.type("#password", password)
+        await self.__kick_page.type(".mb-5 > div > div > input", username)
+        await self.__kick_page.type(".mb-8 > div > div > input", password)
         await self.__kick_page.click("#signin-modal button[type=submit]")
         print("Logged in.")
         await self.update_tokens()
 
     async def update_tokens(self) -> None:
-        cookies = await self.__browser.cookies()
-        with open("cookies.json", "w") as f:
-            json.dump(cookies, f, indent=4)
+        cookies = await self.__browser.cookies(self.cookie_url)
+        # with open("cookies.json", "w") as f:
+        #     json.dump(cookies, f, indent=4)
         for cookie in cookies:
             value = cookie.get("value")
             if value is not None:
@@ -159,12 +161,14 @@ class HTTPClient:
 
     async def request(self, route: Route, **kwargs) -> Any:
         await self.populate_browser()
+        await self.update_tokens()
 
         headers = kwargs.pop("headers", {})
         headers["Authorization"] = f"Bearer {self.token}"
         headers["Referrer"] = route.referrer
         headers["Connection"] = "keep-alive"
         headers["Alt-Used"] = "kick.com"
+        headers["User-Agent"] = self.user_agent
         # headers["Sec-Fetch-Dest"] = "document"
         # headers["Sec-Fetch-Mode"] = "navigate"
         # headers["Sec-Fetch-Site"] = "none"
@@ -200,6 +204,10 @@ class HTTPClient:
                     res = await page.goto(url)
                     print("get request made")
                 case "POST":
+                    cookies = await self.__browser.cookies(self.cookie_url)
+                    headers["Cookie"] = ";".join(
+                        f"{c['name']}={c['value']}" for c in cookies  # type: ignore
+                    )
                     script = (
                         self.post_javascript.replace(
                             "DATA", json.dumps(kwargs.pop("data", {}))
@@ -220,9 +228,12 @@ class HTTPClient:
             if res is not None:
                 print("response found")
                 data = await json_or_text(res)
-                print("Got data")
-                with open("data", "w") as f:
+                print(f"Got data w/ {res.status}")
+                with open("data", "w", encoding="utf-8") as f:
                     f.write(f"{data}")
+
+                if page is not None:
+                    await page.close()
 
                 if NOTFOUND_SIGNATURE in data:
                     error = await error_or_text(data)
@@ -289,7 +300,7 @@ class HTTPClient:
         # raise RuntimeError("Unreachable situation occured in http handling")
 
     def send_message(self, chatroom: int, content: str) -> Response[MessageSentPayload]:
-        raise RuntimeError("This is broky")
+        # raise RuntimeError("This is broky")
         return self.request(
             Route(
                 method="POST",
