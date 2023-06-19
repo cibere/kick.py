@@ -1,4 +1,6 @@
 test.py
+go.mod
+go.sum
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
