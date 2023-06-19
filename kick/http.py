@@ -99,9 +99,6 @@ class HTTPClient:
         token_route.url = token_route.DOMAIN + "/kick-token-provider"
         token_provider = await self.request(token_route)
 
-        with open("token.json", "w") as f:
-            json.dump(token_provider, f, indent=4)
-
         route = Route("POST", "")
         route.url = route.DOMAIN + "/mobile/login"
 
