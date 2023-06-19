@@ -40,7 +40,7 @@ class Client:
         return coro
 
     async def start(
-        self, *, username: str, password: str, one_time_password: str | None = None
+        self, username: str, password: str, *, one_time_password: str | None = None
     ) -> None:
         await self.http.login(
             username=username, password=password, one_time_password=one_time_password
