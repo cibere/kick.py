@@ -4,10 +4,15 @@ __all__ = (
     "Forbidden",
     "NotFound",
     "InternalKickException",
+    "LoginFailure",
 )
 
 
 class KickException(Exception):
+    pass
+
+
+class LoginFailure(KickException):
     pass
 
 

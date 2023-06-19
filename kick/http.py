@@ -10,7 +10,13 @@ from playwright import async_api as playwright
 
 from . import __version__
 from .chatroom import ChatroomWebSocket
-from .errors import Forbidden, HTTPException, InternalKickException, NotFound
+from .errors import (
+    Forbidden,
+    HTTPException,
+    InternalKickException,
+    LoginFailure,
+    NotFound,
+)
 from .utils import MISSING
 
 if TYPE_CHECKING:
@@ -134,6 +140,11 @@ class HTTPClient:
         await self.__kick_page.type(".mb-5 > div > div > input", username)
         await self.__kick_page.type(".mb-8 > div > div > input", password)
         await self.__kick_page.click("#signin-modal button[type=submit]")
+        if not await self.__kick_page.query_selector(
+            ".mt-5.text-center.text-xs.font-medium.text-danger"
+        ):
+            await self.close()
+            raise LoginFailure("Invalid Credentials")
         LOGGER.info("Login successful")
         await self.update_tokens()
 
