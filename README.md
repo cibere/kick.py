@@ -4,10 +4,13 @@ Kick.py _will_ be an async api wrapper for [kick.com](https://kick.com) once the
 
 # TODO
 
-- ratelimit handling
-- cache
+- ratelimit handling (ratelimit is unknown on how it works)
+- cache (idk how I will do this)
 - see types folder for things that still need a payload, and perhaps a dataclass.
 - asset dataclass
+- Add emote support
+- refactor chatroom to make more sense
+- Add partials
 
 # FAQ
 
