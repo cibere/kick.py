@@ -101,7 +101,7 @@ class HTTPClient:
         self.cookie_url = "https://kick.com"
 
     async def close(self) -> None:
-        print("Closing HTTPClient...")
+        LOGGER.info("Closing HTTP Client...")
         if self.__browser is not MISSING:
             await self.__browser.close()
         if self.__session is not MISSING:
@@ -112,10 +112,13 @@ class HTTPClient:
     async def populate_browser(self):
         if self.__browser is MISSING:
             pw = await playwright.async_playwright().start()
-            self.__chromium = await pw.chromium.launch(headless=False)
+            self.__chromium = await pw.chromium.launch(
+                headless=self.client._options.get("headless", True)
+            )
             self.__browser = await self.__chromium.new_context()
 
     async def login(self, username: str, password: str) -> None:
+        LOGGER.info("Logging in with username & password")
         await self.populate_browser()
 
         self.__kick_page = await self.__browser.new_page()
@@ -131,7 +134,7 @@ class HTTPClient:
         await self.__kick_page.type(".mb-5 > div > div > input", username)
         await self.__kick_page.type(".mb-8 > div > div > input", password)
         await self.__kick_page.click("#signin-modal button[type=submit]")
-        print("Logged in.")
+        LOGGER.info("Login successful")
         await self.update_tokens()
 
     async def update_tokens(self) -> None:
