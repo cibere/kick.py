@@ -34,7 +34,6 @@ If you set a port other than `9090` for the bypass script, make sure to pass `by
 - Add emote support
 - refactor chatroom to make more sense
 - Add partials
-- 2FA Support
 
 # FAQ
 
