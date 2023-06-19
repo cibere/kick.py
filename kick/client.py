@@ -6,6 +6,7 @@ from typing import TYPE_CHECKING, Any, Callable, Coroutine, TypeVar
 from .http import HTTPClient
 from .message import Message
 from .user import User
+from .utils import MISSING
 
 if TYPE_CHECKING:
     from typing_extensions import Self
@@ -38,9 +39,12 @@ class Client:
         setattr(self, coro.__name__, coro)
         return coro
 
-    async def start(self, username: str, password: str) -> None:
-        await self.http.login(username=username, password=password)
-        print("starting...")
+    async def start(
+        self, *, username: str, password: str, one_time_password: str | None = None
+    ) -> None:
+        await self.http.login(
+            username=username, password=password, one_time_password=one_time_password
+        )
         await self.http.start()
 
     async def close(self) -> None:
