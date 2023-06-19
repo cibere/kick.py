@@ -16,8 +16,8 @@ EventT = TypeVar("EventT", bound=Callable[..., Coroutine[Any, Any, None]])
 
 class Client:
     def __init__(self, **options: Any) -> None:
-        self.http = HTTPClient(self)
         self._options = options
+        self.http = HTTPClient(self)
 
     async def fetch_user(self, streamer: str) -> User:
         data = await self.http.get_user(streamer)
