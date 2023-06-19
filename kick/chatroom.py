@@ -26,7 +26,6 @@ class ChatroomWebSocket:
         self.http = http
         self.send_json = ws.send_json
         self.close = ws.close
-        self._receive_msgs_task: asyncio.Task | None = None
 
     async def poll_event(self) -> None:
         raw_msg = await self.ws.receive()
