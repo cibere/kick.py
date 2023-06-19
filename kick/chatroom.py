@@ -113,7 +113,7 @@ class Chatroom(BaseDataclass["ChatroomPayload"]):
         msg = Message(data=data["data"])
         return msg
 
-    async def get_chatter(self, chatter_name: str, /) -> Chatter:
+    async def fetch_chatter(self, chatter_name: str, /) -> Chatter:
         from .chatter import Chatter
 
         data = await self.http.get_chatter(self.streamer.slug, chatter_name)
