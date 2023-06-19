@@ -237,7 +237,7 @@ class HTTPClient:
         raise RuntimeError("Unreachable situation occured in http handling")
 
     def send_message(self, chatroom: int, content: str) -> Response[MessageSentPayload]:
-        # raise RuntimeError("This is broky")
+        raise RuntimeError("This is broky")
         return self.request(
             Route(
                 method="POST",
