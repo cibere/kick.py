@@ -7,15 +7,15 @@ from typing import TYPE_CHECKING
 
 from aiohttp import ClientWebSocketResponse as WebSocketResponse
 
-from .chatter import Chatter
 from .enums import ChatroomChatMode
 from .message import Message
 from .object import BaseDataclass
-from .user import User
 
 if TYPE_CHECKING:
+    from .chatter import Chatter
     from .http import HTTPClient
     from .types.user import ChatroomPayload
+    from .user import User
 
 __all__ = ("Chatroom",)
 
@@ -114,6 +114,8 @@ class Chatroom(BaseDataclass["ChatroomPayload"]):
         return msg
 
     async def get_chatter(self, chatter_name: str, /) -> Chatter:
+        from .chatter import Chatter
+
         data = await self.http.get_chatter(self.streamer.slug, chatter_name)
         chatter = Chatter(data=data)
         chatter.http = self.http
