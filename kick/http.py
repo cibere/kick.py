@@ -3,6 +3,7 @@ from __future__ import annotations
 import asyncio
 import json
 import logging
+from http.client import HTTP_PORT
 from typing import TYPE_CHECKING, Any, Coroutine, TypeVar, Union
 
 from aiohttp import ClientConnectionError, ClientResponse, ClientSession
@@ -25,6 +26,7 @@ if TYPE_CHECKING:
     from typing_extensions import Self
 
     from .client import Client, Credentials
+    from .types.assets import AssetPayload
     from .types.chatroom import ChatroomRulesPayload
     from .types.message import FetchMessagesPayload, V1MessageSentPayload
     from .types.user import ChatterPayload, UserPayload
@@ -297,3 +299,18 @@ class HTTPClient:
 
     def get_emotes(self, streamer: str) -> Response[EmotesPayload]:
         return self.request(Route.root("GET", f"/emotes/{streamer}"))
+
+    async def get_asset(self, url: str) -> bytes:
+        if self.__session is MISSING:
+            self.__session = ClientSession()
+
+        res = await self.__session.request("GET", url)
+        match res.status:
+            case 200:
+                return await res.read()
+            case 403:
+                raise Forbidden()
+            case 404:
+                raise NotFound("Asset Not Found")
+            case other:
+                raise HTTPException(await res.text())

@@ -6,6 +6,7 @@ from typing import TYPE_CHECKING, AsyncIterator
 from kick.categories import Category
 from kick.emotes import Emote
 
+from .assets import Asset
 from .chatroom import Chatroom
 from .livestream import Livestream
 from .object import BaseDataclass, HTTPDataclass
@@ -79,14 +80,20 @@ class User(HTTPDataclass["UserPayload"]):
         """THIS IS RAW DATA"""
         return self._data["follower_badges"]
 
-    @property
-    def online_banner_url(self) -> str | None:
-        return self._data["banner_image"]["url"] if self._data["banner_image"] else None
-
-    @property
-    def offline_banner_url(self) -> str | None:
+    @cached_property
+    def online_banner_url(self) -> Asset | None:
         return (
-            self._data["offline_banner_image"]["src"]
+            Asset(url=self._data["banner_image"]["url"], http=self.http)
+            if self._data["banner_image"]
+            else None
+        )
+
+    @cached_property
+    def offline_banner_url(self) -> Asset | None:
+        return (
+            Asset._from_asset_src(
+                data=self._data["offline_banner_image"], http=self.http
+            )
             if self._data["offline_banner_image"]
             else None
         )
@@ -137,7 +144,7 @@ class User(HTTPDataclass["UserPayload"]):
 
     @cached_property
     def livestream(self) -> Livestream:
-        return Livestream(data=self._data["livestream"])
+        return Livestream(data=self._data["livestream"], http=self.http)
 
     @cached_property
     def chatroom(self) -> Chatroom:
@@ -147,21 +154,23 @@ class User(HTTPDataclass["UserPayload"]):
 
     @cached_property
     def recent_categories(self) -> list[Category]:
-        return [Category(data=c) for c in self._data["recent_categories"]]
+        return [
+            Category(data=c, http=self.http) for c in self._data["recent_categories"]
+        ]
 
     async def fetch_videos(self) -> list[Video]:
         data = await self.http.get_streamer_videos(self.slug)
-        return [Video(data=v) for v in data]
+        return [Video(data=v, http=self.http) for v in data]
 
     async def fetch_emotes(
         self, *, include_global: bool = False
     ) -> AsyncIterator[Emote]:
         data = await self.http.get_emotes(self.slug)
         for emote in data[2]["emotes"]:
-            yield Emote(data=emote)
+            yield Emote(data=emote, http=self.http)
         if include_global is True:
             for emote in data[1]["emotes"]:
-                yield Emote(data=emote)
+                yield Emote(data=emote, http=self.http)
 
     def __eq__(self, other: object) -> bool:
         if isinstance(other, User):
