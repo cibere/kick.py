@@ -3,7 +3,7 @@ from __future__ import annotations
 import asyncio
 import json
 from datetime import datetime
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 from aiohttp import ClientWebSocketResponse as WebSocketResponse
 
@@ -119,3 +119,6 @@ class Chatroom(BaseDataclass["ChatroomPayload"]):
         chatter = Chatter(data=data)
         chatter.http = self.http
         return chatter
+
+    def __eq__(self, other: Any) -> bool:
+        return isinstance(other, Chatroom) and other.id == self.id
