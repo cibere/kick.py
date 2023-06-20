@@ -29,6 +29,9 @@ class ChatBadge(BaseDataclass["ChatBadgePayload"]):
     def active(self) -> bool:
         return self._data["active"]
 
+    def __repr__(self) -> str:
+        return f"<ChatBadge type={self.type!r} text={self.text!r} count={self.count!r} active={self.active!r}>"
+
 
 class SubscriberBadge(HTTPDataclass["SubscriberBadgePayload"]):
     @property
@@ -46,3 +49,6 @@ class SubscriberBadge(HTTPDataclass["SubscriberBadgePayload"]):
     @cached_property
     def image(self) -> Asset:
         return Asset._from_asset_src(data=self._data["badge_image"], http=self.http)
+
+    def __repr__(self) -> str:
+        return f"<SubscriberBadge id={self.id!r} channel_id={self.channel_id!r} months={self.months!r} image={self.image!r}>"

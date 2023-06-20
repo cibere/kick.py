@@ -190,3 +190,6 @@ class User(HTTPDataclass["UserPayload"]):
 
     def __str__(self) -> str:
         return self.username
+
+    def __repr__(self) -> str:
+        return f"<User id={self.id!r} name={self.username!r}>"

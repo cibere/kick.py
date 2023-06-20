@@ -41,6 +41,9 @@ class Author(BaseDataclass["AuthorPayload"]):
     def __str__(self) -> str:
         return self.username
 
+    def __repr__(self) -> str:
+        return f"<Author id={self.id!r} username={self.username!r}>"
+
 
 class PartialAuthor(BaseDataclass["ReplyOriginalSender"]):
     @cached_property
@@ -56,6 +59,9 @@ class PartialAuthor(BaseDataclass["ReplyOriginalSender"]):
 
     def __str__(self) -> str:
         return self.username
+
+    def __repr__(self) -> str:
+        return f"<PartialAuthor id={self.id!r} username={self.username!r}>"
 
 
 class PartialMessage(BaseDataclass["ReplyMetaData"]):
@@ -73,6 +79,9 @@ class PartialMessage(BaseDataclass["ReplyMetaData"]):
 
     def __eq__(self, other: object) -> bool:
         return isinstance(other, self.__class__) and other.id == self.id
+
+    def __repr__(self) -> str:
+        return f"<Message id={self.id!r} author={self.author!r}>"
 
 
 class Message(BaseDataclass["MessagePayload"]):
@@ -109,3 +118,6 @@ class Message(BaseDataclass["MessagePayload"]):
 
     def __eq__(self, other: object) -> bool:
         return isinstance(other, self.__class__) and other.id == self.id
+
+    def __repr__(self) -> str:
+        return f"<Message id={self.id!r} chatroom={self.chatroom_id!r} author={self.author!r}>"

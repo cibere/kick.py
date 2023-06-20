@@ -86,3 +86,6 @@ class Video(HTTPDataclass["VideoPayload"]):
     @cached_property
     def categories(self) -> list[Category]:
         return [Category(data=c, http=self.http) for c in self._data["categories"]]
+
+    def __repr__(self) -> str:
+        return f"<Video id={self.id!r} streamer={self.username!r} channel_id={self.channel_id!r}>"

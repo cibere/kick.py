@@ -42,3 +42,8 @@ class Emote(HTTPDataclass["EmotePayload"]):
 
     def __str__(self) -> str:
         return self.name
+
+    def __repr__(self) -> str:
+        return (
+            f"<Emote id={self.id!r} channel_id={self.channel_id!r} name={self.name!r}>"
+        )
