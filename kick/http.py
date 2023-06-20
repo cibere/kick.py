@@ -19,7 +19,7 @@ from .errors import (
 from .utils import MISSING
 
 if TYPE_CHECKING:
-    from .client import Client
+    from .client import Client, Credentials
     from .types.message import V1MessageSentPayload
     from .types.user import ChatterPayload, UserPayload
 
@@ -85,9 +85,7 @@ class HTTPClient:
         if self.ws is not MISSING:
             await self.ws.close()
 
-    async def login(
-        self, *, username: str, password: str, one_time_password: str | None
-    ) -> None:
+    async def login(self, credentials: Credentials) -> None:
         LOGGER.info("Logging in using username and password")
 
         # Mobile login method is used here since more is known about
@@ -103,14 +101,14 @@ class HTTPClient:
         route.url = route.DOMAIN + "/mobile/login"
 
         data = {
-            "email": username,
-            "password": password,
+            "email": credentials.email,
+            "password": credentials.password,
             "isMobileRequest": True,
             token_provider["nameFieldName"]: "",
             token_provider["validFromFieldName"]: token_provider["encryptedValidFrom"],
         }
-        if one_time_password is not None:
-            data["one_time_password"] = one_time_password
+        if credentials.one_time_password is not None:
+            data["one_time_password"] = credentials.one_time_password
 
         res = await self.request(route, json=data)
         if res["2fa_required"] is True:
