@@ -9,21 +9,15 @@ from aiohttp import ClientConnectionError, ClientResponse, ClientSession
 
 from . import __version__
 from .chatroom import ChatroomWebSocket
-from .errors import (
-    CloudflareBypassException,
-    Forbidden,
-    HTTPException,
-    InternalKickException,
-    LoginFailure,
-    NotFound,
-)
+from .errors import (CloudflareBypassException, Forbidden, HTTPException,
+                     InternalKickException, LoginFailure, NotFound)
 from .utils import MISSING
 
 if TYPE_CHECKING:
     from typing_extensions import Self
 
     from .client import Client, Credentials
-    from .types.message import V1MessageSentPayload
+    from .types.message import FetchMessagesPayload, V1MessageSentPayload
     from .types.user import ChatterPayload, UserPayload
 
     T = TypeVar("T")
@@ -84,7 +78,7 @@ class HTTPClient:
         self.token: str = MISSING
         self.xsrf_token: str = MISSING
 
-        self.user_agent = "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3"
+        self.user_agent = "Kick.py V{__version__} (github.com/cibere/kick.py)"
 
         self.bypass_port = client._options.get("bypass_port", 9090)
         self.whitelisted = client._options.get("whitelisted", False)
@@ -165,6 +159,7 @@ class HTTPClient:
 
         headers = kwargs.pop("headers", {})
         headers["User-Agent"] = self.user_agent
+        headers["Accepts"] = "application/json"
 
         cookies = kwargs.pop("cookies", {})
 
@@ -280,3 +275,6 @@ class HTTPClient:
                 path=f"/channels/{streamer}/users/{chatter}",
             )
         )
+
+    def get_messages(self, chatroom: int) -> Response[FetchMessagesPayload]:
+        return self.request(Route("GET", f"/channels/{chatroom}/messages"))
