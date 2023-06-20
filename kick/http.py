@@ -88,7 +88,7 @@ class HTTPClient:
         self.token: str = MISSING
         self.xsrf_token: str = MISSING
 
-        self.user_agent = "Kick.py V{__version__} (github.com/cibere/kick.py)"
+        self.user_agent = f"Kick.py V{__version__} (github.com/cibere/kick.py)"
 
         self.bypass_port = client._options.get("bypass_port", 9090)
         self.whitelisted = client._options.get("whitelisted", False)

@@ -37,3 +37,8 @@ class ChatroomRulesDataPayload(TypedDict):
 class ChatroomRulesPayload(TypedDict):
     status: StatusPayload
     data: ChatroomRulesDataPayload
+
+
+class PollPayload(TypedDict):
+    status: StatusPayload
+    data: None  # NEED TO FIGURE THIS OUT
