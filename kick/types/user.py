@@ -67,7 +67,7 @@ class UserPayload(TypedDict):
     can_host: bool
     user: InnerUser
     chatroom: ChatroomPayload
-    livestream: LivestreamPayload
+    livestream: LivestreamPayload | None
     recent_categories: list[Category]
 
 
