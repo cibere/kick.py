@@ -6,8 +6,8 @@ from .object import BaseDataclass
 from .utils import cached_property
 
 if TYPE_CHECKING:
-    from .types.user import Category as CategoryPayload
-    from .types.user import InnerCategory as ParentCategoryPayload
+    from .types.categories import Category as CategoryPayload
+    from .types.categories import InnerCategory as ParentCategoryPayload
 
 __all__ = ("Category", "ParentCategory")
 
