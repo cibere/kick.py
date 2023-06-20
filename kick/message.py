@@ -4,6 +4,7 @@ from datetime import datetime
 from typing import TYPE_CHECKING
 
 from .object import BaseDataclass
+from .utils import cached_property
 
 if TYPE_CHECKING:
     from .types.message import AuthorPayload, MessagePayload
@@ -37,9 +38,6 @@ class Author(BaseDataclass["AuthorPayload"]):
 
 
 class Message(BaseDataclass["MessagePayload"]):
-    _author: Author | None = None
-    _timestamp: datetime | None
-
     @property
     def id(self) -> str:
         return self._data["id"]
@@ -52,17 +50,13 @@ class Message(BaseDataclass["MessagePayload"]):
     def content(self) -> str:
         return self._data["content"]
 
-    @property
+    @cached_property
     def created_at(self) -> datetime:
-        if self._timestamp is None:
-            self._timestamp = datetime.fromisoformat(self._data["created_at"])
-        return self._timestamp
+        return datetime.fromisoformat(self._data["created_at"])
 
-    @property
+    @cached_property
     def author(self) -> Author:
-        if self._author is None:
-            self._author = Author(data=self._data["sender"])
-        return self._author
+        return Author(data=self._data["sender"])
 
     def __eq__(self, other: object) -> bool:
         return isinstance(other, Message) and other.id == self.id

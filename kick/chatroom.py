@@ -9,7 +9,8 @@ from aiohttp import ClientWebSocketResponse as WebSocketResponse
 
 from .enums import ChatroomChatMode
 from .message import Message
-from .object import BaseDataclass
+from .object import HTTPDataclass
+from .utils import cached_property
 
 if TYPE_CHECKING:
     from .chatter import Chatter
@@ -57,11 +58,7 @@ class ChatroomWebSocket:
         )
 
 
-class Chatroom(BaseDataclass["ChatroomPayload"]):
-    _created_at: datetime | None = None
-    _updated_at: datetime | None = None
-    _ws: ChatroomWebSocket | None = None
-    http: HTTPClient
+class Chatroom(HTTPDataclass["ChatroomPayload"]):
     streamer: User
 
     @property
@@ -72,17 +69,13 @@ class Chatroom(BaseDataclass["ChatroomPayload"]):
     def chatable_type(self) -> str:
         return self._data["chatable_type"]
 
-    @property
+    @cached_property
     def created_at(self) -> datetime:
-        if self._created_at is None:
-            self._created_at = datetime.fromisoformat(self._data["created_at"])
-        return self._created_at
+        return datetime.fromisoformat(self._data["created_at"])
 
-    @property
+    @cached_property
     def updated_at(self) -> datetime:
-        if self._updated_at is None:
-            self._updated_at = datetime.fromisoformat(self._data["updated_at"])
-        return self._updated_at
+        return datetime.fromisoformat(self._data["updated_at"])
 
     @property
     def chat_mode(self) -> ChatroomChatMode:
@@ -125,8 +118,7 @@ class Chatroom(BaseDataclass["ChatroomPayload"]):
         from .chatter import Chatter
 
         data = await self.http.get_chatter(self.streamer.slug, chatter_name)
-        chatter = Chatter(data=data)
-        chatter.http = self.http
+        chatter = Chatter(data=data, http=self.http)
         return chatter
 
     def __eq__(self, other: Any) -> bool:
