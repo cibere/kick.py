@@ -5,11 +5,12 @@ import json
 import logging
 from typing import TYPE_CHECKING, Any, Coroutine, TypeVar, Union
 
-from aiohttp import ClientResponse, ClientSession
+from aiohttp import ClientConnectionError, ClientResponse, ClientSession
 
 from . import __version__
 from .chatroom import ChatroomWebSocket
 from .errors import (
+    CloudflareBypassException,
     Forbidden,
     HTTPException,
     InternalKickException,
@@ -186,16 +187,23 @@ class HTTPClient:
             LOGGER.debug(
                 f"Making request to {route.method} {url}. headers: {headers}, params: {kwargs.get('params', None)}, json: {kwargs.get('json', None)}"
             )
-
-            res = await self.__session.request(
-                route.method,
-                url
-                if self.whitelisted is True
-                else f"http://localhost:{self.bypass_port}/request?url={url}",
-                headers=headers,
-                cookies=cookies,
-                **kwargs,
-            )
+            try:
+                res = await self.__session.request(
+                    route.method,
+                    url
+                    if self.whitelisted is True
+                    else f"http://localhost:{self.bypass_port}/request?url={url}",
+                    headers=headers,
+                    cookies=cookies,
+                    **kwargs,
+                )
+            except ClientConnectionError:
+                if self.whitelisted is True:
+                    raise InternalKickException("Could Not Connect To Kick") from None
+                else:
+                    raise CloudflareBypassException(
+                        "Could Not Connect To Bypass Script"
+                    ) from None
 
             if res is not None:
                 self.xsrf_token = getattr(
