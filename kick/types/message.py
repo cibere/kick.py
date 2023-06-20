@@ -42,6 +42,7 @@ class FetchMessagesDataPayload(TypedDict):
 
 class FetchMessagesPayload(TypedDict):
     status: MessageStatusPayload
+    data: FetchMessagesDataPayload
 
 
 class V1MessageSentPayload(TypedDict):
