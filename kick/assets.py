@@ -4,8 +4,6 @@ import os
 from io import BufferedIOBase
 from typing import TYPE_CHECKING, Any
 
-from kick.types.emotes import EmojiUserPayload
-
 if TYPE_CHECKING:
     from typing_extensions import Self
 

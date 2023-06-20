@@ -3,7 +3,6 @@ from __future__ import annotations
 import asyncio
 import json
 import logging
-from http.client import HTTP_PORT
 from typing import TYPE_CHECKING, Any, Coroutine, TypeVar, Union
 
 from aiohttp import ClientConnectionError, ClientResponse, ClientSession
