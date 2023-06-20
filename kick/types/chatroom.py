@@ -2,6 +2,8 @@ from typing import Any
 
 from typing_extensions import TypedDict
 
+from .all import StatusPayload
+
 
 class ClientChatterPayload(TypedDict):
     subscription: None  # NEED TO FIGURE THIS OUT
@@ -26,3 +28,12 @@ class ChatterPayload(TypedDict):
     following_since: None | str
     subscribed_for: int  # NEED TO FIGURE THIS OUT
     banned: None  # NEED TO FIGURE THIS OUT
+
+
+class ChatroomRulesDataPayload(TypedDict):
+    rules: str
+
+
+class ChatroomRulesPayload(TypedDict):
+    status: StatusPayload
+    data: ChatroomRulesDataPayload
