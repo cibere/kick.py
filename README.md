@@ -61,7 +61,6 @@ asyncio.run(main())
 
 # TODO
 
-- ratelimit handling (ratelimit is unknown on how it works)
 - cache (idk how I will do this)
 - see types folder for things that still need a payload, and perhaps a dataclass.
 - Add partials
