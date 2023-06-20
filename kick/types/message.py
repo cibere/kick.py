@@ -17,13 +17,39 @@ class AuthorPayload(TypedDict):
     identity: AuthorIdentity
 
 
-class MessagePayload(TypedDict):
+class BaseMessagePayload(TypedDict):
     id: str
     chatroom_id: int
     content: str
-    type: Literal["message"]
     created_at: str
     sender: AuthorPayload
+
+
+class NormalMessagePayload(BaseMessagePayload):
+    type: Literal["message"]
+
+
+class ReplyOriginalSender(TypedDict):
+    id: str
+    username: str
+
+
+class ReplyOriginalMessage(TypedDict):
+    id: str
+    content: str
+
+
+class ReplyMetaData(TypedDict):
+    original_sender: ReplyOriginalSender
+    original_message: ReplyOriginalMessage
+
+
+class ReplyMessagePayload(BaseMessagePayload):
+    type: Literal["reply"]
+    metadata: ReplyMetaData
+
+
+MessagePayload = NormalMessagePayload | ReplyMessagePayload
 
 
 class MessageSentPayload(TypedDict):
