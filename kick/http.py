@@ -20,6 +20,8 @@ from .errors import (
 from .utils import MISSING
 
 if TYPE_CHECKING:
+    from types.emotes import EmotesPayload
+
     from typing_extensions import Self
 
     from .client import Client, Credentials
@@ -292,3 +294,6 @@ class HTTPClient:
 
     def get_streamer_videos(self, streamer: str) -> Response[GetVideosPayload]:
         return self.request(Route("GET", f"/channe;s/{streamer}/videos"))
+
+    def get_emotes(self, streamer: str) -> Response[EmotesPayload]:
+        return self.request(Route.root("GET", f"/emotes/{streamer}"))
