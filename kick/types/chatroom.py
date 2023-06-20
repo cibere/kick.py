@@ -26,7 +26,7 @@ class ChatterPayload(TypedDict):
     is_moderator: bool
     badges: list  # NEED TO FIGURE THIS OUT
     following_since: None | str
-    subscribed_for: int  # NEED TO FIGURE THIS OUT
+    subscribed_for: int  # In months
     banned: None  # NEED TO FIGURE THIS OUT
 
 

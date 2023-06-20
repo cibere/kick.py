@@ -7,6 +7,7 @@ from kick.categories import Category
 from kick.emotes import Emote
 
 from .assets import Asset
+from .badges import SubscriberBadge
 from .chatroom import Chatroom
 from .livestream import Livestream
 from .object import BaseDataclass, HTTPDataclass
@@ -75,9 +76,11 @@ class User(HTTPDataclass["UserPayload"]):
         return self._data["followers_count"]
 
     @property
-    def subscriber_badges(self) -> list:
-        """THIS IS RAW DATA"""
-        return self._data["subscriber_badges"]
+    def subscriber_badges(self) -> list[SubscriberBadge]:
+        return [
+            SubscriberBadge(data=c, http=self.http)
+            for c in self._data["subscriber_badges"]
+        ]
 
     @property
     def follower_badges(self) -> list:

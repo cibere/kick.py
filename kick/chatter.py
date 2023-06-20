@@ -4,6 +4,7 @@ from datetime import datetime
 from typing import TYPE_CHECKING
 
 from .assets import Asset
+from .badges import ChatBadge
 from .object import HTTPDataclass
 from .user import User
 from .utils import cached_property
@@ -47,10 +48,9 @@ class Chatter(HTTPDataclass["ChatterPayload"]):
     def is_moderator(self) -> bool:
         return self._data["is_moderator"]
 
-    @property
-    def badges(self) -> list:
-        """THIS IS RAW DATA"""
-        return self._data["badges"]
+    @cached_property
+    def badges(self) -> list[ChatBadge]:
+        return [ChatBadge(data=c) for c in self._data["badges"]]
 
     @cached_property
     def following_since(self) -> datetime | None:
@@ -62,6 +62,10 @@ class Chatter(HTTPDataclass["ChatterPayload"]):
 
     @property
     def subscribed_for(self) -> int:
+        """
+        The amount of months the user has been subscribed for
+        """
+
         return self._data["subscribed_for"]
 
     async def to_user(self) -> User:
