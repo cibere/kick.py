@@ -1,13 +1,14 @@
 from __future__ import annotations
 
 import asyncio
+import logging
 from logging import getLogger
 from typing import TYPE_CHECKING, Any, Callable, Coroutine, TypeVar
 
 from .http import HTTPClient
 from .message import Message
 from .user import User
-from .utils import MISSING
+from .utils import MISSING, setup_logging
 
 if TYPE_CHECKING:
     from typing_extensions import Self
@@ -229,11 +230,21 @@ class Client:
             The message that was received
         """
 
-    def run(self, credentials: Credentials | None = None) -> None:
+    def run(
+        self,
+        credentials: Credentials | None = None,
+        *,
+        handler: logging.Handler = MISSING,
+        formatter: logging.Formatter = MISSING,
+        level: int = MISSING,
+        root: bool = True,
+        stream_supports_colour: bool = False,
+    ) -> None:
         """
         Starts the websocket so you can receive events
         And authenticate yourself if credentials are provided.
-        This is a sync method to call `Client.start`
+
+        `Client.run` automatically calls `utils.setup_logging` with the provided kwargs, and calls `Client.start`.
 
         Parameters
         -----------
@@ -241,4 +252,11 @@ class Client:
             The credentials to authenticate yourself with, if any
         """
 
+        setup_logging(
+            handler=handler,
+            formatter=formatter,
+            level=level,
+            root=root,
+            stream_supports_colour=stream_supports_colour,
+        )
         asyncio.run(self.start(credentials))
