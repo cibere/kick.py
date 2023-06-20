@@ -107,10 +107,8 @@ class Chatroom(BaseDataclass["ChatroomPayload"]):
     async def connect(self) -> None:
         await self.http.ws.subscribe(self.id)
 
-    async def send(self, content: str, /) -> Message:
-        data = await self.http.send_message(self.id, content)
-        msg = Message(data=data["data"])
-        return msg
+    async def send(self, content: str, /) -> None:
+        await self.http.send_message(self.id, content)
 
     async def fetch_chatter(self, chatter_name: str, /) -> Chatter:
         from .chatter import Chatter

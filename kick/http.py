@@ -20,7 +20,7 @@ from .utils import MISSING
 
 if TYPE_CHECKING:
     from .client import Client
-    from .types.message import MessageSentPayload
+    from .types.message import V1MessageSentPayload
     from .types.user import ChatterPayload, UserPayload
 
     T = TypeVar("T")
@@ -233,14 +233,15 @@ class HTTPClient:
 
         raise RuntimeError("Unreachable situation occured in http handling")
 
-    def send_message(self, chatroom: int, content: str) -> Response[MessageSentPayload]:
-        raise RuntimeError("This is broky")
+    def send_message(
+        self, chatroom: int, content: str
+    ) -> Response[V1MessageSentPayload]:
+        # raise RuntimeError("This is broky")
+        route = Route(method="POST", path="")
+        route.url = route.DOMAIN + "/api/v1/chat-messages"
         return self.request(
-            Route(
-                method="POST",
-                path=f"/messages/send/{chatroom}",
-            ),
-            data={"content": content, "type": "message"},
+            route,
+            data={"message": content, "chatroom_id": chatroom},
         )
 
     def get_user(self, streamer: str) -> Response[UserPayload]:
