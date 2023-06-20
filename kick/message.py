@@ -65,7 +65,4 @@ class Message(BaseDataclass["MessagePayload"]):
         return self._author
 
     def __eq__(self, other: object) -> bool:
-        if isinstance(other, Message):
-            return other.id == self.id
-        else:
-            return False
+        return isinstance(other, Message) and other.id == self.id
