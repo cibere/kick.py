@@ -2,6 +2,8 @@ from typing import Literal
 
 from typing_extensions import TypedDict
 
+from .all import StatusPayload
+
 
 class AuthorIdentity(TypedDict):
     color: str
@@ -24,14 +26,8 @@ class MessagePayload(TypedDict):
     sender: AuthorPayload
 
 
-class MessageStatusPayload(TypedDict):
-    error: bool
-    code: int
-    message: str
-
-
 class MessageSentPayload(TypedDict):
-    status: MessageStatusPayload
+    status: StatusPayload
     data: MessagePayload
 
 
@@ -41,11 +37,9 @@ class FetchMessagesDataPayload(TypedDict):
 
 
 class FetchMessagesPayload(TypedDict):
-    status: MessageStatusPayload
+    status: StatusPayload
     data: FetchMessagesDataPayload
 
 
-class V1MessageSentPayload(TypedDict):
-    status: int
-    success: bool
-    message: str
+class V1MessageSentPayload(StatusPayload):
+    ...
