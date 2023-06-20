@@ -48,6 +48,14 @@ class ChatroomWebSocket:
             }
         )
 
+    async def unsubscribe(self, chatroom_id: int) -> None:
+        await self.send_json(
+            {
+                "event": "pusher:unsubscribe",
+                "data": {"auth": "", "channel": f"chatrooms.{chatroom_id}.v2"},
+            }
+        )
+
 
 class Chatroom(BaseDataclass["ChatroomPayload"]):
     _created_at: datetime | None = None
@@ -106,6 +114,9 @@ class Chatroom(BaseDataclass["ChatroomPayload"]):
 
     async def connect(self) -> None:
         await self.http.ws.subscribe(self.id)
+
+    async def disconnect(self) -> None:
+        await self.http.ws.unsubscribe(self.id)
 
     async def send(self, content: str, /) -> None:
         await self.http.send_message(self.id, content)
