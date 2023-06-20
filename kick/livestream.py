@@ -84,6 +84,14 @@ class Livestream(HTTPDataclass["LivestreamPayload"]):
         return self._data["tags"]
 
     @cached_property
+    def url(self) -> str:
+        return f"https://kick.com/{self.username}"
+
+    @cached_property
+    def embed_url(self) -> str:
+        return f"https://player.kick.com/{self.username}"
+
+    @cached_property
     def categories(self) -> list[Category]:
         return [Category(data=c, http=self.http) for c in self._data["categories"]]
 
