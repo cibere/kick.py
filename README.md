@@ -37,6 +37,28 @@ _these steps assume your python executable is `python`, but that might not be th
 
 If you set a port other than `9090` for the bypass script, make sure to pass `bypass_port=THE_PORT` into your `Client` constructor.
 
+# Basic Example
+
+```py
+import kick
+import asyncio
+
+client = kick.Client()
+
+@client.event
+async def on_ready():
+    print("I'm Ready!")
+
+async def main():
+    credentials = kick.Credentials(
+        username = ...,
+        password = ...
+    )
+    await client.start(credentials)
+
+asyncio.run(main())
+```
+
 # TODO
 
 - ratelimit handling (ratelimit is unknown on how it works)
