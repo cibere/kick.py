@@ -1,9 +1,14 @@
 from __future__ import annotations
 
+from datetime import datetime
 from typing import TYPE_CHECKING
 
+from kick.categories import Category
+
 from .chatroom import Chatroom
+from .livestream import Livestream
 from .object import BaseDataclass
+from .utils import cached_property
 
 if TYPE_CHECKING:
     from .http import HTTPClient
@@ -39,8 +44,6 @@ class Socials(BaseDataclass["InnerUser"]):
 
 
 class User(BaseDataclass["UserPayload"]):
-    _socials: Socials | None = None
-    _chatroom: Chatroom | None = None
     http: HTTPClient
 
     @property
@@ -106,6 +109,22 @@ class User(BaseDataclass["UserPayload"]):
         return self._data["can_host"]
 
     @property
+    def bio(self) -> str:
+        return self._data["user"]["bio"]
+
+    @property
+    def agreed_to_terms(self) -> bool:
+        return self._data["user"]["agreed_to_terms"]
+
+    @cached_property
+    def email_verified_at(self) -> datetime:
+        return datetime.fromisoformat(self._data["user"]["email_verified_at"])
+
+    @property
+    def username(self) -> str:
+        return self._data["user"]["username"]
+
+    @property
     def country(self) -> str:
         return self._data["user"]["country"]
 
@@ -113,19 +132,24 @@ class User(BaseDataclass["UserPayload"]):
     def state(self) -> str:
         return self._data["user"]["state"]
 
-    @property
+    @cached_property
     def socials(self) -> Socials:
-        if self._socials is None:
-            self._socials = Socials(data=self._data["user"])
-        return self._socials
+        return Socials(data=self._data["user"])
 
-    @property
+    @cached_property
+    def livestream(self) -> Livestream:
+        return Livestream(data=self._data["livestream"])
+
+    @cached_property
     def chatroom(self) -> Chatroom:
-        if self._chatroom is None:
-            self._chatroom = Chatroom(data=self._data["chatroom"])
-            self._chatroom.http = self.http
-            self._chatroom.streamer = self
-        return self._chatroom
+        chatroom = Chatroom(data=self._data["chatroom"])
+        chatroom.http = self.http
+        chatroom.streamer = self
+        return chatroom
+
+    @cached_property
+    def recent_categories(self) -> list[Category]:
+        return [Category(data=c) for c in self._data["recent_categories"]]
 
     def __eq__(self, other: object) -> bool:
         if isinstance(other, User):
