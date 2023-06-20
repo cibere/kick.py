@@ -22,18 +22,21 @@ class LoginFailure(KickException):
 
 
 class HTTPException(KickException):
-    def __init__(self, txt: str) -> None:
+    def __init__(self, txt: str, status_code: int) -> None:
         super().__init__(txt)
+        self.status_code = status_code
 
 
 class Forbidden(HTTPException):
     def __init__(self) -> None:
-        super().__init__("")
+        super().__init__("", 403)
 
 
 class NotFound(HTTPException):
-    pass
+    def __init__(self, txt: str) -> None:
+        super().__init__(txt, 404)
 
 
 class InternalKickException(HTTPException):
-    pass
+    def __init__(self, txt: str) -> None:
+        super().__init__(txt, 500)
