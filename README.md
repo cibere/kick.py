@@ -2,6 +2,17 @@
 
 Kick.py _will_ be an async api wrapper for [kick.com](https://kick.com) once the api is public, and is documented. Though once its there, I will gladly accept help in making this :D
 
+# Features
+
+- Emotes (Global and per streamer)
+- Videos
+- Livestreams
+- Users
+- Chatters
+- Reading Messages
+- Sending Messages
+- Cloudflare Bypass
+
 # Installation
 
 > !**This project is still in early alpha, so it might not work as expected but here is how installation goes.**
