@@ -3,21 +3,17 @@ from __future__ import annotations
 from datetime import datetime
 from typing import TYPE_CHECKING, Any
 
-from .object import BaseDataclass
+from .object import HTTPDataclass
 from .user import User
-from .utils import MISSING
+from .utils import MISSING, cached_property
 
 if TYPE_CHECKING:
-    from .http import HTTPClient
     from .types.user import ChatterPayload
 
 __all__ = ("Chatter",)
 
 
-class Chatter(BaseDataclass["ChatterPayload"]):
-    http: HTTPClient
-    _following_since: datetime | None = MISSING
-
+class Chatter(HTTPDataclass["ChatterPayload"]):
     @property
     def id(self) -> int:
         return self._data["id"]
@@ -51,15 +47,13 @@ class Chatter(BaseDataclass["ChatterPayload"]):
         """THIS IS RAW DATA"""
         return self._data["badges"]
 
-    @property
+    @cached_property
     def following_since(self) -> datetime | None:
-        if self._following_since is MISSING:
-            raw = self._data["following_since"]
-            if raw is None:
-                self._following_since = None
-            else:
-                self._following_since = datetime.fromisoformat(raw)
-        return self._following_since
+        raw = self._data["following_since"]
+        if raw is None:
+            return
+        else:
+            return datetime.fromisoformat(raw)
 
     @property
     def subscribed_for(self) -> int:
