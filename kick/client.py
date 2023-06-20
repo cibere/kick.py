@@ -44,8 +44,7 @@ class Client:
 
     async def fetch_user(self, streamer: str) -> User:
         data = await self.http.get_user(streamer)
-        user = User(data=data)
-        user.http = self.http
+        user = User(data=data, http=self.http)
         return user
 
     def dispatch(self, event_name: str, *args, **kwargs) -> None:

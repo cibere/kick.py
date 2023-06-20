@@ -61,8 +61,7 @@ class Chatter(HTTPDataclass["ChatterPayload"]):
 
     async def to_user(self) -> User:
         data = await self.http.get_user(self.username)
-        user = User(data=data)
-        user.http = self.http
+        user = User(data=data, http=self.http)
         return user
 
     def __eq__(self, other: Any) -> bool:
