@@ -61,6 +61,9 @@ class Client:
         setattr(self, coro.__name__, coro)
         return coro
 
+    async def login(self, credentials: Credentials) -> None:
+        await self.http.login(credentials)
+
     async def start(self, credentials: Credentials | None = None) -> None:
         LOGGER.warning(
             "Kick.py is in early alpha, and might not work as intended. Use at your own risk."
