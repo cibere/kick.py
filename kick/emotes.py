@@ -17,6 +17,10 @@ class Emote(HTTPDataclass["EmotePayload"]):
     def id(self) -> int:
         return self._data["id"]
 
+    @cached_property
+    def is_global(self) -> bool:
+        return bool(self._data["channel_id"])
+
     @property
     def channel_id(self) -> int | None:
         return self._data["channel_id"]
