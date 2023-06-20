@@ -41,7 +41,7 @@ class ParentCategory(HTTPDataclass["ParentCategoryPayload"]):
     @cached_property
     def icon(self) -> Asset:
         """
-        The categorie's icon url
+        The categorie's icon
         """
 
         return Asset(url=self._data["icon"], http=self.http)
