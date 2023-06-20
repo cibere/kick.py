@@ -22,7 +22,6 @@ class Client:
 
     async def fetch_user(self, streamer: str) -> User:
         data = await self.http.get_user(streamer)
-        print("making user object...")
         user = User(data=data)
         user.http = self.http
         return user
