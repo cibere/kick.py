@@ -8,7 +8,7 @@ from .object import BaseDataclass
 from .utils import cached_property
 
 if TYPE_CHECKING:
-    from .types.user import Livestream as LivestreamPayload
+    from .types.videos import LivestreamPayload
 
 __all__ = ("Livestream",)
 
