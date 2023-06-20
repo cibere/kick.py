@@ -7,12 +7,34 @@ from typing import TYPE_CHECKING, Any, Callable, Coroutine, TypeVar
 from .http import HTTPClient
 from .message import Message
 from .user import User
+from .utils import MISSING
 
 if TYPE_CHECKING:
     from typing_extensions import Self
 
 EventT = TypeVar("EventT", bound=Callable[..., Coroutine[Any, Any, None]])
 LOGGER = getLogger(__name__)
+
+__all__ = ("Credentials", "Client")
+
+
+class Credentials:
+    def __init__(
+        self,
+        *,
+        username: str = MISSING,
+        email: str = MISSING,
+        password: str,
+        one_time_password: str | None = None,
+    ) -> None:
+        if username is MISSING and email is MISSING:
+            raise ValueError("Provide either a `username` or `email` arg")
+        elif username is not MISSING and email is not MISSING:
+            raise ValueError("Provide `username` or `email`, not both.")
+
+        self.email: str = username or email
+        self.password: str = password
+        self.one_time_password: str | None = one_time_password
 
 
 class Client:
@@ -39,16 +61,12 @@ class Client:
         setattr(self, coro.__name__, coro)
         return coro
 
-    async def start(
-        self, username: str, password: str, *, one_time_password: str | None = None
-    ) -> None:
+    async def start(self, credentials: Credentials | None = None) -> None:
         LOGGER.warning(
             "Kick.py is in early alpha, and might not work as intended. Use at your own risk."
         )
-
-        await self.http.login(
-            username=username, password=password, one_time_password=one_time_password
-        )
+        if credentials is not None:
+            await self.http.login(credentials)
         await self.http.start()
 
     async def close(self) -> None:
