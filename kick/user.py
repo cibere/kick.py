@@ -51,6 +51,10 @@ class User(HTTPDataclass["UserPayload"]):
         return self._data["user_id"]
 
     @property
+    def playback_url(self) -> str:
+        return self._data["playback_url"]
+
+    @property
     def slug(self) -> str:
         return self._data["slug"]
 
@@ -81,7 +85,7 @@ class User(HTTPDataclass["UserPayload"]):
         return self._data["follower_badges"]
 
     @cached_property
-    def online_banner_url(self) -> Asset | None:
+    def online_banner(self) -> Asset | None:
         return (
             Asset(url=self._data["banner_image"]["url"], http=self.http)
             if self._data["banner_image"]
@@ -89,7 +93,7 @@ class User(HTTPDataclass["UserPayload"]):
         )
 
     @cached_property
-    def offline_banner_url(self) -> Asset | None:
+    def offline_banner(self) -> Asset | None:
         return (
             Asset._from_asset_src(
                 data=self._data["offline_banner_image"], http=self.http
@@ -106,9 +110,9 @@ class User(HTTPDataclass["UserPayload"]):
     def is_verified(self) -> bool:
         return self._data["verified"]
 
-    @property
-    def avatar_url(self) -> str:
-        return self._data["user"]["profile_pic"]
+    @cached_property
+    def avatar(self) -> Asset:
+        return Asset(url=self._data["user"]["profile_pic"], http=self.http)
 
     @property
     def can_host(self) -> bool:
@@ -143,8 +147,11 @@ class User(HTTPDataclass["UserPayload"]):
         return Socials(data=self._data["user"])
 
     @cached_property
-    def livestream(self) -> Livestream:
-        return Livestream(data=self._data["livestream"], http=self.http)
+    def livestream(self) -> Livestream | None:
+        livestream = self._data["livestream"]
+        if not livestream:
+            return
+        return Livestream(data=livestream, http=self.http)
 
     @cached_property
     def chatroom(self) -> Chatroom:
