@@ -1,6 +1,7 @@
 from typing_extensions import TypedDict
 
 from .assets import AssetSrcset, AssetUrl
+from .badges import ChatBadgePayload, SubscriberBadgePayload
 from .categories import Category
 from .videos import LivestreamPayload
 
@@ -40,13 +41,6 @@ class ChatroomPayload(TypedDict):
     following_min_duration: int
 
 
-class SubscriberBadge(TypedDict):
-    id: int
-    channel_id: int
-    months: int
-    badge_image: AssetSrcset
-
-
 class UserPayload(TypedDict):
     id: int
     user_id: int
@@ -55,9 +49,8 @@ class UserPayload(TypedDict):
     playback_url: str
     vod_enabled: bool
     subscription_enabled: bool
-    cf_rate_limiter: str  # HOW DOES THIS WORK
     followers_count: int
-    subscriber_badges: list[SubscriberBadge]
+    subscriber_badges: list[SubscriberBadgePayload]
     banner_image: AssetUrl | None
     role: None  # NEED TO FIGURE THIS OUT
     muted: bool
@@ -79,7 +72,7 @@ class ChatterPayload(TypedDict):
     is_staff: bool
     is_channel_owner: bool
     is_moderator: bool
-    badges: list  # NEED TO FIGURE THIS OUT
+    badges: list[ChatBadgePayload]
     following_since: None | str
-    subscribed_for: int  # NEED TO FIGURE THIS OUT
+    subscribed_for: int  # in months
     banned: None  # NEED TO FIGURE THIS OUT
