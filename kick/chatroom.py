@@ -33,7 +33,7 @@ class ChatroomWebSocket:
         data = json.loads(msg)
 
         if data.get("type") in ("message", "reply"):
-            msg = Message(data=data)
+            msg = Message(data=data, http=self.http)
             self.http.client.dispatch("message", msg)
 
     async def start(self) -> None:
