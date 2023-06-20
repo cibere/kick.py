@@ -1,9 +1,10 @@
 from __future__ import annotations
 
 from datetime import datetime
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, AsyncIterator
 
 from kick.categories import Category
+from kick.emotes import Emote
 
 from .chatroom import Chatroom
 from .livestream import Livestream
@@ -151,6 +152,16 @@ class User(HTTPDataclass["UserPayload"]):
     async def fetch_videos(self) -> list[Video]:
         data = await self.http.get_streamer_videos(self.slug)
         return [Video(data=v) for v in data]
+
+    async def fetch_emotes(
+        self, *, include_global: bool = False
+    ) -> AsyncIterator[Emote]:
+        data = await self.http.get_emotes(self.slug)
+        for emote in data[2]["emotes"]:
+            yield Emote(data=emote)
+        if include_global is True:
+            for emote in data[1]["emotes"]:
+                yield Emote(data=emote)
 
     def __eq__(self, other: object) -> bool:
         if isinstance(other, User):
