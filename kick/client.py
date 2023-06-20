@@ -84,6 +84,10 @@ class Client:
         self._options = options
         self.http = HTTPClient(self)
 
+        LOGGER.warning(
+            "Kick's api is undocumented, possible unstable, and can change at any time without warning"
+        )
+
     async def fetch_user(self, name: str, /) -> User:
         """
         |coro|
@@ -165,9 +169,6 @@ class Client:
             The credentials to authenticate yourself with, if any
         """
 
-        LOGGER.warning(
-            "Kick.py is in early alpha, and might not work as intended. Use at your own risk."
-        )
         if credentials is not None:
             await self.login(credentials)
         await self.http.start()
