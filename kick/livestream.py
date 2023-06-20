@@ -97,3 +97,6 @@ class Livestream(HTTPDataclass["LivestreamPayload"]):
 
     def __eq__(self, other: object) -> bool:
         return isinstance(other, self.__class__) and other.id == self.id
+
+    def __repr__(self) -> str:
+        return f"<Livestream id={self.id} title={self.session_title} streamer={self.username}>"

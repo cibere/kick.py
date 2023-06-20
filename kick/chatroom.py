@@ -126,3 +126,6 @@ class Chatroom(HTTPDataclass["ChatroomPayload"]):
 
     def __eq__(self, other: object) -> bool:
         return isinstance(other, self.__class__) and other.id == self.id
+
+    def __repr__(self) -> str:
+        return f"<Chatroom id={self.id!r} streamer={self.streamer!r}>"

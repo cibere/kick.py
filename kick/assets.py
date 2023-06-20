@@ -104,3 +104,6 @@ class Asset:
     @classmethod
     def _from_emote(cls, emote_id: int, /, *, http: HTTPClient) -> Self:
         return cls(url=f"https://files.kick.com/emotes/{emote_id}/fullsize", http=http)
+
+    def __repr__(self) -> str:
+        return f"<Asset url={self.url}>"

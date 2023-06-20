@@ -49,6 +49,9 @@ class ParentCategory(HTTPDataclass["ParentCategoryPayload"]):
     def __eq__(self, other: object) -> bool:
         return isinstance(other, self.__class__) and other.id == self.id
 
+    def __repr__(self) -> str:
+        return f"<ParentCategory id={self.id!r} name={self.name!r} icon={self.icon!r}>"
+
 
 class Category(HTTPDataclass["CategoryPayload"]):
     @property
@@ -119,3 +122,6 @@ class Category(HTTPDataclass["CategoryPayload"]):
 
     def __eq__(self, other: object) -> bool:
         return isinstance(other, self.__class__) and other.id == self.id
+
+    def __repr__(self) -> str:
+        return f"<Category id={self.id!r} name={self.name!r} category_id={self.category_id!r}> tags={self.tags!r} description={self.description!r} parent={self.parent!r}"

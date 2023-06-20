@@ -45,7 +45,7 @@ class Chatter(HTTPDataclass["ChatterPayload"]):
         return self._data["is_channel_owner"]
 
     @property
-    def is_moderator(self) -> bool:
+    def is_mod(self) -> bool:
         return self._data["is_moderator"]
 
     @cached_property
@@ -78,3 +78,6 @@ class Chatter(HTTPDataclass["ChatterPayload"]):
 
     def __str__(self) -> str:
         return self.username
+
+    def __repr__(self) -> str:
+        return f"<Chatter id={self.id!r} username={self.username!r} profile_pic={self.profile_pic!r} is_staff={self.is_staff!r} is_channel_owner={self.is_channel_owner!r} is_mod={self.is_mod!r}>"
