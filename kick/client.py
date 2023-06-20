@@ -1,17 +1,18 @@
 from __future__ import annotations
 
 import asyncio
+from logging import getLogger
 from typing import TYPE_CHECKING, Any, Callable, Coroutine, TypeVar
 
 from .http import HTTPClient
 from .message import Message
 from .user import User
-from .utils import MISSING
 
 if TYPE_CHECKING:
     from typing_extensions import Self
 
 EventT = TypeVar("EventT", bound=Callable[..., Coroutine[Any, Any, None]])
+LOGGER = getLogger(__name__)
 
 
 class Client:
@@ -42,6 +43,10 @@ class Client:
     async def start(
         self, username: str, password: str, *, one_time_password: str | None = None
     ) -> None:
+        LOGGER.warning(
+            "Kick.py is in early alpha, and might not work as intended. Use at your own risk."
+        )
+
         await self.http.login(
             username=username, password=password, one_time_password=one_time_password
         )
