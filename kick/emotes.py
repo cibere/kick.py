@@ -2,7 +2,9 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from .object import BaseDataclass
+from .assets import Asset
+from .object import HTTPDataclass
+from .utils import cached_property
 
 if TYPE_CHECKING:
     from .types.emotes import EmotePayload
@@ -10,7 +12,7 @@ if TYPE_CHECKING:
 __all__ = ("Emote",)
 
 
-class Emote(BaseDataclass["EmotePayload"]):
+class Emote(HTTPDataclass["EmotePayload"]):
     @property
     def id(self) -> int:
         return self._data["id"]
@@ -26,3 +28,7 @@ class Emote(BaseDataclass["EmotePayload"]):
     @property
     def subscribers_only(self) -> bool:
         return self._data["subscribers_only"]
+
+    @cached_property
+    def source(self) -> Asset:
+        return Asset._from_emote(self.id, http=self.http)

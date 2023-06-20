@@ -12,6 +12,7 @@ Kick.py _will_ be an async api wrapper for [kick.com](https://kick.com) once the
 - Reading Messages
 - Sending Messages
 - Cloudflare Bypass
+- Assets
 
 # Installation
 

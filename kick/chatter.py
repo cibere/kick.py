@@ -3,9 +3,10 @@ from __future__ import annotations
 from datetime import datetime
 from typing import TYPE_CHECKING, Any
 
+from .assets import Asset
 from .object import HTTPDataclass
 from .user import User
-from .utils import MISSING, cached_property
+from .utils import cached_property
 
 if TYPE_CHECKING:
     from .types.user import ChatterPayload
@@ -26,9 +27,13 @@ class Chatter(HTTPDataclass["ChatterPayload"]):
     def slug(self) -> str:
         return self._data["slug"]
 
-    @property
-    def profile_pic(self) -> str | None:
-        return self._data["profile_pic"]
+    @cached_property
+    def profile_pic(self) -> Asset | None:
+        return (
+            None
+            if self._data["profile_pic"] is None
+            else Asset(url=self._data["profile_pic"], http=self.http)
+        )
 
     @property
     def is_staff(self) -> bool:

@@ -2,7 +2,8 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any
 
-from .object import BaseDataclass
+from .assets import Asset
+from .object import HTTPDataclass
 from .utils import cached_property
 
 if TYPE_CHECKING:
@@ -12,7 +13,7 @@ if TYPE_CHECKING:
 __all__ = ("Category", "ParentCategory")
 
 
-class ParentCategory(BaseDataclass["ParentCategoryPayload"]):
+class ParentCategory(HTTPDataclass["ParentCategoryPayload"]):
     @property
     def id(self) -> int:
         """
@@ -37,19 +38,19 @@ class ParentCategory(BaseDataclass["ParentCategoryPayload"]):
 
         return self._data["slug"]
 
-    @property
-    def icon(self) -> str:
+    @cached_property
+    def icon(self) -> Asset:
         """
         The categorie's icon url
         """
 
-        return self._data["icon"]
+        return Asset(url=self._data["icon"], http=self.http)
 
     def __eq__(self, other: Any) -> bool:
         return isinstance(other, ParentCategory) and other.id == self.id
 
 
-class Category(BaseDataclass["CategoryPayload"]):
+class Category(HTTPDataclass["CategoryPayload"]):
     @property
     def id(self) -> int:
         """
@@ -114,7 +115,7 @@ class Category(BaseDataclass["CategoryPayload"]):
         The categorie's parent category.
         """
 
-        return ParentCategory(data=self._data["category"])
+        return ParentCategory(data=self._data["category"], http=self.http)
 
     def __eq__(self, other: Any) -> bool:
         return isinstance(other, ParentCategory) and other.id == self.id

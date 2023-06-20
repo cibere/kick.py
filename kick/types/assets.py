@@ -12,3 +12,7 @@ class AssetSrcset(TypedDict):
 
 class AssetOnlySrc(TypedDict):
     src: str
+
+
+AnyAsset = AssetUrl | AssetOnlySrc | AssetSrcset
+AssetPayload: bytes

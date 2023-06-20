@@ -4,7 +4,7 @@ from datetime import datetime
 from typing import TYPE_CHECKING, Any
 
 from .categories import Category
-from .object import BaseDataclass
+from .object import HTTPDataclass
 from .utils import cached_property
 
 if TYPE_CHECKING:
@@ -13,7 +13,7 @@ if TYPE_CHECKING:
 __all__ = ("Video",)
 
 
-class Video(BaseDataclass["VideoPayload"]):
+class Video(HTTPDataclass["VideoPayload"]):
     @property
     def id(self) -> int:
         return self._data["id"]
@@ -85,4 +85,4 @@ class Video(BaseDataclass["VideoPayload"]):
 
     @cached_property
     def categories(self) -> list[Category]:
-        return [Category(data=c) for c in self._data["categories"]]
+        return [Category(data=c, http=self.http) for c in self._data["categories"]]

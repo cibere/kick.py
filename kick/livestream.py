@@ -3,8 +3,9 @@ from __future__ import annotations
 from datetime import datetime
 from typing import TYPE_CHECKING, Any
 
+from .assets import Asset
 from .categories import Category
-from .object import BaseDataclass
+from .object import HTTPDataclass
 from .utils import cached_property
 
 if TYPE_CHECKING:
@@ -13,7 +14,7 @@ if TYPE_CHECKING:
 __all__ = ("Livestream",)
 
 
-class Livestream(BaseDataclass["LivestreamPayload"]):
+class Livestream(HTTPDataclass["LivestreamPayload"]):
     @property
     def id(self) -> int:
         return self._data["id"]
@@ -53,10 +54,12 @@ class Livestream(BaseDataclass["LivestreamPayload"]):
         """THIS IS RAW DATA, UNKNOWN ON WHAT IT RETURNS"""
         return self._data["twitch_channel"]
 
-    @property
-    def thumbnail(self) -> str | None:
+    @cached_property
+    def thumbnail(self) -> Asset | None:
         return (
-            None if self._data["thumbnail"] is None else self._data["thumbnail"]["url"]
+            None
+            if self._data["thumbnail"] is None
+            else Asset(url=self._data["thumbnail"]["url"], http=self.http)
         )
 
     @property
@@ -82,4 +85,4 @@ class Livestream(BaseDataclass["LivestreamPayload"]):
 
     @cached_property
     def categories(self) -> list[Category]:
-        return [Category(data=c) for c in self._data["categories"]]
+        return [Category(data=c, http=self.http) for c in self._data["categories"]]
