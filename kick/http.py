@@ -88,6 +88,7 @@ class HTTPClient:
 
         self.token: str = MISSING
         self.xsrf_token: str = MISSING
+        self.globally_locked: bool = False
 
         self.user_agent = f"Kick.py V{__version__} (github.com/cibere/kick.py)"
 
@@ -190,6 +191,9 @@ class HTTPClient:
         data: str | dict | None = None
 
         for current_try in range(3):
+            while self.globally_locked is True:
+                await asyncio.sleep(2)
+
             LOGGER.debug(
                 f"Making request to {route.method} {url}. headers: {headers}, params: {kwargs.get('params', None)}, json: {kwargs.get('json', None)}"
             )
@@ -218,27 +222,29 @@ class HTTPClient:
 
                 data = await json_or_text(res)
 
+                if res.status == 429:
+                    self.globally_locked = True
+                    LOGGER.warning(
+                        f"We have been ratelimited at {route.method} {route.url}. Waiting five seconds before trying again...",
+                    )
+
+                    await asyncio.sleep(5)
+                    return await self.request(route)
+                else:
+                    self.globally_locked = False
+
                 if 300 > res.status >= 200:
                     return data
 
                 match res.status:
                     case 400:
                         error = await error_or_text(data)
-                        raise HTTPException(error)
+                        raise HTTPException(error, res.status)
                     case 403:
-                        print(data)
                         raise Forbidden()
                     case 404:
-                        print("404")
                         error = await error_or_text(data)
-                        raise NotFound(error)
-                    case 429:
-                        LOGGER.warning(
-                            "We have been ratelimited. Waiting five seconds before trying again...",
-                            endpoint,
-                        )
-                        await asyncio.sleep(5)
-                        return await self.request(route)
+                        raise NotFound("Not Found")
                     case 500:
                         time = 2 * current_try
 
@@ -260,7 +266,7 @@ class HTTPClient:
             if res.status >= 500:
                 raise InternalKickException(txt)
 
-            raise HTTPException(txt)
+            raise HTTPException(txt, res.status)
 
         raise RuntimeError("Unreachable situation occured in http handling")
 
@@ -311,5 +317,9 @@ class HTTPClient:
                 raise Forbidden()
             case 404:
                 raise NotFound("Asset Not Found")
+            case 500:
+                data = await json_or_text(res)
+                error = await error_or_text(data)
+                raise InternalKickException(error)
             case other:
-                raise HTTPException(await res.text())
+                raise HTTPException(await res.text(), other)
