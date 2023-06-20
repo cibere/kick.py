@@ -132,3 +132,6 @@ class User(BaseDataclass["UserPayload"]):
             return other.id == self.id
         else:
             return False
+
+    def __str__(self) -> str:
+        return self.slug
