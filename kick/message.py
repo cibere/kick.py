@@ -38,6 +38,9 @@ class Author(BaseDataclass["AuthorPayload"]):
     def __eq__(self, other: object) -> bool:
         return isinstance(other, self.__class__) and other.id == self.id
 
+    def __str__(self) -> str:
+        return self.username
+
 
 class PartialAuthor(BaseDataclass["ReplyOriginalSender"]):
     @cached_property
@@ -50,6 +53,9 @@ class PartialAuthor(BaseDataclass["ReplyOriginalSender"]):
 
     def __eq__(self, other: object) -> bool:
         return isinstance(other, self.__class__) and other.id == self.id
+
+    def __str__(self) -> str:
+        return self.username
 
 
 class PartialMessage(BaseDataclass["ReplyMetaData"]):

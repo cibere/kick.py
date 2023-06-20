@@ -179,4 +179,4 @@ class User(HTTPDataclass["UserPayload"]):
             return False
 
     def __str__(self) -> str:
-        return self.slug
+        return self.username
