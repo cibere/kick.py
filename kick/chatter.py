@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from datetime import datetime
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 from .object import BaseDataclass
 from .user import User
@@ -70,3 +70,9 @@ class Chatter(BaseDataclass["ChatterPayload"]):
         user = User(data=data)
         user.http = self.http
         return user
+
+    def __eq__(self, other: Any) -> bool:
+        return isinstance(other, Chatter) and other.id == self.id
+
+    def __str__(self) -> str:
+        return self.slug
