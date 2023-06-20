@@ -106,9 +106,11 @@ class Chatroom(HTTPDataclass["ChatroomPayload"]):
 
     async def connect(self) -> None:
         await self.http.ws.subscribe(self.id)
+        self.http.client._chatrooms[self.id] = self
 
     async def disconnect(self) -> None:
         await self.http.ws.unsubscribe(self.id)
+        self.http.client._chatrooms.pop(self.id)
 
     async def send(self, content: str, /) -> None:
         await self.http.send_message(self.id, content)

@@ -12,6 +12,8 @@ from .utils import MISSING
 if TYPE_CHECKING:
     from typing_extensions import Self
 
+    from .chatroom import Chatroom
+
 EventT = TypeVar("EventT", bound=Callable[..., Coroutine[Any, Any, None]])
 LOGGER = getLogger(__name__)
 
@@ -83,10 +85,28 @@ class Client:
     def __init__(self, **options: Any) -> None:
         self._options = options
         self.http = HTTPClient(self)
+        self._chatrooms: dict[int, Chatroom] = {}
 
         LOGGER.warning(
             "Kick's api is undocumented, possible unstable, and can change at any time without warning"
         )
+
+    def get_chatroom(self, chatroom_id: int, /) -> Chatroom | None:
+        """
+        Gets a chatroom out of a cache that contains chatrooms that you are connected to.
+
+        Parameters
+        -----------
+        chatroom_id: int
+            The chatroom's id
+
+        Returns
+        -----------
+        Chatroom | None
+            Either the chatroom, or None
+        """
+
+        return self._chatrooms.get(chatroom_id)
 
     async def fetch_user(self, name: str, /) -> User:
         """
