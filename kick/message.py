@@ -3,10 +3,11 @@ from __future__ import annotations
 from datetime import datetime
 from typing import TYPE_CHECKING
 
-from .object import BaseDataclass
+from .object import BaseDataclass, HTTPDataclass
 from .utils import cached_property
 
 if TYPE_CHECKING:
+    from .chatroom import Chatroom
     from .types.message import (
         AuthorPayload,
         MessagePayload,
@@ -84,7 +85,7 @@ class PartialMessage(BaseDataclass["ReplyMetaData"]):
         return f"<Message id={self.id!r} author={self.author!r}>"
 
 
-class Message(BaseDataclass["MessagePayload"]):
+class Message(HTTPDataclass["MessagePayload"]):
     @property
     def id(self) -> str:
         return self._data["id"]
@@ -103,6 +104,10 @@ class Message(BaseDataclass["MessagePayload"]):
     @property
     def chatroom_id(self) -> int:
         return self._data["chatroom_id"]
+
+    @property
+    def chatroom(self) -> Chatroom | None:
+        return self.http.client.get_chatroom(self.chatroom_id)
 
     @property
     def content(self) -> str:
