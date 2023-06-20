@@ -7,9 +7,6 @@ from typing import TYPE_CHECKING, Any, Coroutine, TypeVar, Union
 
 from aiohttp import ClientConnectionError, ClientResponse, ClientSession
 
-from kick.types.chatroom import ChatroomRulesPayload
-from kick.types.videos import VideoPayload
-
 from . import __version__
 from .chatroom import ChatroomWebSocket
 from .errors import (
@@ -26,8 +23,10 @@ if TYPE_CHECKING:
     from typing_extensions import Self
 
     from .client import Client, Credentials
+    from .types.chatroom import ChatroomRulesPayload
     from .types.message import FetchMessagesPayload, V1MessageSentPayload
     from .types.user import ChatterPayload, UserPayload
+    from .types.videos import GetVideosPayload
 
     T = TypeVar("T")
     Response = Coroutine[Any, Any, T]
@@ -291,5 +290,5 @@ class HTTPClient:
     def get_chatroom_rules(self, streamer: str) -> Response[ChatroomRulesPayload]:
         return self.request(Route("GET", f"/channels/{streamer}/chatroom/rules"))
 
-    def get_streamer_videos(self, streamer: str) -> Response[VideoPayload]:
+    def get_streamer_videos(self, streamer: str) -> Response[GetVideosPayload]:
         return self.request(Route("GET", f"/channe;s/{streamer}/videos"))
