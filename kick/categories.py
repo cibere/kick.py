@@ -29,6 +29,9 @@ class ParentCategory(BaseDataclass["ParentCategoryPayload"]):
     def icon(self) -> str:
         return self._data["icon"]
 
+    def __eq__(self, other: Any) -> bool:
+        return isinstance(other, ParentCategory) and other.id == self.id
+
 
 class Category(BaseDataclass["CategoryPayload"]):
     @property
@@ -63,3 +66,6 @@ class Category(BaseDataclass["CategoryPayload"]):
     @cached_property
     def parent(self) -> ParentCategory:
         return ParentCategory(data=self._data["category"])
+
+    def __eq__(self, other: Any) -> bool:
+        return isinstance(other, ParentCategory) and other.id == self.id
