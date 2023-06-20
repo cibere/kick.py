@@ -8,13 +8,17 @@ __version__ = "0.0.1"
 
 from typing import Any, Literal, NamedTuple
 
+from .assets import *
 from .chatroom import *
 from .client import *
+from .emotes import *
 from .enums import *
 from .errors import *
+from .livestream import *
 from .message import *
 from .object import *
 from .user import *
+from .videos import *
 
 
 class VersionInfo(NamedTuple):
