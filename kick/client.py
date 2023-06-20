@@ -68,7 +68,7 @@ class Client:
             "Kick.py is in early alpha, and might not work as intended. Use at your own risk."
         )
         if credentials is not None:
-            await self.http.login(credentials)
+            await self.login(credentials)
         await self.http.start()
 
     async def close(self) -> None:
