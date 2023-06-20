@@ -228,3 +228,17 @@ class Client:
         message: Message
             The message that was received
         """
+
+    def run(self, credentials: Credentials | None = None) -> None:
+        """
+        Starts the websocket so you can receive events
+        And authenticate yourself if credentials are provided.
+        This is a sync method to call `Client.start`
+
+        Parameters
+        -----------
+        credentials: Optional[Credentials]
+            The credentials to authenticate yourself with, if any
+        """
+
+        asyncio.run(self.start(credentials))
