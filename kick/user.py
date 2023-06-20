@@ -9,6 +9,7 @@ from .chatroom import Chatroom
 from .livestream import Livestream
 from .object import BaseDataclass, HTTPDataclass
 from .utils import cached_property
+from .videos import Video
 
 if TYPE_CHECKING:
     from .types.user import InnerUser, UserPayload
@@ -146,6 +147,10 @@ class User(HTTPDataclass["UserPayload"]):
     @cached_property
     def recent_categories(self) -> list[Category]:
         return [Category(data=c) for c in self._data["recent_categories"]]
+
+    async def fetch_videos(self) -> list[Video]:
+        data = await self.http.get_streamer_videos(self.slug)
+        return [Video(data=v) for v in data]
 
     def __eq__(self, other: object) -> bool:
         if isinstance(other, User):
