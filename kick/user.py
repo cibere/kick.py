@@ -7,11 +7,10 @@ from kick.categories import Category
 
 from .chatroom import Chatroom
 from .livestream import Livestream
-from .object import BaseDataclass
+from .object import BaseDataclass, HTTPDataclass
 from .utils import cached_property
 
 if TYPE_CHECKING:
-    from .http import HTTPClient
     from .types.user import InnerUser, UserPayload
 
 __all__ = ("User", "Socials")
@@ -43,9 +42,7 @@ class Socials(BaseDataclass["InnerUser"]):
         return self._data["facebook"]
 
 
-class User(BaseDataclass["UserPayload"]):
-    http: HTTPClient
-
+class User(HTTPDataclass["UserPayload"]):
     @property
     def id(self) -> int:
         return self._data["user_id"]
@@ -142,8 +139,7 @@ class User(BaseDataclass["UserPayload"]):
 
     @cached_property
     def chatroom(self) -> Chatroom:
-        chatroom = Chatroom(data=self._data["chatroom"])
-        chatroom.http = self.http
+        chatroom = Chatroom(data=self._data["chatroom"], http=self.http)
         chatroom.streamer = self
         return chatroom
 
