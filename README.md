@@ -42,10 +42,8 @@ If you set a port other than `9090` for the bypass script, make sure to pass `by
 - ratelimit handling (ratelimit is unknown on how it works)
 - cache (idk how I will do this)
 - see types folder for things that still need a payload, and perhaps a dataclass.
-- asset dataclass
-- Add emote support
-- refactor chatroom to make more sense
 - Add partials
+- Proper handling of `User.playback_url`
 
 # FAQ
 
