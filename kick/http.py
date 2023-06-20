@@ -7,10 +7,19 @@ from typing import TYPE_CHECKING, Any, Coroutine, TypeVar, Union
 
 from aiohttp import ClientConnectionError, ClientResponse, ClientSession
 
+from kick.types.chatroom import ChatroomRulesPayload
+from kick.types.videos import VideoPayload
+
 from . import __version__
 from .chatroom import ChatroomWebSocket
-from .errors import (CloudflareBypassException, Forbidden, HTTPException,
-                     InternalKickException, LoginFailure, NotFound)
+from .errors import (
+    CloudflareBypassException,
+    Forbidden,
+    HTTPException,
+    InternalKickException,
+    LoginFailure,
+    NotFound,
+)
 from .utils import MISSING
 
 if TYPE_CHECKING:
@@ -278,3 +287,9 @@ class HTTPClient:
 
     def get_messages(self, chatroom: int) -> Response[FetchMessagesPayload]:
         return self.request(Route("GET", f"/channels/{chatroom}/messages"))
+
+    def get_chatroom_rules(self, streamer: str) -> Response[ChatroomRulesPayload]:
+        return self.request(Route("GET", f"/channels/{streamer}/chatroom/rules"))
+
+    def get_streamer_videos(self, streamer: str) -> Response[VideoPayload]:
+        return self.request(Route("GET", f"/channe;s/{streamer}/videos"))
