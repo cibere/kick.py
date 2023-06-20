@@ -42,3 +42,6 @@ class InnerVideoPayload(TypedDict):
 class VideoPayload(BaseVideoPayload):
     video: InnerVideoPayload
     thumbnail: AssetSrcset
+
+
+GetVideosPayload = list[VideoPayload]
