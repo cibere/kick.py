@@ -1,50 +1,8 @@
 from typing_extensions import TypedDict
 
-
-class BannerImage1(TypedDict):
-    url: str
-
-
-class BannerImage2(TypedDict):
-    src: str
-    srcset: str
-
-
-class InnerCategory(TypedDict):
-    id: int
-    name: str
-    slug: str
-    icon: str
-
-
-class Category(TypedDict):
-    id: int
-    category_id: int
-    name: str
-    slug: str
-    tags: list[str]
-    description: str | None
-    deleted_at: None  # NEED TO FIGURE THIS OUT
-    category: InnerCategory
-
-
-class Livestream(TypedDict):
-    id: int
-    slug: str
-    channel_id: int
-    created_at: str
-    session_title: str
-    is_live: bool
-    risk_level_id: None  # NEED TO FIGURE THIS OUT
-    source: None  # NEED TO FIGURE THIS OUT
-    twitch_channel: None  # NEED TO FIGURE THIS OUT
-    duration: int
-    language: str
-    is_mature: bool
-    viewer_count: int
-    thumbnail: None | BannerImage1
-    categories: list[Category]
-    tags: list  # NEED TO FIGURE THIS OUT
+from .assets import AssetSrcset, AssetUrl
+from .categories import Category
+from .videos import LivestreamPayload
 
 
 class InnerUser(TypedDict):
@@ -86,7 +44,7 @@ class SubscriberBadge(TypedDict):
     id: int
     channel_id: int
     months: int
-    badge_image: BannerImage2
+    badge_image: AssetSrcset
 
 
 class UserPayload(TypedDict):
@@ -100,16 +58,16 @@ class UserPayload(TypedDict):
     cf_rate_limiter: str  # HOW DOES THIS WORK
     followers_count: int
     subscriber_badges: list[SubscriberBadge]
-    banner_image: BannerImage1 | None
+    banner_image: AssetUrl | None
     role: None  # NEED TO FIGURE THIS OUT
     muted: bool
     follower_badges: list  # NEED TO FIGURE THIS OUT
-    offline_banner_image: BannerImage2 | None
+    offline_banner_image: AssetSrcset | None
     verified: bool
     can_host: bool
     user: InnerUser
     chatroom: ChatroomPayload
-    livestream: Livestream
+    livestream: LivestreamPayload
     recent_categories: list[Category]
 
 
