@@ -19,6 +19,8 @@ from .errors import (
 from .utils import MISSING
 
 if TYPE_CHECKING:
+    from typing_extensions import Self
+
     from .client import Client, Credentials
     from .types.message import V1MessageSentPayload
     from .types.user import ChatterPayload, UserPayload
@@ -63,6 +65,14 @@ class Route:
         self.method: str = method
         self.url = self.BASE + self.path
 
+    @classmethod
+    def root(cls, method: str, path: str) -> Self:
+        self = cls.__new__(cls)
+        self.path = path
+        self.method = method
+        self.url = self.DOMAIN + path
+        return self
+
 
 class HTTPClient:
     def __init__(self, client: Client):
@@ -93,12 +103,10 @@ class HTTPClient:
         # As for compatibility, there is no known endpoints that
         # a mobile token can not authorize at.
 
-        token_route = Route("GET", "")
-        token_route.url = token_route.DOMAIN + "/kick-token-provider"
+        token_route = Route.root("GET", "/kick-token-provider")
         token_provider = await self.request(token_route)
 
-        route = Route("POST", "")
-        route.url = route.DOMAIN + "/mobile/login"
+        route = Route.root("POST", "/mobile/login")
 
         data = {
             "email": credentials.email,
@@ -111,6 +119,13 @@ class HTTPClient:
             data["one_time_password"] = credentials.one_time_password
 
         res = await self.request(route, json=data)
+
+        if isinstance(res, str):
+            raise NotFound("Kick 404'd on login page")
+
+        with open("output.html", "w") as f:
+            f.write(res)
+
         if res["2fa_required"] is True:
             two_fa_code = input(
                 "[WARNING] 2FA is enabled. Either disable it or give a 2fa code.\n> "
@@ -122,6 +137,7 @@ class HTTPClient:
                 res = await self.request(route, json=data)
                 if res["2fa_required"] is True:
                     raise LoginFailure("2FA is enabled.")
+
         if "message" in res.keys():
             raise LoginFailure(res["message"])
 
@@ -129,6 +145,9 @@ class HTTPClient:
         LOGGER.info("Successfully logged in")
 
     async def start(self) -> None:
+        LOGGER.debug(
+            f"Starting HTTP client. Whitelisted: {self.whitelisted}, Bypass Port: {self.bypass_port}"
+        )
         if self.__session is MISSING:
             self.__session = ClientSession()
 
@@ -170,9 +189,9 @@ class HTTPClient:
 
             res = await self.__session.request(
                 route.method,
-                f"http://localhost:{self.bypass_port}/request?url={url}"
-                if self.whitelisted is False
-                else url,
+                url
+                if self.whitelisted is True
+                else f"http://localhost:{self.bypass_port}/request?url={url}",
                 headers=headers,
                 cookies=cookies,
                 **kwargs,
@@ -237,8 +256,7 @@ class HTTPClient:
         # We use the V1 api here since I havn't gotten it to work with V2.
         # Unfortunatly V1 only returns a confirmation, and not the message (unlike V2)
 
-        route = Route(method="POST", path="")
-        route.url = route.DOMAIN + "/api/v1/chat-messages"
+        route = Route.root("POST", "/api/v1/chat-messages")
         return self.request(
             route,
             data={"message": content, "chatroom_id": chatroom},
