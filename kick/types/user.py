@@ -42,7 +42,7 @@ class Livestream(TypedDict):
     language: str
     is_mature: bool
     viewer_count: int
-    thumbnail: None  # NEED TO FIGURE THIS OUT
+    thumbnail: None | BannerImage1
     categories: list[Category]
     tags: list  # NEED TO FIGURE THIS OUT
 
@@ -109,6 +109,8 @@ class UserPayload(TypedDict):
     can_host: bool
     user: InnerUser
     chatroom: ChatroomPayload
+    livestream: Livestream
+    recent_categories: list[Category]
 
 
 class ChatterPayload(TypedDict):
