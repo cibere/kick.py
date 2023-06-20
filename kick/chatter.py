@@ -69,8 +69,8 @@ class Chatter(HTTPDataclass["ChatterPayload"]):
         user = User(data=data, http=self.http)
         return user
 
-    def __eq__(self, other: Any) -> bool:
-        return isinstance(other, Chatter) and other.id == self.id
+    def __eq__(self, other: object) -> bool:
+        return isinstance(other, self.__class__) and other.id == self.id
 
     def __str__(self) -> str:
-        return self.slug
+        return self.username

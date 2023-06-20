@@ -46,8 +46,8 @@ class ParentCategory(HTTPDataclass["ParentCategoryPayload"]):
 
         return Asset(url=self._data["icon"], http=self.http)
 
-    def __eq__(self, other: Any) -> bool:
-        return isinstance(other, ParentCategory) and other.id == self.id
+    def __eq__(self, other: object) -> bool:
+        return isinstance(other, self.__class__) and other.id == self.id
 
 
 class Category(HTTPDataclass["CategoryPayload"]):
@@ -117,5 +117,5 @@ class Category(HTTPDataclass["CategoryPayload"]):
 
         return ParentCategory(data=self._data["category"], http=self.http)
 
-    def __eq__(self, other: Any) -> bool:
-        return isinstance(other, ParentCategory) and other.id == self.id
+    def __eq__(self, other: object) -> bool:
+        return isinstance(other, self.__class__) and other.id == self.id

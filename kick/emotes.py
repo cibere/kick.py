@@ -32,3 +32,9 @@ class Emote(HTTPDataclass["EmotePayload"]):
     @cached_property
     def source(self) -> Asset:
         return Asset._from_emote(self.id, http=self.http)
+
+    def __eq__(self, other: object) -> bool:
+        return isinstance(other, self.__class__) and other.id == self.id
+
+    def __str__(self) -> str:
+        return self.name
