@@ -236,7 +236,9 @@ class HTTPClient:
     def send_message(
         self, chatroom: int, content: str
     ) -> Response[V1MessageSentPayload]:
-        # raise RuntimeError("This is broky")
+        # We use the V1 api here since I havn't gotten it to work with V2.
+        # Unfortunatly V1 only returns a confirmation, and not the message (unlike V2)
+
         route = Route(method="POST", path="")
         route.url = route.DOMAIN + "/api/v1/chat-messages"
         return self.request(
