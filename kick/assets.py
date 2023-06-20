@@ -94,6 +94,9 @@ class Asset:
     def __len__(self) -> int:
         return len(self.url)
 
+    def __eq__(self, other: object) -> bool:
+        return isinstance(other, self.__class__) and other.url == self.url
+
     @classmethod
     def _from_asset_src(
         cls, *, data: AssetSrcset | AssetOnlySrc, http: HTTPClient

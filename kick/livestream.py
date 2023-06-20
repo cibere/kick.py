@@ -86,3 +86,6 @@ class Livestream(HTTPDataclass["LivestreamPayload"]):
     @cached_property
     def categories(self) -> list[Category]:
         return [Category(data=c, http=self.http) for c in self._data["categories"]]
+
+    def __eq__(self, other: object) -> bool:
+        return isinstance(other, self.__class__) and other.id == self.id

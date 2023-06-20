@@ -125,5 +125,5 @@ class Chatroom(HTTPDataclass["ChatroomPayload"]):
         data = await self.http.get_chatroom_rules(self.streamer.slug)
         return data["data"]["rules"]
 
-    def __eq__(self, other: Any) -> bool:
-        return isinstance(other, Chatroom) and other.id == self.id
+    def __eq__(self, other: object) -> bool:
+        return isinstance(other, self.__class__) and other.id == self.id
