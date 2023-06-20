@@ -1,4 +1,4 @@
-from typing_extensions import TypedDict
+from typing_extensions import Any, TypedDict
 
 from .assets import AssetSrcset, AssetUrl
 from .badges import ChatBadgePayload, SubscriberBadgePayload
@@ -75,4 +75,15 @@ class ChatterPayload(TypedDict):
     badges: list[ChatBadgePayload]
     following_since: None | str
     subscribed_for: int  # in months
+    banned: None  # NEED TO FIGURE THIS OUT
+
+
+class ClientChatterPayload(TypedDict):
+    subscription: None  # NEED TO FIGURE THIS OUT
+    is_super_admin: bool
+    is_following: bool
+    following_since: None | str
+    is_broadcaster: bool
+    is_moderator: bool
+    leaderboards: Any  # NEED TO FIGURE THIS OUT
     banned: None  # NEED TO FIGURE THIS OUT
