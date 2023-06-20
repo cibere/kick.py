@@ -5,7 +5,12 @@ __all__ = (
     "NotFound",
     "InternalKickException",
     "LoginFailure",
+    "CloudflareBypassException",
 )
+
+
+class CloudflareBypassException(Exception):
+    ...
 
 
 class KickException(Exception):
