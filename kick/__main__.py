@@ -47,9 +47,7 @@ func sendKickMessage(context *gin.Context) cycletls.Response {
     }, context.Request.Method)
     if err != nil {
         log.Print("Request Failed: " + err.Error())
-    } else {
-		log.Print("Request Successful with a " + strconv.Itoa(response.Status) + " status code")
-	}
+    }
     return response
 }
 
