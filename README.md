@@ -4,7 +4,7 @@ Kick.py _will_ be an async api wrapper for [kick.com](https://kick.com) once the
 
 # Installation
 
-This project is still in early alpha, so it might not work as expected but here is how installation goes.
+> !**This project is still in early alpha, so it might not work as expected but here is how installation goes.**
 
 Install from github \*requires [git](https://git-scm.com/) to be installed\*
 
