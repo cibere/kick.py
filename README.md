@@ -1,8 +1,16 @@
-# kick.py
+# Kick.py
 
 Kick.py _will_ be an async api wrapper for [kick.com](https://kick.com) once the api is public, and is documented. Though once its there, I will gladly accept help in making this :D
 
-# Features
+## Table Of Contents
+
+- [API Reference](/api_reference)
+- [Features](#features)
+- [Installation](#installation)
+- [Setting up the bypass script](#setting-up-the-bypass-script)
+- [Basic Example](#basic-example)
+
+## Features
 
 - Emotes (Global and per streamer)
 - Videos
@@ -17,7 +25,7 @@ Kick.py _will_ be an async api wrapper for [kick.com](https://kick.com) once the
 - Leaderboards
 - Regenerate Token on expiration
 
-# Installation
+## Installation
 
 > !**This project is still in early alpha, so it might not work as expected but here is how installation goes.**
 
@@ -40,7 +48,7 @@ _these steps assume your python executable is `python`, but that might not be th
 
 If you set a port other than `9090` for the bypass script, make sure to pass `bypass_port=THE_PORT` into your `Client` constructor.
 
-# Basic Example
+## Basic Example
 
 ```py
 import kick
@@ -49,28 +57,16 @@ import asyncio
 client = kick.Client()
 
 @client.event
+async def on_message(message):
+    print(f"Received message from {message.author.username}")
+
+@client.event
 async def on_ready():
     print("I'm Ready!")
 
-async def main():
-    credentials = kick.Credentials(
-        username = ...,
-        password = ...
-    )
-    await client.start(credentials)
+    user = await client.fetch_user("xQc")
+    await user.chatroom.connect()
 
-asyncio.run(main())
+
+client.run()
 ```
-
-# TODO
-
-- cache (idk how I will do this)
-- see types folder for things that still need a payload, and perhaps a dataclass.
-- Add partials
-- Proper handling of `User.playback_url`
-
-# FAQ
-
-> Q: Why does this package exist even though the api is not public yet?
->
-> A: Because I'm too impatient, and want to start making the wrapper now
