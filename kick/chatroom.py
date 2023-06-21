@@ -199,8 +199,6 @@ class Chatroom(HTTPDataclass["ChatroomPayload"]):
         """
 
         data = await self.http.get_poll(self.streamer.slug)
-        with open("data.json", "w") as f:
-            f.write(f"{data}")
         poll = Poll(data=data, http=self.http)
         poll.chatroom = self
         return poll
