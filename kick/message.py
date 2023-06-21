@@ -4,6 +4,7 @@ from datetime import datetime
 from typing import TYPE_CHECKING
 
 from .object import BaseDataclass, HTTPDataclass
+from .user import PartialUser
 from .utils import cached_property
 
 if TYPE_CHECKING:
@@ -15,7 +16,7 @@ if TYPE_CHECKING:
         ReplyOriginalSender,
     )
 
-__all__ = ("Author", "Message", "PartialAuthor", "PartialMessage")
+__all__ = ("Author", "Message", "PartialMessage")
 
 
 class Author(BaseDataclass["AuthorPayload"]):
@@ -46,26 +47,7 @@ class Author(BaseDataclass["AuthorPayload"]):
         return f"<Author id={self.id!r} username={self.username!r}>"
 
 
-class PartialAuthor(BaseDataclass["ReplyOriginalSender"]):
-    @cached_property
-    def id(self) -> int:
-        return int(self._data["id"])
-
-    @property
-    def username(self) -> str:
-        return self._data["username"]
-
-    def __eq__(self, other: object) -> bool:
-        return isinstance(other, self.__class__) and other.id == self.id
-
-    def __str__(self) -> str:
-        return self.username
-
-    def __repr__(self) -> str:
-        return f"<PartialAuthor id={self.id!r} username={self.username!r}>"
-
-
-class PartialMessage(BaseDataclass["ReplyMetaData"]):
+class PartialMessage(HTTPDataclass["ReplyMetaData"]):
     @property
     def id(self) -> str:
         return self._data["original_message"]["id"]
@@ -75,8 +57,8 @@ class PartialMessage(BaseDataclass["ReplyMetaData"]):
         return self._data["original_message"]["content"]
 
     @cached_property
-    def author(self) -> PartialAuthor:
-        return PartialAuthor(data=self._data["original_sender"])
+    def author(self) -> PartialUser:
+        return PartialUser(data=self._data["original_sender"], http=self.http)
 
     def __eq__(self, other: object) -> bool:
         return isinstance(other, self.__class__) and other.id == self.id
@@ -99,7 +81,7 @@ class Message(HTTPDataclass["MessagePayload"]):
         data = self._data.get("metadata")
         if not data:
             return
-        return PartialMessage(data=data)
+        return PartialMessage(data=data, http=self.http)
 
     @property
     def chatroom_id(self) -> int:
