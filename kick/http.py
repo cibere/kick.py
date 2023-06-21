@@ -208,7 +208,6 @@ class HTTPClient:
             headers["Authorization"] = f"Bearer {self.token}"
 
         url = route.url
-        endpoint = f"/{route.method.split('/')[-1]}"
 
         if "json" in kwargs:
             headers["Content-Type"] = "application/json"
