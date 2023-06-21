@@ -14,9 +14,9 @@ class ChatroomRulesPayload(TypedDict):
     data: ChatroomRulesDataPayload
 
 
-class PollPayload(TypedDict):
+class DeletePollPayload(TypedDict):
     status: StatusPayload
-    data: None  # NEED TO FIGURE THIS OUT
+    data: None
 
 
 class ChatroomBannedWordsDataPayload(TypedDict):
@@ -69,3 +69,27 @@ class BanChatterDataPayload(TypedDict):
 class BanChatterPayload(TypedDict):
     status: StatusPayload
     data: BanChatterDataPayload
+
+
+class PollOptionPayload(TypedDict):
+    id: int
+    label: str
+    votes: int
+
+
+class PollPayload(TypedDict):
+    title: str
+    options: list[PollOptionPayload]
+    duration: int
+    remaining: int
+    result_display_duration: int
+    has_voted: bool
+
+
+class CreatePollDataPayload(TypedDict):
+    poll: PollPayload
+
+
+class CreatePollPayload(TypedDict):
+    status: StatusPayload
+    data: CreatePollDataPayload

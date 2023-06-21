@@ -29,6 +29,8 @@ if TYPE_CHECKING:
         BanChatterPayload,
         ChatroomBannedWordsPayload,
         ChatroomRulesPayload,
+        CreatePollPayload,
+        DeletePollPayload,
         GetBannedUsersPayload,
         UnbanChatterPayload,
     )
@@ -341,6 +343,42 @@ class HTTPClient:
         return self.request(
             Route("POST", f"/channels/{streamer}/bans"),
             json={"banned_username": chatter, "permanent": True, "reason": reason},
+        )
+
+    def create_poll(
+        self,
+        streamer: str,
+        duration: int,
+        options: list[str],
+        result_display_duration: int,
+        title: str,
+    ) -> Response[CreatePollPayload]:
+        """
+        Durations are in seconds
+        """
+
+        return self.request(
+            Route("POST", f"/channels/{streamer}/polls"),
+            json={
+                "duration": duration,
+                "options": options,
+                "result_display_duration": result_display_duration,
+                "title": title,
+            },
+        )
+
+    def delete_poll(self, streamer: str) -> Response[DeletePollPayload]:
+        return self.request(Route("DELETE", f"/channels/{streamer}/polls"))
+
+    def vote_for_poll(self, streamer: str, option: int) -> Response[CreatePollPayload]:
+        return self.request(
+            Route("POST", f"/channels/{streamer}/polls/vote"),
+            json={"id": option},
+        )
+
+    def get_poll(self, streamer: str) -> Response[CreatePollPayload]:
+        return self.request(
+            Route("GET", f"/channels/{streamer}/polls"),
         )
 
     async def get_asset(self, url: str) -> bytes:
