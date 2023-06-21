@@ -76,6 +76,9 @@ class Chatter(HTTPDataclass["ChatterPayload"]):
         user = User(data=data, http=self.http)
         return user
 
+    async def ban(self, reason: str) -> None:
+        await self.http.ban_user(self.chatroom.streamer.slug, self.slug, reason)
+
     def __eq__(self, other: object) -> bool:
         return isinstance(other, self.__class__) and other.id == self.id
 
