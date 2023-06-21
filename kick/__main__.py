@@ -14,12 +14,12 @@ def bypass():
 
 
 BYPASS_CODE = """
+
 package main
 
 import (
     "log"
     "strings"
-	"strconv"
 	"bytes"
 
     "github.com/Danny-Dasilva/CycleTLS/cycletls"
@@ -63,8 +63,9 @@ func main() {
 
     router.Any("/request", queryRespone)
 
-    router.Run("localhost:{port}")
+    router.Run("localhost:9090")
 }
+
 """
 
 
