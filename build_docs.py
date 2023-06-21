@@ -20,11 +20,13 @@ HEADER = """
 <head>
     <link rel="stylesheet" href="styles.css">
 </head>"""
+RAW_DOCS_DIR = "raw_docs"
+FINAL_DOCS_DIR = "docs"
 
 
 def convert_file(fp: str) -> None:
-    before_fp = os.path.join("raw", fp) + ".md"
-    after_fp = os.path.join("docs", fp) + ".html"
+    before_fp = os.path.join(RAW_DOCS_DIR, fp) + ".md"
+    after_fp = os.path.join(FINAL_DOCS_DIR, fp) + ".html"
 
     with open(before_fp, "r", encoding="utf-8") as f:
         text = f.read()
@@ -116,7 +118,7 @@ def convert_file(fp: str) -> None:
         f.write(html)
 
 
-files = glob.glob("raw/*.md")
+files = glob.glob(f"{RAW_DOCS_DIR}/*.md")
 
 for file in files:
     fp = file.removeprefix("raw\\").removesuffix(".md")
