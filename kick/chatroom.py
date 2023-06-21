@@ -6,12 +6,11 @@ from typing import TYPE_CHECKING, AsyncIterator
 
 from aiohttp import ClientWebSocketResponse as WebSocketResponse
 
-from kick.user import PartialUser
-
 from .emotes import Emote
 from .enums import ChatroomChatMode
 from .message import Message
 from .object import HTTPDataclass
+from .user import PartialUser
 from .utils import cached_property
 
 if TYPE_CHECKING:

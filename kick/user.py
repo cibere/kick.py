@@ -7,7 +7,6 @@ from kick.categories import Category
 
 from .assets import Asset
 from .badges import SubscriberBadge
-from .chatroom import Chatroom
 from .leaderboard import GiftLeaderboard
 from .livestream import Livestream
 from .object import BaseDataclass, HTTPDataclass
@@ -15,6 +14,7 @@ from .utils import cached_property
 from .videos import Video
 
 if TYPE_CHECKING:
+    from .chatroom import Chatroom
     from .types.user import InnerUser, PartialUserPayload, UserPayload
 
 __all__ = ("User", "Socials", "PartialUser")
@@ -181,6 +181,8 @@ class User(HTTPDataclass["UserPayload"]):
 
     @cached_property
     def chatroom(self) -> Chatroom:
+        from .chatroom import Chatroom
+
         chatroom = Chatroom(data=self._data["chatroom"], http=self.http)
         chatroom.streamer = self
         return chatroom
