@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING, Any, Callable, Coroutine, TypeVar
 from .http import HTTPClient
 from .message import Message
 from .user import ClientUser, User
-from .utils import MISSING, setup_logging
+from .utils import MISSING, decorator, setup_logging
 
 if TYPE_CHECKING:
     from typing_extensions import Self
@@ -153,6 +153,7 @@ class Client:
                 event(*args, **kwargs), name=f"event-dispatch: {event_name}"
             )
 
+    @decorator
     def event(self, coro: EventT) -> EventT:
         """
         Lets you set an event outside of a subclass.
