@@ -4,7 +4,6 @@ package main
 import (
     "log"
     "strings"
-	"strconv"
 	"bytes"
 
     "github.com/Danny-Dasilva/CycleTLS/cycletls"
