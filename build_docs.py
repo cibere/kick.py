@@ -25,8 +25,8 @@ FINAL_DOCS_DIR = "docs"
 
 
 def convert_file(fp: str) -> None:
-    before_fp = os.path.join(RAW_DOCS_DIR, fp) + ".md"
-    after_fp = os.path.join(FINAL_DOCS_DIR, fp) + ".html"
+    before_fp = fp
+    after_fp = fp.replace(RAW_DOCS_DIR, FINAL_DOCS_DIR)
 
     with open(before_fp, "r", encoding="utf-8") as f:
         text = f.read()
@@ -121,7 +121,6 @@ def convert_file(fp: str) -> None:
 files = glob.glob(f"{RAW_DOCS_DIR}/*.md")
 
 for file in files:
-    fp = file.removeprefix(f"{RAW_DOCS_DIR}\\").removesuffix(".md")
-    print(f"Starting on {fp}...")
-    convert_file(fp)
-    print(f"Finished {fp}")
+    print(f"Starting on {file}...")
+    convert_file(file)
+    print(f"Finished {file}")
