@@ -16,9 +16,9 @@ from .utils import cached_property
 from .videos import Video
 
 if TYPE_CHECKING:
-    from .types.user import InnerUser, UserPayload
+    from .types.user import InnerUser, PartialUserPayload, UserPayload
 
-__all__ = ("User", "Socials")
+__all__ = ("User", "Socials", "PartialUser")
 
 
 class Socials(BaseDataclass["InnerUser"]):
@@ -45,6 +45,29 @@ class Socials(BaseDataclass["InnerUser"]):
     @property
     def facebook(self) -> str:
         return self._data["facebook"]
+
+
+class PartialUser(HTTPDataclass["PartialUserPayload"]):
+    @cached_property
+    def id(self) -> int:
+        return int(self._data["id"])
+
+    @property
+    def username(self) -> str:
+        return self._data["username"]
+
+    def __eq__(self, other: object) -> bool:
+        return isinstance(other, self.__class__) and other.id == self.id
+
+    def __str__(self) -> str:
+        return self.username
+
+    def __repr__(self) -> str:
+        return f"<PartialUser id={self.id!r} username={self.username!r}>"
+
+    async def fetch(self) -> User:
+        data = await self.http.get_user(self.username)
+        return User(data=data, http=self.http)
 
 
 class User(HTTPDataclass["UserPayload"]):
