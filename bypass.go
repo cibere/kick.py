@@ -1,4 +1,5 @@
 
+
 package main
 
 import (
@@ -43,11 +44,11 @@ func queryRespone(context *gin.Context) {
 
 func main() {
 	log.Print("starting")
-	gin.SetMode(gin.ReleaseMode)
+ 	gin.SetMode(gin.ReleaseMode)
     router := gin.Default()
-
 
     router.Any("/request", queryRespone)
 
     router.Run("localhost:9090")
 }
+
