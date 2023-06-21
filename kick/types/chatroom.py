@@ -40,7 +40,7 @@ class BanEntryDataPayload(TypedDict):
 
 class BanEntryPayload(TypedDict):
     banned_user: BanEntryUserPayload
-    banned_By: BanEntryUserPayload
+    banned_by: BanEntryUserPayload
     ban: BanEntryDataPayload
 
 
