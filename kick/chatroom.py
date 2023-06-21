@@ -2,10 +2,11 @@ from __future__ import annotations
 
 import json
 from datetime import datetime
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, AsyncIterator
 
 from aiohttp import ClientWebSocketResponse as WebSocketResponse
 
+from .emotes import Emote
 from .enums import ChatroomChatMode
 from .message import Message
 from .object import HTTPDataclass
@@ -131,6 +132,16 @@ class Chatroom(HTTPDataclass["ChatroomPayload"]):
     async def fetch_banned_words(self) -> list[str]:
         data = await self.http.get_channels_banned_words(self.streamer.slug)
         return data["data"]["words"]
+
+    async def fetch_emotes(
+        self, *, include_global: bool = False
+    ) -> AsyncIterator[Emote]:
+        data = await self.http.get_emotes(self.streamer.slug)
+        for emote in data[2]["emotes"]:
+            yield Emote(data=emote, http=self.http)
+        if include_global is True:
+            for emote in data[1]["emotes"]:
+                yield Emote(data=emote, http=self.http)
 
     def __eq__(self, other: object) -> bool:
         return isinstance(other, self.__class__) and other.id == self.id
