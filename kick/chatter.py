@@ -72,12 +72,76 @@ class Chatter(HTTPDataclass["ChatterPayload"]):
         return self._data["subscribed_for"]
 
     async def to_user(self) -> User:
+        """
+        |coro|
+
+        Fetches a user object for the chatter
+
+        Raises
+        -----------
+        `HTTPException`
+            Fetching the user failed
+        `NotFound`
+            User not found
+
+        Returns
+        -----------
+        `User`
+            The user
+        """
         data = await self.http.get_user(self.username)
         user = User(data=data, http=self.http)
         return user
 
     async def ban(self, reason: str) -> None:
-        await self.http.ban_user(self.chatroom.streamer.slug, self.slug, reason)
+        """
+        |coro|
+
+        Permanently bans a user from a chatroom.
+
+        Parameters
+        -----------
+        reason: str
+            The reason for the ban
+
+        Raises
+        -----------
+        `HTTPException`
+            Banning the user failed
+        `Forbidden`
+            You are unauthorized from banning the user
+        `NotFound`
+            Streamer or user not found
+        """
+
+        await self.http.ban_chatter(self.chatroom.streamer.slug, self.slug, reason)
+
+    async def timeout(self, duration: int, *, reason: str) -> None:
+        """
+        |coro|
+
+        Temp-bans a user for a given amount of time.
+
+        Parameters
+        -----------
+        duration: int
+            The amount of seconds for the temp-ban to be
+        reason: str
+            The reason for the tempban
+
+        Raises
+        -----------
+        `HTTPException`
+            Tempbanning the user failed
+        `Forbidden`
+            You are unauthorized from tempbanning the user
+        `NotFound`
+            Streamer or user not found
+        """
+
+        await self.http.timeout_chatter(
+            self.chatroom.streamer.slug, self.slug, reason, duration
+        )
 
     def __eq__(self, other: object) -> bool:
         return isinstance(other, self.__class__) and other.id == self.id

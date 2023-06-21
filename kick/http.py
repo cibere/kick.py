@@ -71,14 +71,14 @@ async def json_or_text(response: ClientResponse, /) -> Union[dict[str, Any], str
 
 async def error_or_text(data: Union[dict, str]) -> str:
     if isinstance(data, dict):
-        return data["error"]
+        return data["message"]
     else:
         return data
 
 
 async def error_or_nothing(data: Union[dict, str]) -> str:
     if isinstance(data, dict):
-        return data["error"]
+        return data["message"]
     else:
         return ""
 
@@ -362,12 +362,29 @@ class HTTPClient:
     def unban_user(self, streamer: str, chatter: str) -> Response[UnbanChatterPayload]:
         return self.request(Route("DELETE", f"/channels/{streamer}/bans/{chatter}"))
 
-    def ban_user(
+    def timeout_chatter(
+        self, streamer: str, chatter: str, reason: str, duration: int
+    ) -> Response[BanChatterPayload]:
+        return self.request(
+            Route("POST", f"/channels/{streamer}/bans"),
+            json={
+                "banned_username": chatter,
+                "permanent": False,
+                "reason": reason,
+                "duration": duration,
+            },
+        )
+
+    def ban_chatter(
         self, streamer: str, chatter: str, reason: str
     ) -> Response[BanChatterPayload]:
         return self.request(
             Route("POST", f"/channels/{streamer}/bans"),
-            json={"banned_username": chatter, "permanent": True, "reason": reason},
+            json={
+                "banned_username": chatter,
+                "permanent": True,
+                "reason": reason,
+            },
         )
 
     def create_poll(
