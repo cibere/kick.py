@@ -33,4 +33,4 @@ jobs:
       - name: Build Docs
         id: build-docs
         run: |
-          python setup_docs.py
+          python build_docs.py
