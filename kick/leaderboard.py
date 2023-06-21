@@ -3,11 +3,11 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from .object import BaseDataclass
-from .user import User
 from .utils import cached_property
 
 if TYPE_CHECKING:
     from .types.leaderboard import GiftEntryPayload, LeaderboardPayload
+    from .user import User
 
 __all__ = ("GiftLeaderboard", "GiftLeaderboardEntry")
 
