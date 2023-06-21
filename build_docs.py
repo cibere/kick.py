@@ -110,10 +110,8 @@ def convert_file(fp: str) -> None:
     # Convert to HTML
     text = markdown.markdown(text)
 
-    html = f"{HEADER}{text}"
-
     with open(after_fp, "w", encoding="utf-8") as f:
-        f.write(html)
+        f.write(f"<html>{HEADER}<body>{text}</body></html>")
 
 
 files = glob.glob(f"{RAW_DOCS_DIR}/*.md")
