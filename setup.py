@@ -1,12 +1,24 @@
-import setuptools
+import re
 
-from kick import __version__ as version
+import setuptools
 
 with open("README.md", "r") as f:
     LONG_DESCRIPTION = f.read()
 
 with open("requirements.txt", "r") as f:
     REQUIREMENTS = f.read().splitlines()
+
+version = ""
+with open("kick/__init__.py") as f:
+    version = re.search(
+        r'^__version__\s*=\s*[\'"]([^\'"]*)[\'"]', f.read(), re.MULTILINE
+    ).group(
+        1
+    )  # type: ignore
+
+if not version:
+    raise RuntimeError("version is not set")
+
 
 if version.endswith(("a", "b", "rc")):
     # append version identifier based on commit count
