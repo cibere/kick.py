@@ -15,6 +15,7 @@ Kick.py _will_ be an async api wrapper for [kick.com](https://kick.com) once the
 - Assets
 - Full Ban Support
 - Leaderboards
+- Regenerate Token on expiration
 
 # Installation
 
