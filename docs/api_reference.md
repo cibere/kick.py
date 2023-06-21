@@ -1,7 +1,7 @@
-
+<html>
 <head>
     <link rel="stylesheet" href="styles.css">
-</head><h1>Client</h1>
+</head><body><h1>Client</h1>
 <p><span class="h4" id="Client">
     <span class="class">
         class 
@@ -628,4 +628,4 @@ Forbidden<br>
         class 
     </span>
     InternalKickException
-</span></p>
+</span></p></body></html>
