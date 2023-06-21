@@ -9,8 +9,14 @@ from aiohttp import ClientConnectionError, ClientResponse, ClientSession
 
 from . import __version__
 from .chatroom import ChatroomWebSocket
-from .errors import (CloudflareBypassException, Forbidden, HTTPException,
-                     InternalKickException, LoginFailure, NotFound)
+from .errors import (
+    CloudflareBypassException,
+    Forbidden,
+    HTTPException,
+    InternalKickException,
+    LoginFailure,
+    NotFound,
+)
 from .utils import MISSING
 
 if TYPE_CHECKING:
@@ -19,8 +25,12 @@ if TYPE_CHECKING:
     from typing_extensions import Self
 
     from .client import Client, Credentials
-    from .types.chatroom import (ChatroomBannedWordsPayload,
-                                 ChatroomRulesPayload, GetBannedUsersPayload)
+    from .types.chatroom import (
+        ChatroomBannedWordsPayload,
+        ChatroomRulesPayload,
+        GetBannedUsersPayload,
+        UnbanChatterPayload,
+    )
     from .types.leaderboard import LeaderboardPayload
     from .types.message import FetchMessagesPayload, V1MessageSentPayload
     from .types.user import ChatterPayload, UserPayload
@@ -320,6 +330,9 @@ class HTTPClient:
         """
 
         return self.request(Route("GET", f"/channels/{streamer}/bans"))
+
+    def unban_user(self, streamer: str, chatter: str) -> Response[UnbanChatterPayload]:
+        return self.request(Route("DELETE", f"/channels/{streamer}/bans/{chatter}"))
 
     async def get_asset(self, url: str) -> bytes:
         if self.__session is MISSING:

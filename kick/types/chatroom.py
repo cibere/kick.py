@@ -45,3 +45,8 @@ class BanEntryPayload(TypedDict):
 
 
 GetBannedUsersPayload = list[BanEntryPayload]
+
+
+class UnbanChatterPayload(TypedDict):
+    status: bool
+    message: str
