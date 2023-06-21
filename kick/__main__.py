@@ -77,7 +77,7 @@ func main() {
 @click.option("--fp", default="bypass.go", help="The filepath for the file to go to")
 def create_file(port: int, fp: str) -> None:
     with open(fp, "w", encoding="utf-8") as f:
-        f.write(BYPASS_CODE.format(port=f"{port}"))
+        f.write(BYPASS_CODE.replace("{port}", f"{port}"))
     print(f"Done writing to {fp}.\nMake sure to install the dependencys.")
 
 
