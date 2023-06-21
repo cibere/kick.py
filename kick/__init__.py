@@ -4,7 +4,7 @@ Kick API Wrapper
 A basic wrapper for the Kick API.
 """
 
-__version__ = "0.0.1"
+__version__ = "0.0.2a"
 
 from typing import Any, Literal, NamedTuple
 
