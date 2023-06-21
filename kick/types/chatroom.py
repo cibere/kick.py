@@ -24,3 +24,24 @@ class ChatroomBannedWordsDataPayload(TypedDict):
 class ChatroomBannedWordsPayload(TypedDict):
     status: StatusPayload
     data: ChatroomBannedWordsDataPayload
+
+
+class BanEntryUserPayload(TypedDict):
+    id: int
+    username: str
+
+
+class BanEntryDataPayload(TypedDict):
+    reason: str
+    banned_at: str
+    permanent: bool
+    expires_at: str
+
+
+class BanEntryPayload(TypedDict):
+    banned_user: BanEntryUserPayload
+    banned_By: BanEntryUserPayload
+    ban: BanEntryDataPayload
+
+
+GetBannedUsersPayload = list[BanEntryPayload]
