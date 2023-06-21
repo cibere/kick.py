@@ -262,6 +262,13 @@ class ClientUser(HTTPDataclass["ClientUserPayload"]):
     def socials(self) -> Socials:
         return Socials(data=self._data)
 
+    @cached_property
+    def avatar(self) -> Asset | None:
+        url = self._data["profilepic"]
+        if url is None:
+            return
+        return Asset(url=url, http=self.http)
+
     async def fetch_videos(self) -> list[Video]:
         data = await self.http.get_streamer_videos(self.slug)
         return [Video(data=v, http=self.http) for v in data]
