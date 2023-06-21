@@ -43,7 +43,9 @@ func queryRespone(context *gin.Context) {
 
 func main() {
 	log.Print("starting")
+	gin.SetMode(gin.ReleaseMode)
     router := gin.Default()
+
 
     router.Any("/request", queryRespone)
 
