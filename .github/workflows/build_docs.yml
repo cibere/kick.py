@@ -34,3 +34,11 @@ jobs:
         id: build-docs
         run: |
           python build_docs.py
+
+      - name: Commit and push changes
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git add .
+          git commit -m "Build Docs"
+          git push --force
