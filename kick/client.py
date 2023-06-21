@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING, Any, Callable, Coroutine, TypeVar
 
 from .http import HTTPClient
 from .message import Message
-from .user import User
+from .user import ClientUser, User
 from .utils import MISSING, setup_logging
 
 if TYPE_CHECKING:
@@ -82,12 +82,18 @@ class Client:
         If you have been api whitelisted. If set to True, the bypass script will not be used.
     bypass_port: int = 9090
         The port the bypass script is running on. Defaults to 9090
+
+    Attributes
+    -----------
+    user: ClientUser | None
+        The user you are logged in as. It is `None` until `Client.login` is called.
     """
 
     def __init__(self, **options: Any) -> None:
         self._options = options
         self.http = HTTPClient(self)
         self._chatrooms: dict[int, Chatroom] = {}
+        self.user: ClientUser | None = None
 
         LOGGER.warning(
             "Kick's api is undocumented, possible unstable, and can change at any time without warning"
@@ -167,7 +173,7 @@ class Client:
         """
         |coro|
 
-        Authenticates yourself.
+        Authenticates yourself, and fills `Client.user`
         Unlike `Client.start`, this does not start the websocket
 
         Parameters
@@ -177,6 +183,9 @@ class Client:
         """
 
         await self.http.login(credentials)
+
+        data = await self.http.get_me()
+        self.user = ClientUser(data=data, http=self.http)
 
     async def start(self, credentials: Credentials | None = None) -> None:
         """
