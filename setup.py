@@ -12,9 +12,9 @@ version = ""
 with open("kick/__init__.py") as f:
     version = re.search(
         r'^__version__\s*=\s*[\'"]([^\'"]*)[\'"]', f.read(), re.MULTILINE
-    ).group(
+    ).group(  # type: ignore
         1
-    )  # type: ignore
+    )
 
 if not version:
     raise RuntimeError("version is not set")
