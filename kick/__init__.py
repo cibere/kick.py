@@ -14,6 +14,7 @@ from .client import *
 from .emotes import *
 from .enums import *
 from .errors import *
+from .leaderboard import *
 from .livestream import *
 from .message import *
 from .object import *
