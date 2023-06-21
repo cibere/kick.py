@@ -9,14 +9,8 @@ from aiohttp import ClientConnectionError, ClientResponse, ClientSession
 
 from . import __version__
 from .chatroom import ChatroomWebSocket
-from .errors import (
-    CloudflareBypassException,
-    Forbidden,
-    HTTPException,
-    InternalKickException,
-    LoginFailure,
-    NotFound,
-)
+from .errors import (CloudflareBypassException, Forbidden, HTTPException,
+                     InternalKickException, LoginFailure, NotFound)
 from .utils import MISSING
 
 if TYPE_CHECKING:
@@ -25,7 +19,8 @@ if TYPE_CHECKING:
     from typing_extensions import Self
 
     from .client import Client, Credentials
-    from .types.chatroom import ChatroomBannedWordsPayload, ChatroomRulesPayload
+    from .types.chatroom import (ChatroomBannedWordsPayload,
+                                 ChatroomRulesPayload, GetBannedUsersPayload)
     from .types.leaderboard import LeaderboardPayload
     from .types.message import FetchMessagesPayload, V1MessageSentPayload
     from .types.user import ChatterPayload, UserPayload
@@ -318,6 +313,13 @@ class HTTPClient:
         self, streamer: str
     ) -> Response[LeaderboardPayload]:
         return self.request(Route.root("GET", f"/channels/{streamer}/leaderboards"))
+
+    def get_channel_bans(self, streamer: str) -> Response[GetBannedUsersPayload]:
+        """
+        Requires Mod
+        """
+
+        return self.request(Route("GET", f"/channels/{streamer}/bans"))
 
     async def get_asset(self, url: str) -> bytes:
         if self.__session is MISSING:

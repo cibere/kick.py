@@ -6,6 +6,8 @@ from typing import TYPE_CHECKING, AsyncIterator
 
 from aiohttp import ClientWebSocketResponse as WebSocketResponse
 
+from kick.user import PartialUser
+
 from .emotes import Emote
 from .enums import ChatroomChatMode
 from .message import Message
@@ -15,10 +17,11 @@ from .utils import cached_property
 if TYPE_CHECKING:
     from .chatter import Chatter
     from .http import HTTPClient
+    from .types.chatroom import BanEntryPayload
     from .types.user import ChatroomPayload
     from .user import User
 
-__all__ = ("Chatroom",)
+__all__ = ("Chatroom", "BanEntry")
 
 
 class ChatroomWebSocket:
@@ -57,6 +60,36 @@ class ChatroomWebSocket:
                 "event": "pusher:unsubscribe",
                 "data": {"auth": "", "channel": f"chatrooms.{chatroom_id}.v2"},
             }
+        )
+
+
+class BanEntry(HTTPDataclass["BanEntryPayload"]):
+    @property
+    def reason(self) -> str:
+        return self._data["ban"]["reason"]
+
+    @property
+    def is_permanent(self) -> bool:
+        return self._data["ban"]["permanent"]
+
+    @cached_property
+    def user(self) -> PartialUser:
+        return PartialUser(data=self._data["banned_user"], http=self.http)
+
+    @cached_property
+    def banned_by(self) -> PartialUser:
+        return PartialUser(data=self._data["banned_by"], http=self.http)
+
+    @cached_property
+    def banned_at(self) -> datetime:
+        return datetime.fromisoformat(self._data["ban"]["banned_at"])
+
+    @cached_property
+    def expires_at(self) -> datetime | None:
+        return (
+            None
+            if self.is_permanent is True
+            else datetime.fromisoformat(self._data["ban"]["expires_at"])
         )
 
 
@@ -132,6 +165,10 @@ class Chatroom(HTTPDataclass["ChatroomPayload"]):
     async def fetch_banned_words(self) -> list[str]:
         data = await self.http.get_channels_banned_words(self.streamer.slug)
         return data["data"]["words"]
+
+    async def fetch_bans(self) -> list[BanEntry]:
+        data = await self.http.get_channel_bans(self.streamer.slug)
+        return [BanEntry(data=c, http=self.http) for c in data]
 
     async def fetch_emotes(
         self, *, include_global: bool = False
