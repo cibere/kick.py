@@ -1,5 +1,4 @@
 import glob
-import os
 import re
 import textwrap
 from copy import copy
@@ -41,7 +40,7 @@ def convert_file(fp: str) -> None:
         for find in DOC_STRING_REGEX.findall(text):
             try:
                 item = eval(f"kick.{find}")
-                doc = item.__doc__
+                doc = item.__doc__ or ""
             except Exception as e:
                 pass
             else:
@@ -68,7 +67,7 @@ def convert_file(fp: str) -> None:
             except Exception as e:
                 pass
             else:
-                doc = copy(getattr(item, "__doc__", ""))
+                doc = copy(item.__doc__ or "")
                 class_ = ""
 
                 if doc and doc.splitlines()[1].strip() == "|coro|":
