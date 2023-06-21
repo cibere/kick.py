@@ -10,6 +10,7 @@ from .emotes import Emote
 from .enums import ChatroomChatMode
 from .message import Message
 from .object import HTTPDataclass
+from .polls import Poll
 from .user import PartialUser
 from .utils import cached_property
 
@@ -177,6 +178,32 @@ class Chatroom(HTTPDataclass["ChatroomPayload"]):
             entry = BanEntry(data=entry_data, http=self.http)
             entry.chatroom = self
             yield entry
+
+    async def fetch_poll(self) -> Poll:
+        """
+        |coro|
+
+        Gets a poll from the chatroom
+
+        Raises
+        -----------
+        NotFound
+            There is no poll in the current chatroom
+        HTTPException
+            Fetching the poll failed
+
+        Returns
+        -----------
+        Poll
+            The poll
+        """
+
+        data = await self.http.get_poll(self.streamer.slug)
+        with open("data.json", "w") as f:
+            f.write(f"{data}")
+        poll = Poll(data=data, http=self.http)
+        poll.chatroom = self
+        return poll
 
     async def fetch_emotes(
         self, *, include_global: bool = False
