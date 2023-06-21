@@ -63,6 +63,8 @@ class ChatroomWebSocket:
 
 
 class BanEntry(HTTPDataclass["BanEntryPayload"]):
+    chatroom: Chatroom
+
     @property
     def reason(self) -> str:
         return self._data["ban"]["reason"]
@@ -90,6 +92,9 @@ class BanEntry(HTTPDataclass["BanEntryPayload"]):
             if self.is_permanent is True
             else datetime.fromisoformat(self._data["ban"]["expires_at"])
         )
+
+    async def unban(self) -> None:
+        await self.http.unban_user(self.chatroom.streamer.username, self.user.username)
 
 
 class Chatroom(HTTPDataclass["ChatroomPayload"]):
@@ -165,9 +170,12 @@ class Chatroom(HTTPDataclass["ChatroomPayload"]):
         data = await self.http.get_channels_banned_words(self.streamer.slug)
         return data["data"]["words"]
 
-    async def fetch_bans(self) -> list[BanEntry]:
+    async def fetch_bans(self) -> AsyncIterator[BanEntry]:
         data = await self.http.get_channel_bans(self.streamer.slug)
-        return [BanEntry(data=c, http=self.http) for c in data]
+        for entry_data in data:
+            entry = BanEntry(data=entry_data, http=self.http)
+            entry.chatroom = self
+            yield entry
 
     async def fetch_emotes(
         self, *, include_global: bool = False
