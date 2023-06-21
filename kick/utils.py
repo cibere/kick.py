@@ -19,6 +19,9 @@ def _cached_property(func: Callable):
 
 if TYPE_CHECKING:
     from functools import cached_property as cached_property
+    from typing import TypeVar
+
+    FuncT = TypeVar("FuncT", bound=Callable)
 else:
     cached_property = _cached_property
 
@@ -42,6 +45,11 @@ class _MissingSentinel:
 
 
 MISSING: Any = _MissingSentinel()
+
+
+def decorator(func: FuncT) -> FuncT:
+    func.__is_decorator__ = True
+    return func
 
 
 class _ColourFormatter(logging.Formatter):
