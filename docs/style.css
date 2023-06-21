@@ -1,0 +1,32 @@
+a.hidden {
+    color: inherit;
+    text-decoration: none;
+    ;
+}
+
+a.hidden:hover {
+    text-decoration: underline;
+}
+
+span.h3 {
+    font-weight: bold;
+    font-size: 30px;
+}
+
+span.h4 {
+    font-weight: bold;
+    font-size: 20px;
+}
+
+span.def {
+    color: lightgreen;
+}
+
+span.async {
+    color: rgb(200, 4, 200);
+}
+
+span.class,
+span.at {
+    color: rgb(255, 168, 183);
+}
