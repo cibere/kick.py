@@ -103,7 +103,9 @@ class HTTPClient:
             await self.ws.close()
 
     async def login(self, credentials: Credentials) -> None:
-        LOGGER.info("Logging in using username and password")
+        LOGGER.info(
+            f"Logging in using {'username' if credentials.username_was_provided else 'email'} and password"
+        )
 
         # Mobile login method is used here since more is known about
         # how that works compared to the desktop version.

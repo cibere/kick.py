@@ -62,6 +62,7 @@ class Credentials:
             raise ValueError("Provide `username` or `email`, not both.")
 
         self.email: str = username or email
+        self.username_was_provided: bool = username is not MISSING
         self.password: str = password
         self.one_time_password: str | None = one_time_password
 
