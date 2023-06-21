@@ -9,6 +9,7 @@ from kick.emotes import Emote
 from .assets import Asset
 from .badges import SubscriberBadge
 from .chatroom import Chatroom
+from .leaderboard import GiftLeaderboard
 from .livestream import Livestream
 from .object import BaseDataclass, HTTPDataclass
 from .utils import cached_property
@@ -181,6 +182,12 @@ class User(HTTPDataclass["UserPayload"]):
         if include_global is True:
             for emote in data[1]["emotes"]:
                 yield Emote(data=emote, http=self.http)
+
+    async def fetch_gift_leaderboard(self) -> GiftLeaderboard:
+        data = await self.http.get_channel_gift_leaderboard(self.slug)
+        leaderboard = GiftLeaderboard(data=data)
+        leaderboard.streamer = self
+        return leaderboard
 
     def __eq__(self, other: object) -> bool:
         if isinstance(other, User):

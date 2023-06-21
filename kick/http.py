@@ -26,6 +26,7 @@ if TYPE_CHECKING:
 
     from .client import Client, Credentials
     from .types.chatroom import ChatroomBannedWordsPayload, ChatroomRulesPayload
+    from .types.leaderboard import LeaderboardPayload
     from .types.message import FetchMessagesPayload, V1MessageSentPayload
     from .types.user import ChatterPayload, UserPayload
     from .types.videos import GetVideosPayload
@@ -308,6 +309,11 @@ class HTTPClient:
         self, streamer: str
     ) -> Response[ChatroomBannedWordsPayload]:
         return self.request(Route("GET", f"/channels/{streamer}/chatroom/banned-words"))
+
+    def get_channel_gift_leaderboard(
+        self, streamer: str
+    ) -> Response[LeaderboardPayload]:
+        return self.request(Route.root("GET", f"/channels/{streamer}/leaderboards"))
 
     async def get_asset(self, url: str) -> bytes:
         if self.__session is MISSING:
