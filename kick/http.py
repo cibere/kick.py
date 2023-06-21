@@ -248,9 +248,9 @@ class HTTPClient:
                     ) from None
 
             if res is not None:
-                self.xsrf_token = getattr(
+                self.xsrf_token = f'{getattr(
                     res.cookies.get("XSRF-TOKEN", MISSING), "value", MISSING
-                )
+                )}'
 
                 data = await json_or_text(res)
 
