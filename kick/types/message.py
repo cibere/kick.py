@@ -30,7 +30,7 @@ class NormalMessagePayload(BaseMessagePayload):
 
 
 class ReplyOriginalSender(TypedDict):
-    id: str
+    id: str | int
     username: str
 
 
