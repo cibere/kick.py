@@ -1,3 +1,4 @@
+
 package main
 
 import (
@@ -10,20 +11,12 @@ import (
     "github.com/gin-gonic/gin"
 )
 
-type Message struct {
-    Content string `json:"content"`
-    Type    int    `json:"type"`
-}
-
-
 func sendKickMessage(context *gin.Context) cycletls.Response {
     client := cycletls.Init()
-	// chatroom := context.Param("id")
 	headers := make(map[string]string)
 	for key, values := range context.Request.Header {
 	headers[key] = strings.Join(values, ",")
 	}
-	// jsonHeaders, _ := json.Marshal(headers)
 
 	buf := new(bytes.Buffer)
 	buf.ReadFrom(context.Request.Body)
@@ -39,9 +32,7 @@ func sendKickMessage(context *gin.Context) cycletls.Response {
     }, context.Request.Method)
     if err != nil {
         log.Print("Request Failed: " + err.Error())
-    } else {
-		log.Print("Request Successful with a " + strconv.Itoa(response.Status) + " status code")
-	}
+    }
     return response
 }
 
