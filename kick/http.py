@@ -42,7 +42,7 @@ if TYPE_CHECKING:
         ReplyOriginalSender,
         V1MessageSentPayload,
     )
-    from .types.user import ChatterPayload, UserPayload
+    from .types.user import ChatterPayload, ClientUserPayload, UserPayload
     from .types.videos import GetVideosPayload
 
     T = TypeVar("T")
@@ -406,6 +406,9 @@ class HTTPClient:
                 "type": "reply",
             },
         )
+
+    def get_me(self) -> Response[ClientUserPayload]:
+        return self.request(Route.root("GET", "/api/v1/user"))
 
     async def get_asset(self, url: str) -> bytes:
         if self.__session is MISSING:

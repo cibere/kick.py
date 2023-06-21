@@ -52,9 +52,9 @@ class UserPayload(TypedDict):
     followers_count: int
     subscriber_badges: list[SubscriberBadgePayload]
     banner_image: AssetUrl | None
-    role: None  # NEED TO FIGURE THIS OUT
+    role: None  # Unknown
     muted: bool
-    follower_badges: list  # NEED TO FIGURE THIS OUT
+    follower_badges: list  # Unknown
     offline_banner_image: AssetSrcset | None
     verified: bool
     can_host: bool
@@ -75,20 +75,68 @@ class ChatterPayload(TypedDict):
     badges: list[ChatBadgePayload]
     following_since: None | str
     subscribed_for: int  # in months
-    banned: None  # NEED TO FIGURE THIS OUT
+    banned: None  # Unknown
 
 
 class ClientChatterPayload(TypedDict):
-    subscription: None  # NEED TO FIGURE THIS OUT
+    subscription: None  # Unknown
     is_super_admin: bool
     is_following: bool
     following_since: None | str
     is_broadcaster: bool
     is_moderator: bool
-    leaderboards: Any  # NEED TO FIGURE THIS OUT
-    banned: None  # NEED TO FIGURE THIS OUT
+    leaderboards: Any  # Unknown
+    banned: None  # Unknown
 
 
 class PartialUserPayload(TypedDict):
     id: str | int
     username: str
+
+
+class ClientUserStreamerChannelsPayload(TypedDict):
+    id: int
+    user_id: int
+    slug: str
+    is_banned: bool
+    playback_url: None | str
+    name_updated_at: None  # Unknown
+    vod_enabled: bool
+    subscription_enabled: bool
+    can_host: bool
+    verified: None  # Unknown
+
+
+class ClientUserPayload(TypedDict):
+    id: int
+    email: str
+    username: str
+    google_id: None  # Unknown
+    agreed_to_terms: bool
+    email_verified_at: str
+    bio: None | str
+    country: None | str
+    state: None | str
+    city: None | str
+    enable_live_notifications: bool
+    youtube: None | str
+    instagram: None | str
+    twitter: None | str
+    discord: None | str
+    tiktok: None | str
+    facebook: None | str
+    enable_onscreen_live_notifications: bool
+    apple_id: None  # Unknown
+    phone: None | int
+    email_updated_at: None  # Unknown
+    newsletter_subscribed: bool
+    enable_sms_promo: bool
+    enable_sms_security: bool
+    profilepic: None  # Unknown
+    is_2fa_setup: bool
+    redirect: None  # Unknown
+    channel_can_be_updated: bool
+    is_live: bool
+    intercom_hash: None  # Unknown
+    streamer_channel: ClientUserStreamerChannelsPayload
+    roles: list  # Unknown

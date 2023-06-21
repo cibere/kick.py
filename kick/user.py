@@ -15,35 +15,40 @@ from .videos import Video
 
 if TYPE_CHECKING:
     from .chatroom import Chatroom
-    from .types.user import InnerUser, PartialUserPayload, UserPayload
+    from .types.user import (
+        ClientUserPayload,
+        InnerUser,
+        PartialUserPayload,
+        UserPayload,
+    )
 
-__all__ = ("User", "Socials", "PartialUser")
+__all__ = ("User", "Socials", "PartialUser", "ClientUser")
 
 
-class Socials(BaseDataclass["InnerUser"]):
+class Socials(BaseDataclass["InnerUser | ClientUserPayload"]):
     @property
     def instagram(self) -> str:
-        return self._data["instagram"]
+        return self._data["instagram"] or ""
 
     @property
     def youtube(self) -> str:
-        return self._data["youtube"]
+        return self._data["youtube"] or ""
 
     @property
     def twitter(self) -> str:
-        return self._data["twitter"]
+        return self._data["twitter"] or ""
 
     @property
     def discord(self) -> str:
-        return self._data["discord"]
+        return self._data["discord"] or ""
 
     @property
     def tiktok(self) -> str:
-        return self._data["tiktok"]
+        return self._data["tiktok"] or ""
 
     @property
     def facebook(self) -> str:
-        return self._data["facebook"]
+        return self._data["facebook"] or ""
 
 
 class PartialUser(HTTPDataclass["PartialUserPayload"]):
@@ -214,3 +219,61 @@ class User(HTTPDataclass["UserPayload"]):
 
     def __repr__(self) -> str:
         return f"<User id={self.id!r} name={self.username!r}>"
+
+
+class ClientUser(HTTPDataclass["ClientUserPayload"]):
+    @property
+    def id(self) -> int:
+        return self._data["id"]
+
+    @property
+    def username(self) -> str:
+        return self._data["username"]
+
+    @property
+    def slug(self) -> str:
+        return self._data["username"].lower().replace("_", "-")
+
+    @property
+    def bio(self) -> str:
+        return self._data["bio"] or ""
+
+    @property
+    def agreed_to_terms(self) -> bool:
+        return self._data["agreed_to_terms"]
+
+    @cached_property
+    def email_verified_at(self) -> datetime:
+        return datetime.fromisoformat(self._data["email_verified_at"])
+
+    @property
+    def country(self) -> str | None:
+        return self._data["country"]
+
+    @property
+    def city(self) -> str | None:
+        return self._data["city"]
+
+    @property
+    def state(self) -> str | None:
+        return self._data["state"]
+
+    @cached_property
+    def socials(self) -> Socials:
+        return Socials(data=self._data)
+
+    async def fetch_videos(self) -> list[Video]:
+        data = await self.http.get_streamer_videos(self.slug)
+        return [Video(data=v, http=self.http) for v in data]
+
+    def __eq__(self, other: object) -> bool:
+        if isinstance(other, User):
+            return other.id == self.id
+        else:
+            return False
+
+    def __str__(self) -> str:
+        return self.username
+
+    def __repr__(self) -> str:
+        return f"<ClientUser id={self.id!r} name={self.username!r}>"
