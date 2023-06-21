@@ -103,11 +103,19 @@ class HTTPClient:
         self.token: str = MISSING
         self.xsrf_token: str = MISSING
         self.globally_locked: bool = False
+        self.__regex_token_task: asyncio.Task | None = None
+        self._credentials: Credentials | None = None
 
         self.user_agent = f"Kick.py V{__version__} (github.com/cibere/kick.py)"
 
         self.bypass_port = client._options.get("bypass_port", 9090)
         self.whitelisted = client._options.get("whitelisted", False)
+
+    async def regen_token_coro(self) -> None:
+        await asyncio.sleep(2419200)  # 28 days just to be safe
+        if self._credentials:
+            LOGGER.info("Attempting to renew token")
+            await self.client.login(self._credentials)
 
     async def close(self) -> None:
         LOGGER.info("Closing HTTP Client...")
@@ -117,6 +125,8 @@ class HTTPClient:
             await self.ws.close()
 
     async def login(self, credentials: Credentials) -> None:
+        self._credentials = credentials
+
         LOGGER.info(
             f"Logging in using {'username' if credentials.username_was_provided else 'email'} and password"
         )
@@ -163,6 +173,9 @@ class HTTPClient:
 
         self.token = res["token"]
         LOGGER.info("Successfully logged in")
+        self.__regex_token_task = asyncio.create_task(
+            self.regen_token_coro(), name="Regen-Token"
+        )
 
     async def start(self) -> None:
         LOGGER.debug(
