@@ -1,10 +1,9 @@
 from __future__ import annotations
 
 from datetime import datetime
-from typing import TYPE_CHECKING, AsyncIterator
+from typing import TYPE_CHECKING
 
 from kick.categories import Category
-from kick.emotes import Emote
 
 from .assets import Asset
 from .badges import SubscriberBadge
