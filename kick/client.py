@@ -157,14 +157,6 @@ class Client:
     def event(self, coro: EventT) -> EventT:
         """
         Lets you set an event outside of a subclass.
-
-        Examples
-        -----------
-        ```
-            @client.event
-            async def on_ready():
-                print("The Bot is ready!")
-        ```
         """
 
         setattr(self, coro.__name__, coro)
