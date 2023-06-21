@@ -26,6 +26,7 @@ if TYPE_CHECKING:
 
     from .client import Client, Credentials
     from .types.chatroom import (
+        BanChatterPayload,
         ChatroomBannedWordsPayload,
         ChatroomRulesPayload,
         GetBannedUsersPayload,
@@ -333,6 +334,14 @@ class HTTPClient:
 
     def unban_user(self, streamer: str, chatter: str) -> Response[UnbanChatterPayload]:
         return self.request(Route("DELETE", f"/channels/{streamer}/bans/{chatter}"))
+
+    def ban_user(
+        self, streamer: str, chatter: str, reason: str
+    ) -> Response[BanChatterPayload]:
+        return self.request(
+            Route("POST", f"/channels/{streamer}/bans"),
+            json={"banned_username": chatter, "permanent": True, "reason": reason},
+        )
 
     async def get_asset(self, url: str) -> bytes:
         if self.__session is MISSING:

@@ -1,3 +1,5 @@
+from codecs import StreamWriter
+
 from typing_extensions import TypedDict
 
 from .all import StatusPayload
@@ -50,3 +52,20 @@ GetBannedUsersPayload = list[BanEntryPayload]
 class UnbanChatterPayload(TypedDict):
     status: bool
     message: str
+
+
+class BanChatterDataPayload(TypedDict):
+    id: str
+    chat_id: int
+    banned_id: int
+    banner_id: int
+    reason: str
+    type: str
+    permanent: bool
+    created_at: str
+    expires_at: str
+
+
+class BanChatterPayload(TypedDict):
+    status: StatusPayload
+    data: BanChatterDataPayload
