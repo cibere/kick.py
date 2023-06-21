@@ -300,7 +300,7 @@ class HTTPClient:
         return self.request(Route("GET", f"/channels/{streamer}/chatroom/rules"))
 
     def get_streamer_videos(self, streamer: str) -> Response[GetVideosPayload]:
-        return self.request(Route("GET", f"/channe;s/{streamer}/videos"))
+        return self.request(Route("GET", f"/channels/{streamer}/videos"))
 
     def get_emotes(self, streamer: str) -> Response[EmotesPayload]:
         return self.request(Route.root("GET", f"/emotes/{streamer}"))
