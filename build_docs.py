@@ -32,7 +32,7 @@ def convert_file(fp: str) -> None:
     with open(before_fp, "r", encoding="utf-8") as f:
         text = f.read()
 
-    if text.splitlines()[0] == IGNORE_FORMAT_TEXT:
+    if text.splitlines()[0] != IGNORE_FORMAT_TEXT:
         for find in SHOW_ALL_REGEX.findall(text):
             after = "{{x}}".replace("x", find) + f"\n[[{find}]]"
             text = text.replace(f"|[{find}]|", after)
