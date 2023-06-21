@@ -25,8 +25,7 @@ if TYPE_CHECKING:
     from typing_extensions import Self
 
     from .client import Client, Credentials
-    from .types.assets import AssetPayload
-    from .types.chatroom import ChatroomRulesPayload
+    from .types.chatroom import ChatroomBannedWordsPayload, ChatroomRulesPayload
     from .types.message import FetchMessagesPayload, V1MessageSentPayload
     from .types.user import ChatterPayload, UserPayload
     from .types.videos import GetVideosPayload
@@ -304,6 +303,11 @@ class HTTPClient:
 
     def get_emotes(self, streamer: str) -> Response[EmotesPayload]:
         return self.request(Route.root("GET", f"/emotes/{streamer}"))
+
+    def get_channels_banned_words(
+        self, streamer: str
+    ) -> Response[ChatroomBannedWordsPayload]:
+        return self.request(Route("GET", f"/channels/{streamer}/chatroom/banned-words"))
 
     async def get_asset(self, url: str) -> bytes:
         if self.__session is MISSING:
