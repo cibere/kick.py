@@ -143,6 +143,42 @@ class Chatter(HTTPDataclass["ChatterPayload"]):
             self.chatroom.streamer.slug, self.slug, reason, duration
         )
 
+    async def unban(self) -> None:
+        """
+        |coro|
+
+        Unbans the chatter from the chatroom
+
+        Raises
+        -----------
+        `HTTPException`
+            Unbanning the user failed
+        `Forbidden`
+            You are unauthorized from unbanning the user
+        `NotFound`
+            Streamer or user not found
+        """
+
+        await self.http.unban_user(self.chatroom.streamer.slug, self.slug)
+
+    async def untimeout(self) -> None:
+        """
+        |coro|
+
+        untimeout's the chatter
+
+        Raises
+        -----------
+        `HTTPException`
+            untimeouting the user failed
+        `Forbidden`
+            You are unauthorized from untimeouting the user
+        `NotFound`
+            Streamer or user not found
+        """
+
+        await self.http.unban_user(self.chatroom.streamer.slug, self.slug)
+
     def __eq__(self, other: object) -> bool:
         return isinstance(other, self.__class__) and other.id == self.id
 
