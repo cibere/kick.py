@@ -35,6 +35,11 @@ jobs:
         run: |
           python build_docs.py
 
+      - name: Check for changes
+        id: check-changes
+        run: |
+          git status --porcelain
+
       - name: Commit and push changes
         if: ${{ steps.check-changes.outputs.stdout != '' }}
         run: |
