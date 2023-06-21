@@ -1,7 +1,7 @@
-
+<html>
 <head>
     <link rel="stylesheet" href="styles.css">
-</head><p>!IGNORE-FORMAT</p>
+</head><body><p>!IGNORE-FORMAT</p>
 <h1>Kick.py</h1>
 <p>Kick.py <em>will</em> be an async api wrapper for <a href="https://kick.com">kick.com</a> once the api is public, and is documented. Though once its there, I will gladly accept help in making this :D</p>
 <h2>Table Of Contents</h2>
@@ -59,4 +59,4 @@ async def on_ready():
 await user.chatroom.connect()
 </code></pre>
 <p>client.run()
-```</p>
+```</p></body></html>
