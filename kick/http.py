@@ -130,9 +130,6 @@ class HTTPClient:
         if isinstance(res, str):
             raise NotFound("Kick 404'd on login page")
 
-        with open("output.html", "w") as f:
-            f.write(res)
-
         if res["2fa_required"] is True:
             two_fa_code = input(
                 "[WARNING] 2FA is enabled. Either disable it or give a 2fa code.\n> "
@@ -249,8 +246,7 @@ class HTTPClient:
                         time = 2 * current_try
 
                         LOGGER.warning(
-                            "API returned a 500 status code at '%s'. Retrying in %s seconds",
-                            endpoint,
+                            f"API returned a 500 status code at {route.method} {route.url}. Retrying in {time} seconds",
                         )
                         await asyncio.sleep(time)
                         continue
