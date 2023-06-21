@@ -10,12 +10,15 @@ from .user import User
 from .utils import cached_property
 
 if TYPE_CHECKING:
+    from .chatroom import Chatroom
     from .types.user import ChatterPayload
 
 __all__ = ("Chatter",)
 
 
 class Chatter(HTTPDataclass["ChatterPayload"]):
+    chatroom: Chatroom
+
     @property
     def id(self) -> int:
         return self._data["id"]

@@ -160,6 +160,7 @@ class Chatroom(HTTPDataclass["ChatroomPayload"]):
 
         data = await self.http.get_chatter(self.streamer.slug, chatter_name)
         chatter = Chatter(data=data, http=self.http)
+        chatter.chatroom = self
         return chatter
 
     async def fetch_rules(self) -> str:
