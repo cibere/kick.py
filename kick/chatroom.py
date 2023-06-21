@@ -95,6 +95,21 @@ class BanEntry(HTTPDataclass["BanEntryPayload"]):
         )
 
     async def unban(self) -> None:
+        """
+        |coro|
+
+        Unbans the chatter from the chatroom.
+
+        Raises
+        -----------
+        NotFound
+            Streamer or chatter not found
+        HTTPException
+            Unbanning the chatter failed
+        Forbidden
+            You are unauthorized from unbanning the chatter
+        """
+
         await self.http.unban_user(self.chatroom.streamer.username, self.user.username)
 
 
@@ -146,17 +161,72 @@ class Chatroom(HTTPDataclass["ChatroomPayload"]):
         return self._data["following_min_duration"]
 
     async def connect(self) -> None:
+        """
+        |coro|
+
+        Connects to the chatroom, making it so you can now listen for the messages.
+        """
+
         await self.http.ws.subscribe(self.id)
         self.http.client._chatrooms[self.id] = self
 
     async def disconnect(self) -> None:
+        """
+        |coro|
+
+        disconnects to the chatroom, making it so you can no longer listen for the messages.
+        """
+
         await self.http.ws.unsubscribe(self.id)
         self.http.client._chatrooms.pop(self.id)
 
     async def send(self, content: str, /) -> None:
+        """
+        |coro|
+
+        Sends a message in the chatroom
+
+        Parameters
+        -----------
+        content: str
+            The message's content
+
+        Raises
+        -----------
+        NotFound
+            Streamer or chatter not found
+        HTTPException
+            Sending the message failed
+        Forbidden
+            You are unauthorized from sending the message
+        """
+
         await self.http.send_message(self.id, content)
 
     async def fetch_chatter(self, chatter_name: str, /) -> Chatter:
+        """
+        |coro|
+
+        Fetches a chatroom's chatter
+
+        Parameters
+        -----------
+        chatter_name: str
+            The chatter's username
+
+        Raises
+        -----------
+        NotFound
+            Streamer or chatter not found
+        HTTPException
+            Fetching the chatter failed
+
+        Returns
+        -----------
+        Chatter
+            The chatter
+        """
+
         from .chatter import Chatter
 
         data = await self.http.get_chatter(self.streamer.slug, chatter_name)
@@ -165,14 +235,68 @@ class Chatroom(HTTPDataclass["ChatroomPayload"]):
         return chatter
 
     async def fetch_rules(self) -> str:
+        """
+        |coro|
+
+        Fetches the chatroom's rules
+
+        Raises
+        -----------
+        NotFound
+            Streamer Not Found
+        HTTPException
+            Fetching the rules failed
+
+        Returns
+        -----------
+        str
+            The rules
+        """
+
         data = await self.http.get_chatroom_rules(self.streamer.slug)
         return data["data"]["rules"]
 
     async def fetch_banned_words(self) -> list[str]:
+        """
+        |coro|
+
+        Fetches the chatroom's banned words
+
+        Raises
+        -----------
+        NotFound
+            Streamer Not Found
+        HTTPException
+            Fetching the words failed
+
+        Returns
+        -----------
+        list[str]
+            A list of the banned words
+        """
+
         data = await self.http.get_channels_banned_words(self.streamer.slug)
         return data["data"]["words"]
 
     async def fetch_bans(self) -> AsyncIterator[BanEntry]:
+        """
+        |coro|
+
+        Fetches the chatroom's bans
+
+        Raises
+        -----------
+        NotFound
+            Streamer Not Found
+        HTTPException
+            Fetching the bans failed
+
+        Returns
+        -----------
+        AsyncIterator[BanEntry]
+            Yields all of the ban entries
+        """
+
         data = await self.http.get_channel_bans(self.streamer.slug)
         for entry_data in data:
             entry = BanEntry(data=entry_data, http=self.http)
@@ -188,7 +312,7 @@ class Chatroom(HTTPDataclass["ChatroomPayload"]):
         Raises
         -----------
         NotFound
-            There is no poll in the current chatroom
+            There is no poll in the current chatroom or Streamer Not Found
         HTTPException
             Fetching the poll failed
 
@@ -206,6 +330,29 @@ class Chatroom(HTTPDataclass["ChatroomPayload"]):
     async def fetch_emotes(
         self, *, include_global: bool = False
     ) -> AsyncIterator[Emote]:
+        """
+        |coro|
+
+        Fetches the emotes from the current chatroom.
+
+        Parameters
+        -----------
+        include_global: bool = False
+            Wether to include global emotes or not
+
+        Raises
+        -----------
+        NotFound
+            Streamer Not Found
+        HTTPException
+            Fetching the bans failed
+
+        Returns
+        -----------
+        AsyncIterator[Emote]
+            Yields each emote. Starting with from the chatroom, then global
+        """
+
         data = await self.http.get_emotes(self.streamer.slug)
         for emote in data[2]["emotes"]:
             yield Emote(data=emote, http=self.http)
