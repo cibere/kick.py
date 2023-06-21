@@ -1,4 +1,4 @@
-# Introduction
+# Client
 
 |[Client]|
 
@@ -28,6 +28,8 @@
 
 |[Credentials]|
 
+# Asset
+
 <hr>
 
 |[Asset]|
@@ -37,3 +39,163 @@
 |[Asset.read]|
 
 |[Asset.save]|
+
+# Badges
+
+<hr>
+
+|[ChatBadge]|
+
+<hr>
+
+|[SubscriberBadge]|
+
+# Categories
+
+|[ParentCategory]|
+
+<hr>
+
+|[Category]|
+
+# Chatroom
+
+|[Chatroom]|
+
+## Methods
+
+|[Chatroom.connect]|
+
+|[Chatroom.disconnect]|
+
+|[Chatroom.send]|
+
+|[Chatroom.fetch_chatter]|
+
+|[Chatroom.fetch_bans]|
+
+|[Chatroom.fetch_banned_words]|
+
+|[Chatroom.fetch_rules]|
+
+|[Chatroom.fetch_poll]|
+
+|[Chatroom.fetch_emotes]|
+
+# BanEntry
+
+|[BanEntry]|
+
+## Methods
+
+|[BanEntry.unban]|
+
+# Users
+
+|[User]|
+
+## Methods
+
+|[User.fetch_videos]|
+
+|[User.fetch_gift_leaderboard]|
+
+<hr>
+
+|[PartialUser]|
+
+<hr>
+
+|[ClientUser]|
+
+## Methods
+
+|[ClientUser.fetch_videos]|
+
+<hr>
+
+|[Chatter]|
+
+<hr>
+
+|[Author]|
+
+# Messages
+
+|[Message]|
+
+<hr>
+
+|[PartialMessage]|
+
+# Emote
+
+|[Emote]|
+
+# Enums
+
+|[ChatroomChatMode]|
+
+# Leaderboard
+
+|[GiftLeaderboardEntry]|
+
+<hr>
+
+|[GiftLeaderboard]|
+
+# Livestream
+
+|[Livestream]|
+
+# Polls
+
+|[PollOption]|
+
+## Methods
+
+|[PollOption.vote]|
+
+<hr>
+
+|[Poll]|
+
+## Methods
+
+|[Poll.delete]|
+
+# Videos
+
+|[Video]|
+
+# Other
+
+|[Socials]|
+
+# Errors
+
+|[CloudflareBypassException]|
+
+<hr>
+
+|[KickException]|
+
+<hr>
+
+|[LoginFailure]|
+
+<hr>
+
+|[HTTPException]|
+
+<hr>
+
+|[Forbidden]|
+
+<hr>
+
+|[NotFound]|
+
+<hr>
+
+|[InternalKickException]|
