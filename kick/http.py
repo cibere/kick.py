@@ -278,6 +278,12 @@ class HTTPClient:
             data={"message": content, "chatroom_id": chatroom},
         )
 
+    def delete_message(self, chatroom: int, message_id: str) -> Response[Any]:
+        # Kick keeps 500ing on this, so not sure what to expect from it
+        return self.request(
+            Route("DELETE", f"/chatrooms/{chatroom}/messages/{message_id}")
+        )
+
     def get_user(self, streamer: str) -> Response[UserPayload]:
         return self.request(Route(method="GET", path=f"/channels/{streamer}"))
 
