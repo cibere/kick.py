@@ -56,7 +56,7 @@ setuptools.setup(
     },
     version="0.0.1",
     python_requires=">=3.11",
-    requires=REQUIREMENTS,
+    install_requires=REQUIREMENTS,
     packages=["kick"],
     description="",
     long_description=LONG_DESCRIPTION,
