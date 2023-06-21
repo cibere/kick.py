@@ -35,7 +35,13 @@ if TYPE_CHECKING:
         UnbanChatterPayload,
     )
     from .types.leaderboard import LeaderboardPayload
-    from .types.message import FetchMessagesPayload, V1MessageSentPayload
+    from .types.message import (
+        FetchMessagesPayload,
+        MessagePayload,
+        ReplyOriginalMessage,
+        ReplyOriginalSender,
+        V1MessageSentPayload,
+    )
     from .types.user import ChatterPayload, UserPayload
     from .types.videos import GetVideosPayload
 
@@ -248,6 +254,7 @@ class HTTPClient:
                         error = await error_or_text(data)
                         raise HTTPException(error, res.status)
                     case 403:
+                        print(await error_or_text(data))
                         raise Forbidden()
                     case 404:
                         error = await error_or_text(data)
@@ -379,6 +386,25 @@ class HTTPClient:
     def get_poll(self, streamer: str) -> Response[CreatePollPayload]:
         return self.request(
             Route("GET", f"/channels/{streamer}/polls"),
+        )
+
+    def reply_to_message(
+        self,
+        chatroom: int,
+        content: str,
+        original_message: ReplyOriginalMessage,
+        original_sender: ReplyOriginalSender,
+    ) -> Response[MessagePayload]:
+        return self.request(
+            Route("POST", f"/messages/send/{chatroom}"),
+            json={
+                "content": content,
+                "metadata": {
+                    "original_message": original_message,
+                    "original_sender": original_sender,
+                },
+                "type": "reply",
+            },
         )
 
     async def get_asset(self, url: str) -> bytes:
