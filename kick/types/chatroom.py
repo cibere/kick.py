@@ -15,3 +15,12 @@ class ChatroomRulesPayload(TypedDict):
 class PollPayload(TypedDict):
     status: StatusPayload
     data: None  # NEED TO FIGURE THIS OUT
+
+
+class ChatroomBannedWordsDataPayload(TypedDict):
+    words: list[str]
+
+
+class ChatroomBannedWordsPayload(TypedDict):
+    status: StatusPayload
+    data: ChatroomBannedWordsDataPayload

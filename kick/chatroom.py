@@ -128,6 +128,10 @@ class Chatroom(HTTPDataclass["ChatroomPayload"]):
         data = await self.http.get_chatroom_rules(self.streamer.slug)
         return data["data"]["rules"]
 
+    async def fetch_banned_words(self) -> list[str]:
+        data = await self.http.get_channels_banned_words(self.streamer.slug)
+        return data["data"]["words"]
+
     def __eq__(self, other: object) -> bool:
         return isinstance(other, self.__class__) and other.id == self.id
 
