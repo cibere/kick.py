@@ -121,7 +121,7 @@ def convert_file(fp: str) -> None:
 files = glob.glob(f"{RAW_DOCS_DIR}/*.md")
 
 for file in files:
-    fp = file.removeprefix("raw\\").removesuffix(".md")
+    fp = file.removeprefix(f"{RAW_DOCS_DIR}\\").removesuffix(".md")
     print(f"Starting on {fp}...")
     convert_file(fp)
     print(f"Finished {fp}")
