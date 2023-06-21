@@ -76,6 +76,13 @@ async def error_or_text(data: Union[dict, str]) -> str:
         return data
 
 
+async def error_or_nothing(data: Union[dict, str]) -> str:
+    if isinstance(data, dict):
+        return data["error"]
+    else:
+        return ""
+
+
 class Route:
     DOMAIN: str = "https://kick.com"
     BASE: str = f"{DOMAIN}/api/v2"
@@ -266,11 +273,10 @@ class HTTPClient:
                         error = await error_or_text(data)
                         raise HTTPException(error, res.status)
                     case 403:
-                        print(await error_or_text(data))
-                        raise Forbidden()
+                        raise Forbidden(await error_or_nothing(data))
                     case 404:
-                        error = await error_or_text(data)
-                        raise NotFound("Not Found")
+                        error = await error_or_nothing(data)
+                        raise NotFound(error or "Not Found")
                     case 500:
                         time = 2 * current_try
 

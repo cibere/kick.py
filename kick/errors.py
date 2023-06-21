@@ -28,8 +28,8 @@ class HTTPException(KickException):
 
 
 class Forbidden(HTTPException):
-    def __init__(self) -> None:
-        super().__init__("", 403)
+    def __init__(self, txt: str = "") -> None:
+        super().__init__(txt, 403)
 
 
 class NotFound(HTTPException):
