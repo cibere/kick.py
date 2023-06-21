@@ -120,21 +120,21 @@ class Chatter(HTTPDataclass["ChatterPayload"]):
         """
         |coro|
 
-        Temp-bans a user for a given amount of time.
+        Times out a user for a given amount of time.
 
         Parameters
         -----------
         duration: int
-            The amount of seconds for the temp-ban to be
+            The amount of seconds for the timeout to be
         reason: str
-            The reason for the tempban
+            The reason for the timeout
 
         Raises
         -----------
         `HTTPException`
-            Tempbanning the user failed
+            timing out the user failed
         `Forbidden`
-            You are unauthorized from tempbanning the user
+            You are unauthorized from timing out the user
         `NotFound`
             Streamer or user not found
         """
