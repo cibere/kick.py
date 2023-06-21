@@ -54,9 +54,7 @@ class PollOption(HTTPDataclass["PollOptionPayload"]):
             Deleting the poll failed
         """
 
-        data = await self.http.vote_for_poll(self.chatroom.streamer.slug, self.id)
-        with open("data.json", "w") as f:
-            f.write(f"{data}")
+        await self.http.vote_for_poll(self.chatroom.streamer.slug, self.id)
 
 
 class Poll(HTTPDataclass["CreatePollPayload"]):
@@ -129,6 +127,4 @@ class Poll(HTTPDataclass["CreatePollPayload"]):
             Deleting the poll failed
         """
 
-        data = await self.http.delete_poll(self.chatroom.streamer.slug)
-        with open("data.json", "w") as f:
-            f.write(f"{data}")
+        await self.http.delete_poll(self.chatroom.streamer.slug)
