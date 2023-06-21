@@ -87,3 +87,8 @@ class ClientChatterPayload(TypedDict):
     is_moderator: bool
     leaderboards: Any  # NEED TO FIGURE THIS OUT
     banned: None  # NEED TO FIGURE THIS OUT
+
+
+class PartialUserPayload(TypedDict):
+    id: str | int
+    username: str
