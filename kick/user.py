@@ -173,16 +173,6 @@ class User(HTTPDataclass["UserPayload"]):
         data = await self.http.get_streamer_videos(self.slug)
         return [Video(data=v, http=self.http) for v in data]
 
-    async def fetch_emotes(
-        self, *, include_global: bool = False
-    ) -> AsyncIterator[Emote]:
-        data = await self.http.get_emotes(self.slug)
-        for emote in data[2]["emotes"]:
-            yield Emote(data=emote, http=self.http)
-        if include_global is True:
-            for emote in data[1]["emotes"]:
-                yield Emote(data=emote, http=self.http)
-
     async def fetch_gift_leaderboard(self) -> GiftLeaderboard:
         data = await self.http.get_channel_gift_leaderboard(self.slug)
         leaderboard = GiftLeaderboard(data=data)
