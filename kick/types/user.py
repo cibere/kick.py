@@ -132,7 +132,6 @@ class ClientUserPayload(TypedDict):
     newsletter_subscribed: bool
     enable_sms_promo: bool
     enable_sms_security: bool
-    profilepic: None  # Unknown
     is_2fa_setup: bool
     redirect: None  # Unknown
     channel_can_be_updated: bool
@@ -140,3 +139,4 @@ class ClientUserPayload(TypedDict):
     intercom_hash: None  # Unknown
     streamer_channel: ClientUserStreamerChannelsPayload
     roles: list  # Unknown
+    profilepic: str | None
