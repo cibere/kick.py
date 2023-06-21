@@ -1,12 +1,37 @@
 import setuptools
 
+from kick import __version__ as version
+
 with open("README.md", "r") as f:
     LONG_DESCRIPTION = f.read()
 
 with open("requirements.txt", "r") as f:
     REQUIREMENTS = f.read().splitlines()
 
-# packages = ["kick"]
+if version.endswith(("a", "b", "rc")):
+    # append version identifier based on commit count
+    try:
+        import subprocess
+
+        p = subprocess.Popen(
+            ["git", "rev-list", "--count", "HEAD"],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        out, err = p.communicate()
+        if out:
+            version += out.decode("utf-8").strip()
+        p = subprocess.Popen(
+            ["git", "rev-parse", "--short", "HEAD"],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        out, err = p.communicate()
+        if out:
+            version += "+g" + out.decode("utf-8").strip()
+    except Exception:
+        pass
+
 
 setuptools.setup(
     name="kick.py",
@@ -20,7 +45,7 @@ setuptools.setup(
     version="0.0.1",
     python_requires=">=3.11",
     install_requires=REQUIREMENTS,
-    # packages=packages,
+    packages=["kick"],
     description="",
     long_description=LONG_DESCRIPTION,
     long_description_content_type="text/markdown",
