@@ -10,7 +10,8 @@ from .utils import cached_property
 
 if TYPE_CHECKING:
     from .http import HTTPClient
-    from .types.videos import LivestreamPayload, PartialLivestreamPayload
+    from .types.videos import LivestreamPayload
+    from .types.ws import PartialLivestreamPayload
     from .users import User
 
 __all__ = ("Livestream", "PartialLivestream")
