@@ -28,7 +28,7 @@ Kick.py _will_ be an async api wrapper for [kick.com](https://kick.com) once the
 
 ## Installation
 
-> !**This project is still in early alpha, so it might not work as expected but here is how installation goes.**
+> ! **This project is still in early alpha, so it might not work as expected but here is how installation goes.**
 
 Install from github _requires [git](https://git-scm.com/) to be installed_
 
@@ -43,10 +43,10 @@ If you are api whitelisted (meaning you are whitelisted from cloudflare), then y
 _these steps assume your python executable is `python`, but that might not be the case_
 
 1. Install [golang](https://go.dev/doc/install)
-2. Run `python -m kick bypass create --port 9090 --fp bypass.go` to create the script.
-3. If you require proxy support edit `bypass.go`and uncomment `// Proxy: "http://username:password@hostname.com:port",`.
-4. To install the dependencies run `python -m kick bypass install`.
-5. To start the script run `go run bypass.go`.
+2. Run `python -m kick bypass create` to create the script. See `python -m kick bypass create --help` for information about running the command.
+   > Options include: proxy, port, filepath
+3. To install the dependencies run `python -m kick bypass install`.
+4. To start the script run `go run bypass.go`.
 
 If you set a port other than `9090` for the bypass script, make sure to pass `bypass_port=THE_PORT` into your `Client` constructor.
 
