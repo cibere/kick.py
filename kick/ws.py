@@ -27,6 +27,7 @@ class PusherWebSocket:
         data = json.loads(raw_data["data"])
 
         self.http.client.dispatch("payload_receive", raw_data["event"], data)
+        self.http.client.dispatch("raw_payload_receive", raw_data)
 
         match raw_data["event"]:
             case "App\\Events\\ChatMessageEvent":
