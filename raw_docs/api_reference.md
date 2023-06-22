@@ -8,6 +8,10 @@
 
 |[Client.get_chatroom]|
 
+|[Client.get_partial_chatter]|
+
+|[Client.get_partial_user]|
+
 |[Client.event]|
 
 |[Client.login]|
