@@ -760,6 +760,26 @@ recent_categories: list[<a href="#Category" class="hidden"><a href="#Category" c
 
 {{User.fetch_gift_leaderboard}}[[User.fetch_gift_leaderboard]]
 
+
+<a href="#User.start_watch" class="h3 hidden" id="User.start_watch">
+    <span class="async">
+        async def 
+    </span>
+    User.start_watch
+</a>
+<br>
+Watches a user to see if they go online.<br>
+
+
+<a href="#User.stop_watching" class="h3 hidden" id="User.stop_watching">
+    <span class="async">
+        async def 
+    </span>
+    User.stop_watching
+</a>
+<br>
+Stops watching the user<br>
+
 <hr>
 
 
