@@ -91,7 +91,7 @@ def convert_file(fp: str) -> None:
                     class_ = prefix.split(" ")[0]
 
                 after = f"""
-                <a href="#{find}">
+                <a href="#{find}" class="hidden">
                     <span class="h4" id="{find}">
                         <span class="{class_}">
                             {prefix}
