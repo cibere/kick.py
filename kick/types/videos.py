@@ -21,6 +21,14 @@ class BaseVideoPayload(TypedDict):
     categories: list[Category]
 
 
+class PartialLivestreamPayload(TypedDict):
+    id: int
+    channel_id: int
+    session_title: str
+    source: None  # Unknown
+    created_at: str
+
+
 class LivestreamPayload(BaseVideoPayload):
     tags: list  # NEED TO FIGURE THIS OUT
     thumbnail: None | AssetUrl
