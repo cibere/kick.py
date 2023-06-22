@@ -72,7 +72,29 @@
 
 |[Category]|
 
-# Chatroom
+# Chatrooms
+
+|[PartialChatroom]|
+
+## Methods
+
+|[PartialChatroom.connect]|
+
+|[PartialChatroom.disconnect]|
+
+|[PartialChatroom.send]|
+
+|[PartialChatroom.fetch_chatter]|
+
+|[PartialChatroom.fetch_bans]|
+
+|[PartialChatroom.fetch_banned_words]|
+
+|[PartialChatroom.fetch_rules]|
+
+|[PartialChatroom.fetch_poll]|
+
+|[PartialChatroom.fetch_emotes]|
 
 |[Chatroom]|
 
