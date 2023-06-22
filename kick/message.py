@@ -8,7 +8,7 @@ from .users import PartialUser, User
 from .utils import cached_property
 
 if TYPE_CHECKING:
-    from .chatroom import Chatroom
+    from .chatroom import Chatroom, PartialChatroom
     from .types.message import AuthorPayload, MessagePayload, ReplyMetaData
 
 __all__ = ("Author", "Message", "PartialMessage")
@@ -199,7 +199,7 @@ class Message(HTTPDataclass["MessagePayload"]):
         return self._data["chatroom_id"]
 
     @property
-    def chatroom(self) -> Chatroom | None:
+    def chatroom(self) -> Chatroom | PartialChatroom | None:
         """
         The chatroom the message was sent in.
         """
