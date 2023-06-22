@@ -9,7 +9,10 @@ __version__ = "0.0.2a"
 from typing import Any, Literal, NamedTuple
 
 from .assets import *
+from .badges import *
+from .categories import *
 from .chatroom import *
+from .chatter import *
 from .client import *
 from .emotes import *
 from .enums import *
@@ -18,6 +21,7 @@ from .leaderboard import *
 from .livestream import *
 from .message import *
 from .object import *
+from .polls import *
 from .users import *
 from .videos import *
 
