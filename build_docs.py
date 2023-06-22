@@ -34,7 +34,7 @@ def convert_file(fp: str) -> None:
 
     if text.splitlines()[0] != IGNORE_FORMAT_TEXT:
         for find in SHOW_ALL_REGEX.findall(text):
-            after = "{{x}}".replace("x", find) + f"\n[[{find}]]"
+            after = "{{x}}".replace("x", find) + f"[[{find}]]"
             text = text.replace(f"|[{find}]|", after)
 
         # Docstring
