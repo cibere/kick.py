@@ -5,7 +5,7 @@ client = Client()
 
 @client.event
 async def on_message(msg: Message):
-    print(f"Received message by {msg.author.username} saying {msg.content}")
+    print(f"Received message by {msg.author.slug} saying {msg.content}")
 
 
 @client.event
