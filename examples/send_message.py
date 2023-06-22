@@ -1,4 +1,4 @@
-from kick import Client, Credentials, user
+from kick import Client, Credentials
 
 client = Client()
 
