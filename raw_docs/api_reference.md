@@ -30,6 +30,8 @@
 
 |[Client.on_livestream_start]|
 
+|[Client.on_payload_receive]|
+
 <hr>
 
 |[Credentials]|
