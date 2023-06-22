@@ -5,7 +5,7 @@
 # Client
 
 
-<a href="#Client" class="h3 hidden" id="Client">
+<a href="#Client" class="h2 hidden" id="Client">
     <span class="class">
         class 
     </span>
@@ -236,7 +236,7 @@ message: Message<br>
 <hr>
 
 
-<a href="#Credentials" class="h3 hidden" id="Credentials">
+<a href="#Credentials" class="h2 hidden" id="Credentials">
     <span class="class">
         class 
     </span>
@@ -271,7 +271,7 @@ one_time_password: Optional[str]<br>
 <hr>
 
 
-<a href="#Asset" class="h3 hidden" id="Asset">
+<a href="#Asset" class="h2 hidden" id="Asset">
     <span class="class">
         class 
     </span>
@@ -342,7 +342,7 @@ int<br>
 <hr>
 
 
-<a href="#ChatBadge" class="h3 hidden" id="ChatBadge">
+<a href="#ChatBadge" class="h2 hidden" id="ChatBadge">
     <span class="class">
         class 
     </span>
@@ -365,7 +365,7 @@ active: bool<br>
 <hr>
 
 
-<a href="#SubscriberBadge" class="h3 hidden" id="SubscriberBadge">
+<a href="#SubscriberBadge" class="h2 hidden" id="SubscriberBadge">
     <span class="class">
         class 
     </span>
@@ -388,7 +388,7 @@ image: <a href="#Asset" class="hidden"><a href="#Asset" class="hidden"><a href="
 # Categories
 
 
-<a href="#ParentCategory" class="h3 hidden" id="ParentCategory">
+<a href="#ParentCategory" class="h2 hidden" id="ParentCategory">
     <span class="class">
         class 
     </span>
@@ -411,7 +411,7 @@ icon: <a href="#Asset" class="hidden"><a href="#Asset" class="hidden"><a href="#
 <hr>
 
 
-<a href="#Category" class="h3 hidden" id="Category">
+<a href="#Category" class="h2 hidden" id="Category">
     <span class="class">
         class 
     </span>
@@ -440,7 +440,7 @@ parent: <a href="#ParentCategory" class="hidden">`ParentCategory`</a><br>
 # Chatroom
 
 
-<a href="#Chatroom" class="h3 hidden" id="Chatroom">
+<a href="#Chatroom" class="h2 hidden" id="Chatroom">
     <span class="class">
         class 
     </span>
@@ -660,7 +660,7 @@ AsyncIterator[Emote]<br>
 # BanEntry
 
 
-<a href="#BanEntry" class="h3 hidden" id="BanEntry">
+<a href="#BanEntry" class="h2 hidden" id="BanEntry">
     <span class="class">
         class 
     </span>
@@ -711,7 +711,7 @@ Forbidden<br>
 # Users
 
 
-<a href="#User" class="h3 hidden" id="User">
+<a href="#User" class="h2 hidden" id="User">
     <span class="class">
         class 
     </span>
@@ -782,7 +782,7 @@ recent_categories: list[<a href="#Category" class="hidden"><a href="#Category" c
 <hr>
 
 
-<a href="#PartialUser" class="h3 hidden" id="PartialUser">
+<a href="#PartialUser" class="h2 hidden" id="PartialUser">
     <span class="class">
         class 
     </span>
@@ -801,7 +801,7 @@ username: str<br>
 <hr>
 
 
-<a href="#ClientUser" class="h3 hidden" id="ClientUser">
+<a href="#ClientUser" class="h2 hidden" id="ClientUser">
     <span class="class">
         class 
     </span>
@@ -825,7 +825,7 @@ username: str<br>
 <hr>
 
 
-<a href="#Chatter" class="h3 hidden" id="Chatter">
+<a href="#Chatter" class="h2 hidden" id="Chatter">
     <span class="class">
         class 
     </span>
@@ -948,7 +948,7 @@ untimeout's the chatter<br>
 <hr>
 
 
-<a href="#PartialChatter" class="h3 hidden" id="PartialChatter">
+<a href="#PartialChatter" class="h2 hidden" id="PartialChatter">
     <span class="class">
         class 
     </span>
@@ -1076,7 +1076,7 @@ untimeout's the chatter<br>
 <hr>
 
 
-<a href="#Author" class="h3 hidden" id="Author">
+<a href="#Author" class="h2 hidden" id="Author">
     <span class="class">
         class 
     </span>
@@ -1099,7 +1099,7 @@ badges: list<br>
 # Messages
 
 
-<a href="#Message" class="h3 hidden" id="Message">
+<a href="#Message" class="h2 hidden" id="Message">
     <span class="class">
         class 
     </span>
@@ -1130,7 +1130,7 @@ author: <a href="#Author" class="hidden">`Author`</a><br>
 <hr>
 
 
-<a href="#PartialMessage" class="h3 hidden" id="PartialMessage">
+<a href="#PartialMessage" class="h2 hidden" id="PartialMessage">
     <span class="class">
         class 
     </span>
@@ -1151,7 +1151,7 @@ author: <a href="#PartialUser" class="hidden"><a href="#PartialUser" class="hidd
 # Emote
 
 
-<a href="#Emote" class="h3 hidden" id="Emote">
+<a href="#Emote" class="h2 hidden" id="Emote">
     <span class="class">
         class 
     </span>
@@ -1178,7 +1178,7 @@ source: <a href="#Asset" class="hidden"><a href="#Asset" class="hidden"><a href=
 # Enums
 
 
-<a href="#ChatroomChatMode" class="h3 hidden" id="ChatroomChatMode">
+<a href="#ChatroomChatMode" class="h2 hidden" id="ChatroomChatMode">
     <span class="class">
         class 
     </span>
@@ -1197,7 +1197,7 @@ privet: <a href="#ChatroomChatMode" class="hidden"><a href="#ChatroomChatMode" c
 # Leaderboard
 
 
-<a href="#GiftLeaderboardEntry" class="h3 hidden" id="GiftLeaderboardEntry">
+<a href="#GiftLeaderboardEntry" class="h2 hidden" id="GiftLeaderboardEntry">
     <span class="class">
         class 
     </span>
@@ -1218,7 +1218,7 @@ username: str<br>
 <hr>
 
 
-<a href="#GiftLeaderboard" class="h3 hidden" id="GiftLeaderboard">
+<a href="#GiftLeaderboard" class="h2 hidden" id="GiftLeaderboard">
     <span class="class">
         class 
     </span>
@@ -1241,7 +1241,7 @@ all_time: list[<a href="#GiftLeaderboardEntry" class="hidden"><a href="#GiftLead
 # Livestream
 
 
-<a href="#Livestream" class="h3 hidden" id="Livestream">
+<a href="#Livestream" class="h2 hidden" id="Livestream">
     <span class="class">
         class 
     </span>
@@ -1286,7 +1286,7 @@ categories: list[<a href="#Category" class="hidden"><a href="#Category" class="h
 # Polls
 
 
-<a href="#PollOption" class="h3 hidden" id="PollOption">
+<a href="#PollOption" class="h2 hidden" id="PollOption">
     <span class="class">
         class 
     </span>
@@ -1328,7 +1328,7 @@ HTTPException<br>
 <hr>
 
 
-<a href="#Poll" class="h3 hidden" id="Poll">
+<a href="#Poll" class="h2 hidden" id="Poll">
     <span class="class">
         class 
     </span>
@@ -1378,7 +1378,7 @@ HTTPException<br>
 # Videos
 
 
-<a href="#Video" class="h3 hidden" id="Video">
+<a href="#Video" class="h2 hidden" id="Video">
     <span class="class">
         class 
     </span>
@@ -1419,7 +1419,7 @@ categories: list[<a href="#Category" class="hidden"><a href="#Category" class="h
 # Other
 
 
-<a href="#Socials" class="h3 hidden" id="Socials">
+<a href="#Socials" class="h2 hidden" id="Socials">
     <span class="class">
         class 
     </span>
@@ -1446,7 +1446,7 @@ facebook: str<br>
 # Errors
 
 
-<a href="#CloudflareBypassException" class="h3 hidden" id="CloudflareBypassException">
+<a href="#CloudflareBypassException" class="h2 hidden" id="CloudflareBypassException">
     <span class="class">
         class 
     </span>
@@ -1459,7 +1459,7 @@ This error is used when there is an error with the bypass script.<br>
 <hr>
 
 
-<a href="#KickException" class="h3 hidden" id="KickException">
+<a href="#KickException" class="h2 hidden" id="KickException">
     <span class="class">
         class 
     </span>
@@ -1472,7 +1472,7 @@ This error is used when there is an error with kick.<br>
 <hr>
 
 
-<a href="#LoginFailure" class="h3 hidden" id="LoginFailure">
+<a href="#LoginFailure" class="h2 hidden" id="LoginFailure">
     <span class="class">
         class 
     </span>
@@ -1485,7 +1485,7 @@ This error is used when there is an error with logging in.<br>
 <hr>
 
 
-<a href="#HTTPException" class="h3 hidden" id="HTTPException">
+<a href="#HTTPException" class="h2 hidden" id="HTTPException">
     <span class="class">
         class 
     </span>
@@ -1502,7 +1502,7 @@ status_code: int<br>
 <hr>
 
 
-<a href="#Forbidden" class="h3 hidden" id="Forbidden">
+<a href="#Forbidden" class="h2 hidden" id="Forbidden">
     <span class="class">
         class 
     </span>
@@ -1519,7 +1519,7 @@ status_code: int = 403<br>
 <hr>
 
 
-<a href="#NotFound" class="h3 hidden" id="NotFound">
+<a href="#NotFound" class="h2 hidden" id="NotFound">
     <span class="class">
         class 
     </span>
@@ -1536,7 +1536,7 @@ status_code: int = 404<br>
 <hr>
 
 
-<a href="#InternalKickException" class="h3 hidden" id="InternalKickException">
+<a href="#InternalKickException" class="h2 hidden" id="InternalKickException">
     <span class="class">
         class 
     </span>
