@@ -15,7 +15,7 @@ from .utils import MISSING, decorator, setup_logging
 if TYPE_CHECKING:
     from typing_extensions import Self
 
-    from .chatroom import Chatroom
+    from .chatroom import Chatroom, PartialChatroom
 
 EventT = TypeVar("EventT", bound=Callable[..., Coroutine[Any, Any, None]])
 LOGGER = getLogger(__name__)
@@ -94,7 +94,7 @@ class Client:
     def __init__(self, **options: Any) -> None:
         self._options = options
         self.http = HTTPClient(self)
-        self._chatrooms: dict[int, Chatroom] = {}
+        self._chatrooms: dict[int, Chatroom | PartialChatroom] = {}
         self._watched_users: dict[int, User] = {}
         self.user: ClientUser | None = None
 
@@ -102,7 +102,30 @@ class Client:
             "Kick's api is undocumented, possible unstable, and can change at any time without warning"
         )
 
-    def get_chatroom(self, chatroom_id: int, /) -> Chatroom | None:
+    def get_partial_chatroom(
+        self, chatroom_id: int, streamer_name: str
+    ) -> PartialChatroom:
+        """
+        Gets a partial chatroom.
+
+        Parameters
+        -----------
+        chatroom_id: int
+            The id of the chatroom you want to connect to
+        streamer_name: str
+            The name of the streamer who's chatroom it is
+
+        Returns
+        -----------
+        `PartialChatroom`
+            The partial chatroom
+        """
+
+        return PartialChatroom(
+            id=chatroom_id, streamer_name=streamer_name, http=self.http
+        )
+
+    def get_chatroom(self, chatroom_id: int, /) -> PartialChatroom | Chatroom | None:
         """
         Gets a chatroom out of a cache that contains chatrooms that you are connected to.
 
