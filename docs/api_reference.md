@@ -11,7 +11,6 @@
     </span>
     Client
 </a>
-
 <br>
 This repersents the Client you can use to interact with kick.<br>
 <br>
@@ -38,7 +37,6 @@ user: ClientUser | None<br>
     </span>
     Client.fetch_user
 </a>
-
 <br>
 Fetches a user from the API.<br>
 <br>
@@ -63,7 +61,6 @@ User<br>
     </span>
     Client.get_chatroom
 </a>
-
 <br>
 Gets a chatroom out of a cache that contains chatrooms that you are connected to.<br>
 <br>
@@ -82,7 +79,6 @@ Chatroom | None<br>
     </span>
     Client.get_partial_chatter
 </a>
-
 <br>
 Gets a partial chatter instance by the streamer and chatter names provided.<br>
 <br>
@@ -103,7 +99,6 @@ chatter_name: str<br>
     </span>
     Client.get_partial_user
 </a>
-
 <br>
 Gets a partial user instance by the username and id provided.<br>
 <br>
@@ -124,7 +119,6 @@ id: int<br>
     </span>
     Client.event
 </a>
-
 <br>
 Lets you set an event outside of a subclass.<br>
 
@@ -135,7 +129,6 @@ Lets you set an event outside of a subclass.<br>
     </span>
     Client.login
 </a>
-
 <br>
 Authenticates yourself, and fills <a href="#Client.user" class="hidden"><a href="#Client.user" class="hidden">`Client.user`</a></a><br>
 Unlike <a href="#Client.start" class="hidden"><a href="#Client.start" class="hidden"><a href="#Client.start" class="hidden">`Client.start`</a></a></a>, this does not start the websocket<br>
@@ -151,7 +144,6 @@ credentials: Credentials<br>
     </span>
     Client.start
 </a>
-
 <br>
 Starts the websocket so you can receive events<br>
 And authenticate yourself if credentials are provided.<br>
@@ -167,7 +159,6 @@ credentials: Optional[Credentials]<br>
     </span>
     Client.login
 </a>
-
 <br>
 Authenticates yourself, and fills <a href="#Client.user" class="hidden"><a href="#Client.user" class="hidden">`Client.user`</a></a><br>
 Unlike <a href="#Client.start" class="hidden"><a href="#Client.start" class="hidden"><a href="#Client.start" class="hidden">`Client.start`</a></a></a>, this does not start the websocket<br>
@@ -183,7 +174,6 @@ credentials: Credentials<br>
     </span>
     Client.run
 </a>
-
 <br>
 Starts the websocket so you can receive events<br>
 And authenticate yourself if credentials are provided.<br>
@@ -201,7 +191,6 @@ credentials: Optional[Credentials]<br>
     </span>
     Client.close
 </a>
-
 <br>
 Closes the HTTPClient, no requests can be made after this.<br>
 
@@ -212,7 +201,6 @@ Closes the HTTPClient, no requests can be made after this.<br>
     </span>
     Client.on_ready
 </a>
-
 <br>
 on_ready is an event that can be overriden with the <a href="#Client.event" class="hidden"><a href="#Client.event" class="hidden">`Client.event`</a></a> decorator or with a subclass.<br>
 This is called after the client has started the websocket and is receiving events.<br>
@@ -224,7 +212,6 @@ This is called after the client has started the websocket and is receiving event
     </span>
     Client.on_message
 </a>
-
 <br>
 on_ready is an event that can be overriden with the <a href="#Client.event" class="hidden"><a href="#Client.event" class="hidden">`Client.event`</a></a> decorator or with a subclass.<br>
 This is called when a message is received over the websocket<br>
@@ -242,7 +229,6 @@ message: Message<br>
     </span>
     Credentials
 </a>
-
 <br>
 This holds credentials that can be used to authenticate yourself with kick.<br>
 <br>
@@ -277,7 +263,6 @@ one_time_password: Optional[str]<br>
     </span>
     Asset
 </a>
-
 <br>
 A class which repersents a kick asset.<br>
 <br>
@@ -294,7 +279,6 @@ url: str<br>
     </span>
     Asset.read
 </a>
-
 <br>
 Fetches the asset from kick<br>
 <br>
@@ -315,7 +299,6 @@ bytes<br>
     </span>
     Asset.save
 </a>
-
 <br>
 Saves the asset into a file-like object<br>
 <br>
@@ -348,7 +331,6 @@ int<br>
     </span>
     ChatBadge
 </a>
-
 <br>
 A dataclass which represents a badge from a chatroon.<br>
 <br>
@@ -371,7 +353,6 @@ active: bool<br>
     </span>
     SubscriberBadge
 </a>
-
 <br>
 A dataclass which represents a subscriber badge from a channel.<br>
 <br>
@@ -394,7 +375,6 @@ image: <a href="#Asset" class="hidden"><a href="#Asset" class="hidden"><a href="
     </span>
     ParentCategory
 </a>
-
 <br>
 A dataclass which represents one of kick's main categories<br>
 <br>
@@ -417,7 +397,6 @@ icon: <a href="#Asset" class="hidden"><a href="#Asset" class="hidden"><a href="#
     </span>
     Category
 </a>
-
 <br>
 A dataclass which represents one of kick's sub categories<br>
 <br>
@@ -446,7 +425,6 @@ parent: <a href="#ParentCategory" class="hidden">`ParentCategory`</a><br>
     </span>
     Chatroom
 </a>
-
 <br>
 A dataclass that represents a kick chatroom.<br>
 <br>
@@ -485,7 +463,6 @@ streamer: <a href="#User" class="hidden"><a href="#User" class="hidden"><a href=
     </span>
     Chatroom.connect
 </a>
-
 <br>
 Connects to the chatroom, making it so you can now listen for the messages.<br>
 
@@ -496,7 +473,6 @@ Connects to the chatroom, making it so you can now listen for the messages.<br>
     </span>
     Chatroom.disconnect
 </a>
-
 <br>
 disconnects to the chatroom, making it so you can no longer listen for the messages.<br>
 
@@ -507,7 +483,6 @@ disconnects to the chatroom, making it so you can no longer listen for the messa
     </span>
     Chatroom.send
 </a>
-
 <br>
 Sends a message in the chatroom<br>
 <br>
@@ -530,7 +505,6 @@ Forbidden<br>
     </span>
     Chatroom.fetch_chatter
 </a>
-
 <br>
 Fetches a chatroom's chatter<br>
 <br>
@@ -555,7 +529,6 @@ Chatter<br>
     </span>
     Chatroom.fetch_bans
 </a>
-
 <br>
 Fetches the chatroom's bans<br>
 <br>
@@ -576,7 +549,6 @@ AsyncIterator[BanEntry]<br>
     </span>
     Chatroom.fetch_banned_words
 </a>
-
 <br>
 Fetches the chatroom's banned words<br>
 <br>
@@ -597,7 +569,6 @@ list[str]<br>
     </span>
     Chatroom.fetch_rules
 </a>
-
 <br>
 Fetches the chatroom's rules<br>
 <br>
@@ -618,7 +589,6 @@ str<br>
     </span>
     Chatroom.fetch_poll
 </a>
-
 <br>
 Gets a poll from the chatroom<br>
 <br>
@@ -639,7 +609,6 @@ Poll<br>
     </span>
     Chatroom.fetch_emotes
 </a>
-
 <br>
 Fetches the emotes from the current chatroom.<br>
 <br>
@@ -666,7 +635,6 @@ AsyncIterator[Emote]<br>
     </span>
     BanEntry
 </a>
-
 <br>
 A dataclass which represents a ban entry on kick.<br>
 This includes timeouts.<br>
@@ -696,7 +664,6 @@ chatroom: Chatroom<br>
     </span>
     BanEntry.unban
 </a>
-
 <br>
 Unbans the chatter from the chatroom.<br>
 <br>
@@ -717,7 +684,6 @@ Forbidden<br>
     </span>
     User
 </a>
-
 <br>
 A dataclass which represents a User on kick<br>
 <br>
@@ -773,11 +739,9 @@ recent_categories: list[<a href="#Category" class="hidden"><a href="#Category" c
 
 ## Methods
 
-{{User.fetch_videos}}
-[[User.fetch_videos]]
+{{User.fetch_videos}}[[User.fetch_videos]]
 
-{{User.fetch_gift_leaderboard}}
-[[User.fetch_gift_leaderboard]]
+{{User.fetch_gift_leaderboard}}[[User.fetch_gift_leaderboard]]
 
 <hr>
 
@@ -788,7 +752,6 @@ recent_categories: list[<a href="#Category" class="hidden"><a href="#Category" c
     </span>
     PartialUser
 </a>
-
 <br>
 This dataclass represents a partial user on kick<br>
 <br>
@@ -809,7 +772,6 @@ username: str<br>
 </a>
 
 
-
 ## Methods
 
 
@@ -821,7 +783,6 @@ username: str<br>
 </a>
 
 
-
 <hr>
 
 
@@ -831,7 +792,6 @@ username: str<br>
     </span>
     Chatter
 </a>
-
 <br>
 A dataclass which respresents a chatter on kick<br>
 <br>
@@ -866,7 +826,6 @@ following_since: datetime.datetime | None<br>
     </span>
     Chatter.ban
 </a>
-
 <br>
 Permanently bans a user from a chatroom.<br>
 <br>
@@ -889,7 +848,6 @@ reason: str<br>
     </span>
     Chatter.unban
 </a>
-
 <br>
 Unbans the chatter from the chatroom<br>
 <br>
@@ -908,7 +866,6 @@ Unbans the chatter from the chatroom<br>
     </span>
     Chatter.timeout
 </a>
-
 <br>
 Times out a user for a given amount of time.<br>
 <br>
@@ -933,7 +890,6 @@ reason: str<br>
     </span>
     Chatter.untimeout
 </a>
-
 <br>
 untimeout's the chatter<br>
 <br>
@@ -954,7 +910,6 @@ untimeout's the chatter<br>
     </span>
     PartialChatter
 </a>
-
 <br>
 This represents a partial user.<br>
 <br>
@@ -973,7 +928,6 @@ username: str<br>
     </span>
     PartialChatter.to_user
 </a>
-
 <br>
 Fetches a user object for the chatter<br>
 <br>
@@ -994,7 +948,6 @@ Fetches a user object for the chatter<br>
     </span>
     PartialChatter.ban
 </a>
-
 <br>
 Permanently bans a user from a chatroom.<br>
 <br>
@@ -1017,7 +970,6 @@ reason: str<br>
     </span>
     PartialChatter.unban
 </a>
-
 <br>
 Unbans the chatter from the chatroom<br>
 <br>
@@ -1036,7 +988,6 @@ Unbans the chatter from the chatroom<br>
     </span>
     PartialChatter.timeout
 </a>
-
 <br>
 Times out a user for a given amount of time.<br>
 <br>
@@ -1061,7 +1012,6 @@ reason: str<br>
     </span>
     PartialChatter.untimeout
 </a>
-
 <br>
 untimeout's the chatter<br>
 <br>
@@ -1082,7 +1032,6 @@ untimeout's the chatter<br>
     </span>
     Author
 </a>
-
 <br>
 Represents the author of a message on kick<br>
 <br>
@@ -1105,7 +1054,6 @@ badges: list<br>
     </span>
     Message
 </a>
-
 <br>
 Represents a message sent on kick<br>
 <br>
@@ -1136,7 +1084,6 @@ author: <a href="#Author" class="hidden">`Author`</a><br>
     </span>
     PartialMessage
 </a>
-
 <br>
 This represents a partial message. Mainly used as the message someone is replying too.<br>
 <br>
@@ -1157,7 +1104,6 @@ author: <a href="#PartialUser" class="hidden"><a href="#PartialUser" class="hidd
     </span>
     Emote
 </a>
-
 <br>
 A dataclass which represents an emote on kick.<br>
 <br>
@@ -1184,7 +1130,6 @@ source: <a href="#Asset" class="hidden"><a href="#Asset" class="hidden"><a href=
     </span>
     ChatroomChatMode
 </a>
-
 <br>
 An enum containing possble chatroom chat mode values.<br>
 <br>
@@ -1203,7 +1148,6 @@ privet: <a href="#ChatroomChatMode" class="hidden"><a href="#ChatroomChatMode" c
     </span>
     GiftLeaderboardEntry
 </a>
-
 <br>
 This dataclass represents a gift leaderboard entry.<br>
 <br>
@@ -1224,7 +1168,6 @@ username: str<br>
     </span>
     GiftLeaderboard
 </a>
-
 <br>
 This is a dataclass which reprsents the gift leaderboard for a kick streamer.<br>
 <br>
@@ -1247,7 +1190,6 @@ all_time: list[<a href="#GiftLeaderboardEntry" class="hidden"><a href="#GiftLead
     </span>
     Livestream
 </a>
-
 <br>
 A dataclass which represents a livestream on kick.<br>
 <br>
@@ -1292,7 +1234,6 @@ categories: list[<a href="#Category" class="hidden"><a href="#Category" class="h
     </span>
     PollOption
 </a>
-
 <br>
 This dataclass represents a chatroom <a href="#Poll" class="hidden">`Poll`</a>'s option on kick.<br>
 <br>
@@ -1315,7 +1256,6 @@ votes: int<br>
     </span>
     PollOption.vote
 </a>
-
 <br>
 Votes for this option in the poll<br>
 <br>
@@ -1334,7 +1274,6 @@ HTTPException<br>
     </span>
     Poll
 </a>
-
 <br>
 This dataclass represents a poll in a chatroom on kick.<br>
 <br>
@@ -1363,7 +1302,6 @@ ends_at: datetime.datetime<br>
     </span>
     Poll.delete
 </a>
-
 <br>
 Deletes the current poll from the chatroom<br>
 <br>
@@ -1384,7 +1322,6 @@ HTTPException<br>
     </span>
     Video
 </a>
-
 <br>
 This dataclass represents a video on kick<br>
 <br>
@@ -1425,7 +1362,6 @@ categories: list[<a href="#Category" class="hidden"><a href="#Category" class="h
     </span>
     Socials
 </a>
-
 <br>
 The socials a user on kick has added to their profile<br>
 <br>
@@ -1452,7 +1388,6 @@ facebook: str<br>
     </span>
     CloudflareBypassException
 </a>
-
 <br>
 This error is used when there is an error with the bypass script.<br>
 
@@ -1465,7 +1400,6 @@ This error is used when there is an error with the bypass script.<br>
     </span>
     KickException
 </a>
-
 <br>
 This error is used when there is an error with kick.<br>
 
@@ -1478,7 +1412,6 @@ This error is used when there is an error with kick.<br>
     </span>
     LoginFailure
 </a>
-
 <br>
 This error is used when there is an error with logging in.<br>
 
@@ -1491,7 +1424,6 @@ This error is used when there is an error with logging in.<br>
     </span>
     HTTPException
 </a>
-
 <br>
 This error is used when an error is ran into when making a request to kick.<br>
 <br>
@@ -1508,7 +1440,6 @@ status_code: int<br>
     </span>
     Forbidden
 </a>
-
 <br>
 This error is used when kick returns a 403 status code.<br>
 <br>
@@ -1525,7 +1456,6 @@ status_code: int = 403<br>
     </span>
     NotFound
 </a>
-
 <br>
 This error is used when kick returns a 404 status code.<br>
 <br>
@@ -1542,7 +1472,6 @@ status_code: int = 404<br>
     </span>
     InternalKickException
 </a>
-
 <br>
 This error is used when kick returns a a 500 status code, or doesn't connect.<br>
 <br>
