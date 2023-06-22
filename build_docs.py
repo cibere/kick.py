@@ -26,7 +26,7 @@ IGNORE_FORMAT_TEXT = "!IGNORE-FORMAT"
 
 def convert_file(fp: str) -> None:
     before_fp = fp
-    after_fp = fp.replace(RAW_DOCS_DIR, FINAL_DOCS_DIR)
+    after_fp = fp.replace(RAW_DOCS_DIR, FINAL_DOCS_DIR).replace(".md", ".html")
 
     with open(before_fp, "r", encoding="utf-8") as f:
         text = f.read()
