@@ -330,8 +330,7 @@ class User:
     def chatroom(self) -> Chatroom:
         from .chatroom import Chatroom
 
-        chatroom = Chatroom(data=self._data["chatroom"], http=self.http)
-        chatroom.streamer = self
+        chatroom = Chatroom(data=self._data["chatroom"], http=self.http, streamer=self)
         return chatroom
 
     @cached_property
