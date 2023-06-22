@@ -690,6 +690,8 @@ A dataclass which represents a User on kick<br>
 <span class="h4">Attributes</span><br>
 id: int<br>
 <span style="margin-left: 30px">    The user's id</span><br>
+channel_id: int<br>
+<span style="margin-left: 30px">    The user's channel id</span><br>
 username: str<br>
 <span style="margin-left: 30px">    The user's name</span><br>
 state: str<br>
