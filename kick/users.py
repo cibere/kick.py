@@ -220,7 +220,7 @@ class User:
     @property
     def channel_id(self) -> int:
         return self._data["id"]
-    
+
     @property
     def playback_url(self) -> str:
         return self._data["playback_url"]
@@ -339,6 +339,26 @@ class User:
         return [
             Category(data=c, http=self.http) for c in self._data["recent_categories"]
         ]
+
+    async def start_watch(self) -> None:
+        """
+        |coro|
+
+        Watches a user to see if they go online.
+        """
+
+        await self.http.ws.watch_channel(self.channel_id)
+        self.http.client._watched_users[self.channel_id] = self
+
+    async def stop_watching(self) -> None:
+        """
+        |coro|
+
+        Stops watching the user
+        """
+
+        await self.http.ws.unwatch_channel(self.channel_id)
+        self.http.client._watched_users.pop(self.channel_id)
 
 
 class ClientUser(BaseUser):
