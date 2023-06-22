@@ -26,38 +26,100 @@ __all__ = ("User", "Socials", "PartialUser", "ClientUser")
 
 
 class Socials(BaseDataclass["InnerUser | ClientUserPayload"]):
+    """
+    The socials a user on kick has added to their profile
+
+    Attributes
+    -----------
+    instagram: str
+        Their instagram
+    youtube: str
+        Their youtube
+    twitter: str
+        Their twitter
+    discord: str
+        Their discord
+    tiktok: str
+        Their tiktok
+    facebook: str
+        Their facebook
+    """
+
     @property
     def instagram(self) -> str:
+        """
+        Their instagram
+        """
+
         return self._data["instagram"] or ""
 
     @property
     def youtube(self) -> str:
+        """
+        Their youtube
+        """
+
         return self._data["youtube"] or ""
 
     @property
     def twitter(self) -> str:
+        """
+        Their twitter
+        """
+
         return self._data["twitter"] or ""
 
     @property
     def discord(self) -> str:
+        """
+        Their discord
+        """
+
         return self._data["discord"] or ""
 
     @property
     def tiktok(self) -> str:
+        """
+        Their tiktok
+        """
+
         return self._data["tiktok"] or ""
 
     @property
     def facebook(self) -> str:
+        """
+        Their facebook
+        """
+
         return self._data["facebook"] or ""
 
 
 class PartialUser(HTTPDataclass["PartialUserPayload"]):
+    """
+    This dataclass represents a partial user on kick
+
+    Attributes
+    -----------
+    id: int
+        The user's id
+    username: str
+        The user's name
+    """
+
     @cached_property
     def id(self) -> int:
+        """
+        The user's id
+        """
+
         return int(self._data["id"])
 
     @property
     def username(self) -> str:
+        """
+        The user's name
+        """
+
         return self._data["username"]
 
     def __eq__(self, other: object) -> bool:
@@ -70,11 +132,84 @@ class PartialUser(HTTPDataclass["PartialUserPayload"]):
         return f"<PartialUser id={self.id!r} username={self.username!r}>"
 
     async def fetch(self) -> User:
+        """
+        |coro|
+
+        Fetches a full user object
+
+        Raises
+        -----------
+        `HTTPException`
+            Fetching the user failed
+        `NotFound`
+            User not found
+
+        Returns
+        -----------
+        `User`
+            The full user object
+        """
+
         data = await self.http.get_user(self.username)
         return User(data=data, http=self.http)
 
 
 class User(HTTPDataclass["UserPayload"]):
+    """
+    A dataclass which represents a User on kick
+
+    Attributes
+    -----------
+    id: int
+        The user's id
+    username: str
+        The user's name
+    state: str
+        The state the user has said they live in
+    socials: `Socials`
+        The socials the user has said they have
+    country: str
+        The country the user has said they live in
+    playback_url: str
+        The user's playback url
+    slug: str
+        The user's slug
+    vod_enabled: bool
+        If the user has vods enabled
+    is_banned: bool
+        If the user is banned
+    subscription_enabled: bool
+        If the user has subscriptions enabled
+    follower_count: int
+        The amount of followers the user has
+    subscriber_badges: list[`SubscriberBadge`]
+        A list of subscriber badges the user has
+    online_banner: `Asset` | None
+        the banner that gets displayed when the user is live
+    offline_banner: `Asset` | None
+        the banner that gets displayed when the user is offline
+    is_muted: bool
+        If the user is muted
+    is_verified: bool
+        If the user is verified
+    avatar: `Asset`
+        The user's avatar
+    can_host: bool
+        If the user can host
+    bio: str
+        The user's bio
+    agreed_to_terms: bool
+        if the user has agreed to kick's TOS
+    email_verified_at: datetime.datetime
+        When the user verified their user
+    livestream: `Livestream` | None
+        The user's livestream
+    chatroom: `Chatroom`
+        The user's chatroom
+    recent_categories: list[`Category`]
+        The categories the user has recently gone live in
+    """
+
     @property
     def id(self) -> int:
         return self._data["user_id"]
