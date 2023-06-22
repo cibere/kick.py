@@ -8,7 +8,6 @@ from typing import TYPE_CHECKING, Any, Coroutine, TypeVar, Union
 from aiohttp import ClientConnectionError, ClientResponse, ClientSession
 
 from . import __version__
-from .chatroom import ChatroomWebSocket
 from .errors import (
     CloudflareBypassException,
     Forbidden,
@@ -18,6 +17,7 @@ from .errors import (
     NotFound,
 )
 from .utils import MISSING
+from .ws import PusherWebSocket
 
 if TYPE_CHECKING:
     from types.emotes import EmotesPayload
@@ -104,7 +104,7 @@ class Route:
 class HTTPClient:
     def __init__(self, client: Client):
         self.__session: ClientSession = MISSING
-        self.ws: ChatroomWebSocket = MISSING
+        self.ws: PusherWebSocket = MISSING
         self.client = client
 
         self.token: str = MISSING
@@ -194,7 +194,7 @@ class HTTPClient:
         actual_ws = await self.__session.ws_connect(
             f"wss://ws-us2.pusher.com/app/eb1d5f283081a78b932c?protocol=7&client=js&version=7.6.0&flash=false"
         )
-        self.ws = ChatroomWebSocket(actual_ws, http=self)
+        self.ws = PusherWebSocket(actual_ws, http=self)
         self.client.dispatch("ready")
         await self.ws.start()
 
