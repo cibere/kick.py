@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from datetime import datetime
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING
 
 from .assets import Asset
 from .categories import Category
@@ -9,9 +9,46 @@ from .object import HTTPDataclass
 from .utils import cached_property
 
 if TYPE_CHECKING:
-    from .types.videos import LivestreamPayload
+    from .http import HTTPClient
+    from .types.videos import LivestreamPayload, PartialLivestreamPayload
+    from .users import User
 
-__all__ = ("Livestream",)
+__all__ = ("Livestream", "PartialLivestream")
+
+
+class PartialLivestream:
+    """
+    A dataclass which represents a partial livestream on kick.
+
+    Attributes
+    -----------
+    id: int
+        The livestream's id
+    channel_id: int
+        The livestream's channel id
+    title: str
+        The livestream's title
+    created_at: datetime.datetime
+        When the livestream started
+    streamer: `User` | None
+        The livestream's streaner
+    """
+
+    def __init__(self, *, data: PartialLivestreamPayload, http: HTTPClient) -> None:
+        self._data = data
+        self.http = http
+
+        self.id: int = data["id"]
+        self.channel_id: int = data["channel_id"]
+        self.title: str = data["session_title"]
+
+    @cached_property
+    def created_at(self) -> datetime:
+        return datetime.fromisoformat(self._data["created_at"])
+
+    @property
+    def streamer(self) -> User | None:
+        return self.http.client._watched_users.get(self.channel_id)
 
 
 class Livestream(HTTPDataclass["LivestreamPayload"]):
