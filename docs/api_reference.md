@@ -202,7 +202,7 @@ Closes the HTTPClient, no requests can be made after this.<br>
     Client.on_ready
 </a>
 <br>
-on_ready is an event that can be overriden with the <a href="#Client.event" class="hidden"><a href="#Client.event" class="hidden"><a href="#Client.event" class="hidden">`Client.event`</a></a></a> decorator or with a subclass.<br>
+on_ready is an event that can be overriden with the <a href="#Client.event" class="hidden"><a href="#Client.event" class="hidden"><a href="#Client.event" class="hidden"><a href="#Client.event" class="hidden">`Client.event`</a></a></a></a> decorator or with a subclass.<br>
 This is called after the client has started the websocket and is receiving events.<br>
 
 
@@ -213,7 +213,7 @@ This is called after the client has started the websocket and is receiving event
     Client.on_message
 </a>
 <br>
-on_ready is an event that can be overriden with the <a href="#Client.event" class="hidden"><a href="#Client.event" class="hidden"><a href="#Client.event" class="hidden">`Client.event`</a></a></a> decorator or with a subclass.<br>
+on_ready is an event that can be overriden with the <a href="#Client.event" class="hidden"><a href="#Client.event" class="hidden"><a href="#Client.event" class="hidden"><a href="#Client.event" class="hidden">`Client.event`</a></a></a></a> decorator or with a subclass.<br>
 This is called when a message is received over the websocket<br>
 <br>
 <span class="h4">Parameters</span><br>
@@ -228,12 +228,29 @@ message: <a href="#Message" class="hidden">`Message`</a><br>
     Client.on_livestream_start
 </a>
 <br>
-on_livestream_start is an event that can be overriden with the <a href="#Client.event" class="hidden"><a href="#Client.event" class="hidden"><a href="#Client.event" class="hidden">`Client.event`</a></a></a> decorator or with a subclass.<br>
+on_livestream_start is an event that can be overriden with the <a href="#Client.event" class="hidden"><a href="#Client.event" class="hidden"><a href="#Client.event" class="hidden"><a href="#Client.event" class="hidden">`Client.event`</a></a></a></a> decorator or with a subclass.<br>
 This is called when a livestream starts<br>
 <br>
 <span class="h4">Parameters</span><br>
 livestream: <a href="#PartialLivestream" class="hidden">`PartialLivestream`</a><br>
 <span style="margin-left: 30px">    The livestream</span><br>
+
+
+<a href="#Client.on_payload_receive" class="h3 hidden" id="Client.on_payload_receive">
+    <span class="async">
+        async def 
+    </span>
+    Client.on_payload_receive
+</a>
+<br>
+on_payload_receive is an event that can be overriden with the <a href="#Client.event" class="hidden"><a href="#Client.event" class="hidden"><a href="#Client.event" class="hidden"><a href="#Client.event" class="hidden">`Client.event`</a></a></a></a> decorator or with a subclass.<br>
+This is called when an event is received from the websocket.<br>
+<br>
+<span class="h4">Parameters</span><br>
+event: str<br>
+<span style="margin-left: 30px">    The payload's event</span><br>
+payload: dict<br>
+<span style="margin-left: 30px">    The payload</span><br>
 
 <hr>
 
