@@ -176,7 +176,9 @@
 
 |[GiftLeaderboard]|
 
-# Livestream
+# Livestreams
+
+|[PartialLivestream]|
 
 |[Livestream]|
 
