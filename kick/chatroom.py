@@ -8,6 +8,7 @@ from aiohttp import ClientWebSocketResponse as WebSocketResponse
 
 from .emotes import Emote
 from .enums import ChatroomChatMode
+from .livestream import PartialLivestream
 from .message import Message
 from .object import HTTPDataclass
 from .polls import Poll
@@ -42,6 +43,9 @@ class ChatroomWebSocket:
             case "App\\Events\\ChatMessageEvent":
                 msg = Message(data=data, http=self.http)
                 self.http.client.dispatch("message", msg)
+            case "App\\Events\\StreamerIsLive":
+                livestream = PartialLivestream(data=data, http=self.http)
+                self.http.client.dispatch("livestream_start", livestream)
 
     async def start(self) -> None:
         while not self.ws.closed:
