@@ -164,6 +164,10 @@
 
 |[Author]|
 
+## Methods
+
+|[Author.to_user]|
+
 # Messages
 
 |[Message]|
