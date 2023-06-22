@@ -4,7 +4,7 @@ from datetime import datetime
 from typing import TYPE_CHECKING
 
 from .object import BaseDataclass, HTTPDataclass
-from .user import PartialUser
+from .users import PartialUser
 from .utils import cached_property
 
 if TYPE_CHECKING:
@@ -105,7 +105,11 @@ class PartialMessage(HTTPDataclass["ReplyMetaData"]):
         The message's author
         """
 
-        return PartialUser(data=self._data["original_sender"], http=self.http)
+        return PartialUser(
+            id=int(self._data["original_sender"]["id"]),
+            username=self._data["original_sender"]["username"],
+            http=self.http,
+        )
 
     def __eq__(self, other: object) -> bool:
         return isinstance(other, self.__class__) and other.id == self.id

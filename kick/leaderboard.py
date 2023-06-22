@@ -7,7 +7,7 @@ from .utils import cached_property
 
 if TYPE_CHECKING:
     from .types.leaderboard import GiftEntryPayload, LeaderboardPayload
-    from .user import User
+    from .users import AnyUser
 
 __all__ = ("GiftLeaderboard", "GiftLeaderboardEntry")
 
@@ -70,7 +70,7 @@ class GiftLeaderboard(BaseDataclass["LeaderboardPayload"]):
         The gift leaderboard for all time
     """
 
-    streamer: User
+    streamer: AnyUser
 
     @cached_property
     def this_week(self) -> list[GiftLeaderboardEntry]:
