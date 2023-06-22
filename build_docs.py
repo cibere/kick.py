@@ -91,13 +91,11 @@ def convert_file(fp: str) -> None:
                     class_ = prefix.split(" ")[0]
 
                 after = f"""
-                <a href="#{find}" class="hidden">
-                    <span class="h4" id="{find}">
-                        <span class="{class_}">
-                            {prefix}
-                        </span>
-                        {find}
+                <a href="#{find}" class="hidden" class="h4" id="{find}">
+                    <span class="{class_}">
+                        {prefix}
                     </span>
+                    {find}
                 </a>
                 """
                 text = text.replace("{{x}}".replace("x", find), textwrap.dedent(after))
