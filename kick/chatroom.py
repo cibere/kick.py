@@ -359,8 +359,7 @@ class Chatroom(HTTPDataclass["ChatroomPayload"]):
         from .chatter import Chatter
 
         data = await self.http.get_chatter(self.streamer.slug, chatter_name)
-        chatter = Chatter(data=data, http=self.http)
-        chatter.chatroom = self
+        chatter = Chatter(data=data, http=self.http, chatroom=self)
         return chatter
 
     async def fetch_rules(self) -> str:

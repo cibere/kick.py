@@ -5,18 +5,155 @@ from typing import TYPE_CHECKING
 
 from .assets import Asset
 from .badges import ChatBadge
-from .object import HTTPDataclass
 from .users import User
 from .utils import cached_property
 
 if TYPE_CHECKING:
     from .chatroom import Chatroom
+    from .http import HTTPClient
     from .types.user import ChatterPayload
 
-__all__ = ("Chatter",)
+__all__ = ("Chatter", "PartialChatter")
 
 
-class Chatter(HTTPDataclass["ChatterPayload"]):
+class PartialChatter:
+    """
+    This represents a partial user.
+
+    Attributes
+    -----------
+    streamer_name: str
+        The streamer's name
+    username: str
+        The chatter's username
+    """
+
+    def __init__(
+        self, *, streamer_name: str, chatter_name: str, http: HTTPClient
+    ) -> None:
+        self.streamer_name = streamer_name
+        self.username = chatter_name
+        self.http = http
+
+    async def to_user(self) -> User:
+        """
+        |coro|
+
+        Fetches a user object for the chatter
+
+        Raises
+        -----------
+        `HTTPException`
+            Fetching the user failed
+        `NotFound`
+            User not found
+
+        Returns
+        -----------
+        `User`
+            The user
+        """
+        data = await self.http.get_user(self.username)
+        user = User(data=data, http=self.http)
+        return user
+
+    async def ban(self, reason: str) -> None:
+        """
+        |coro|
+
+        Permanently bans a user from a chatroom.
+
+        Parameters
+        -----------
+        reason: str
+            The reason for the ban
+
+        Raises
+        -----------
+        `HTTPException`
+            Banning the user failed
+        `Forbidden`
+            You are unauthorized from banning the user
+        `NotFound`
+            Streamer or user not found
+        """
+
+        await self.http.ban_chatter(self.streamer_name, self.username, reason)
+
+    async def timeout(self, duration: int, *, reason: str) -> None:
+        """
+        |coro|
+
+        Times out a user for a given amount of time.
+
+        Parameters
+        -----------
+        duration: int
+            The amount of seconds for the timeout to be
+        reason: str
+            The reason for the timeout
+
+        Raises
+        -----------
+        `HTTPException`
+            timing out the user failed
+        `Forbidden`
+            You are unauthorized from timing out the user
+        `NotFound`
+            Streamer or user not found
+        """
+
+        await self.http.timeout_chatter(
+            self.streamer_name, self.username, reason, duration
+        )
+
+    async def unban(self) -> None:
+        """
+        |coro|
+
+        Unbans the chatter from the chatroom
+
+        Raises
+        -----------
+        `HTTPException`
+            Unbanning the user failed
+        `Forbidden`
+            You are unauthorized from unbanning the user
+        `NotFound`
+            Streamer or user not found
+        """
+
+        await self.http.unban_user(self.streamer_name, self.username)
+
+    async def untimeout(self) -> None:
+        """
+        |coro|
+
+        untimeout's the chatter
+
+        Raises
+        -----------
+        `HTTPException`
+            untimeouting the user failed
+        `Forbidden`
+            You are unauthorized from untimeouting the user
+        `NotFound`
+            Streamer or user not found
+        """
+
+        await self.http.unban_user(self.streamer_name, self.username)
+
+    def __eq__(self, other: object) -> bool:
+        return isinstance(other, self.__class__) and other.username == self.username
+
+    def __str__(self) -> str:
+        return self.username
+
+    def __repr__(self) -> str:
+        return f"<PartialChatter username={self.username!r} streamer_name={self.streamer_name!r}>"
+
+
+class Chatter(PartialChatter):
     """
     A dataclass which respresents a chatter on kick
 
@@ -44,7 +181,17 @@ class Chatter(HTTPDataclass["ChatterPayload"]):
         when the chatter started following the streamer
     """
 
-    chatroom: Chatroom
+    def __init__(
+        self, *, data: ChatterPayload, http: HTTPClient, chatroom: Chatroom
+    ) -> None:
+        self._data = data
+        self.chatroom: Chatroom = chatroom
+
+        super().__init__(
+            streamer_name=chatroom.streamer.username,
+            chatter_name=data["username"],
+            http=http,
+        )
 
     @property
     def id(self) -> int:
@@ -53,14 +200,6 @@ class Chatter(HTTPDataclass["ChatterPayload"]):
         """
 
         return self._data["id"]
-
-    @property
-    def username(self) -> str:
-        """
-        The chatter's username
-        """
-
-        return self._data["username"]
 
     @property
     def slug(self) -> str:
@@ -134,119 +273,8 @@ class Chatter(HTTPDataclass["ChatterPayload"]):
 
         return self._data["subscribed_for"]
 
-    async def to_user(self) -> User:
-        """
-        |coro|
-
-        Fetches a user object for the chatter
-
-        Raises
-        -----------
-        `HTTPException`
-            Fetching the user failed
-        `NotFound`
-            User not found
-
-        Returns
-        -----------
-        `User`
-            The user
-        """
-        data = await self.http.get_user(self.username)
-        user = User(data=data, http=self.http)
-        return user
-
-    async def ban(self, reason: str) -> None:
-        """
-        |coro|
-
-        Permanently bans a user from a chatroom.
-
-        Parameters
-        -----------
-        reason: str
-            The reason for the ban
-
-        Raises
-        -----------
-        `HTTPException`
-            Banning the user failed
-        `Forbidden`
-            You are unauthorized from banning the user
-        `NotFound`
-            Streamer or user not found
-        """
-
-        await self.http.ban_chatter(self.chatroom.streamer.slug, self.slug, reason)
-
-    async def timeout(self, duration: int, *, reason: str) -> None:
-        """
-        |coro|
-
-        Times out a user for a given amount of time.
-
-        Parameters
-        -----------
-        duration: int
-            The amount of seconds for the timeout to be
-        reason: str
-            The reason for the timeout
-
-        Raises
-        -----------
-        `HTTPException`
-            timing out the user failed
-        `Forbidden`
-            You are unauthorized from timing out the user
-        `NotFound`
-            Streamer or user not found
-        """
-
-        await self.http.timeout_chatter(
-            self.chatroom.streamer.slug, self.slug, reason, duration
-        )
-
-    async def unban(self) -> None:
-        """
-        |coro|
-
-        Unbans the chatter from the chatroom
-
-        Raises
-        -----------
-        `HTTPException`
-            Unbanning the user failed
-        `Forbidden`
-            You are unauthorized from unbanning the user
-        `NotFound`
-            Streamer or user not found
-        """
-
-        await self.http.unban_user(self.chatroom.streamer.slug, self.slug)
-
-    async def untimeout(self) -> None:
-        """
-        |coro|
-
-        untimeout's the chatter
-
-        Raises
-        -----------
-        `HTTPException`
-            untimeouting the user failed
-        `Forbidden`
-            You are unauthorized from untimeouting the user
-        `NotFound`
-            Streamer or user not found
-        """
-
-        await self.http.unban_user(self.chatroom.streamer.slug, self.slug)
-
     def __eq__(self, other: object) -> bool:
         return isinstance(other, self.__class__) and other.id == self.id
-
-    def __str__(self) -> str:
-        return self.username
 
     def __repr__(self) -> str:
         return f"<Chatter id={self.id!r} username={self.username!r} avatar={self.avatar!r} is_staff={self.is_staff!r} is_owner={self.is_owner!r} is_mod={self.is_mod!r}>"

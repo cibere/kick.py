@@ -116,6 +116,32 @@
 
 |[Chatter]|
 
+## Methods
+
+|[Chatter.ban]|
+
+|[Chatter.unban]|
+
+|[Chatter.timeout]|
+
+|[Chatter.untimeout]|
+
+<hr>
+
+|[PartialChatter]|
+
+## Methods
+
+|[PartialChatter.to_user]|
+
+|[PartialChatter.ban]|
+
+|[PartialChatter.unban]|
+
+|[PartialChatter.timeout]|
+
+|[PartialChatter.untimeout]|
+
 <hr>
 
 |[Author]|
