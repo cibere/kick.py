@@ -195,7 +195,11 @@ one_time_password: Optional[str]<br>
     Asset
 </span>
 <br>
-A class which repersents a kick asset.<br></p>
+A class which repersents a kick asset.<br>
+<br>
+<span class="h4">Attributes</span><br>
+url: str<br>
+<span style="margin-left: 30px">    The asset's url</span><br></p>
 <h2>Methods</h2>
 <p><span class="h4" id="Asset.read">
     <span class="async">
@@ -263,7 +267,35 @@ int<br>
         class 
     </span>
     Chatroom
-</span></p>
+</span>
+<br>
+A dataclass that represents a kick chatroom.<br>
+<br>
+<span class="h4">Attributes</span><br>
+id: int<br>
+<span style="margin-left: 30px">    The chatroom's id</span><br>
+chatable_type: str<br>
+<span style="margin-left: 30px">    The chatroom's type</span><br>
+created_at: datetime.datetime<br>
+<span style="margin-left: 30px">    When the chatroom was created</span><br>
+updated_at: datetime.datetime<br>
+<span style="margin-left: 30px">    When the chatroom was last updated</span><br>
+chat_mode: ChatroomChatMode<br>
+<span style="margin-left: 30px">    The mode the chatroom is in</span><br>
+slowmode: bool<br>
+<span style="margin-left: 30px">    Wether slowmode is enabled</span><br>
+followers_mode: bool<br>
+<span style="margin-left: 30px">    Wether followers_mode is enabled</span><br>
+subscribers_mode: bool<br>
+<span style="margin-left: 30px">    Wether subscribers_mode is enabled</span><br>
+emotes_mode: bool<br>
+<span style="margin-left: 30px">    Wether emotes_mode is enabled</span><br>
+message_interval: int<br>
+<span style="margin-left: 30px">    Unknown on what this is</span><br>
+following_min_duration: int<br>
+<span style="margin-left: 30px">    Unknown on what this is</span><br>
+streamer: <a href="#User" class="hidden"><a href="#User" class="hidden"><code>User</code></a></a><br>
+<span style="margin-left: 30px">    The user who this chatroom belongs to</span><br></p>
 <h2>Methods</h2>
 <p><span class="h4" id="Chatroom.connect">
     <span class="async">
@@ -423,7 +455,26 @@ AsyncIterator[Emote]<br>
         class 
     </span>
     BanEntry
-</span></p>
+</span>
+<br>
+A dataclass which represents a ban entry on kick.<br>
+This includes timeouts.<br>
+<br>
+<span class="h4">Attributes</span><br>
+reason: str<br>
+<span style="margin-left: 30px">    The reason for the ban/timeout</span><br>
+is_permanent: bool<br>
+<span style="margin-left: 30px">    wether the ban is permanent. True == ban, false == timeout</span><br>
+user: <a href="#PartialUser" class="hidden"><a href="#PartialUser" class="hidden"><a href="#PartialUser" class="hidden"><code>PartialUser</code></a></a></a><br>
+<span style="margin-left: 30px">    The user the action was towards</span><br>
+banned_by: <a href="#PartialUser" class="hidden"><a href="#PartialUser" class="hidden"><a href="#PartialUser" class="hidden"><code>PartialUser</code></a></a></a><br>
+<span style="margin-left: 30px">    The responsible mod</span><br>
+expires_at: datetime.datetime | None<br>
+<span style="margin-left: 30px">    when the timeout expires at. None for a ban</span><br>
+banned_at: datetime.datetime<br>
+<span style="margin-left: 30px">    When the action happened</span><br>
+chatroom: Chatroom<br>
+<span style="margin-left: 30px">    The chatroom the action happened in</span><br></p>
 <h2>Methods</h2>
 <p><span class="h4" id="BanEntry.unban">
     <span class="async">
@@ -495,14 +546,46 @@ Forbidden<br>
         class 
     </span>
     Author
-</span></p>
+</span>
+<br>
+Represents the author of a message on kick<br>
+<br>
+<span class="h4">Attributes</span><br>
+id: int<br>
+<span style="margin-left: 30px">    The author's id</span><br>
+slug: str<br>
+<span style="margin-left: 30px">    The author's slug</span><br>
+color: str<br>
+<span style="margin-left: 30px">    The authors... color?</span><br>
+badges: list<br>
+<span style="margin-left: 30px">    Unknown</span><br></p>
 <h1>Messages</h1>
 <p><span class="h4" id="Message">
     <span class="class">
         class 
     </span>
     Message
-</span></p>
+</span>
+<br>
+Represents a message sent on kick<br>
+<br>
+<span class="h4">Attributes</span><br>
+id: str<br>
+<span style="margin-left: 30px">    the message's id</span><br>
+is_reply: bool<br>
+<span style="margin-left: 30px">    If the message is replying to any message</span><br>
+references: <a href="#PartialMessage" class="hidden"><a href="#PartialMessage" class="hidden"><code>PartialMessage</code></a></a> | None<br>
+<span style="margin-left: 30px">    If the message is replying to a message, a <a href="#PartialMessage" class="hidden"><a href="#PartialMessage" class="hidden"><code>PartialMessage</code></a></a> object is returned. Otherwise None</span><br>
+chatroom_id: int<br>
+<span style="margin-left: 30px">    The id of the chatroom the message was sent in</span><br>
+chatroom: <a href="#Chatroom" class="hidden"><code>Chatroom</code></a> | None<br>
+<span style="margin-left: 30px">    The chatroom the message was sent in.</span><br>
+content: str<br>
+<span style="margin-left: 30px">    The message's content</span><br>
+created_at: datetime.datetime<br>
+<span style="margin-left: 30px">    When the message was sent</span><br>
+author: <a href="#Author" class="hidden"><code>Author</code></a><br>
+<span style="margin-left: 30px">    The message's author</span><br></p>
 <hr>
 
 <p><span class="h4" id="PartialMessage">
@@ -510,28 +593,72 @@ Forbidden<br>
         class 
     </span>
     PartialMessage
-</span></p>
+</span>
+<br>
+This represents a partial message. Mainly used as the message someone is replying too.<br>
+<br>
+<span class="h4">Attributes</span><br>
+id: str<br>
+<span style="margin-left: 30px">    The message's id</span><br>
+content: str<br>
+<span style="margin-left: 30px">    The message's content</span><br>
+author: <a href="#PartialUser" class="hidden"><a href="#PartialUser" class="hidden"><a href="#PartialUser" class="hidden"><code>PartialUser</code></a></a></a><br>
+<span style="margin-left: 30px">    The message's author</span><br></p>
 <h1>Emote</h1>
 <p><span class="h4" id="Emote">
     <span class="class">
         class 
     </span>
     Emote
-</span></p>
+</span>
+<br>
+A dataclass which represents an emote on kick.<br>
+<br>
+<span class="h4">Attributes</span><br>
+id: int<br>
+<span style="margin-left: 30px">    The emote's id</span><br>
+is_global: bool<br>
+<span style="margin-left: 30px">    If the emote is a global emote, or from a channel</span><br>
+channel_id: int | None<br>
+<span style="margin-left: 30px">    returns the channel_id the emote is from, or None if global</span><br>
+name: str<br>
+<span style="margin-left: 30px">    The emote's name</span><br>
+subscribers_only: bool<br>
+<span style="margin-left: 30px">    If you have to be a subscriber of the channel to use it. False for global emotes</span><br>
+source: <a href="#Asset" class="hidden"><a href="#Asset" class="hidden"><a href="#Asset" class="hidden"><code>Asset</code></a></a></a><br>
+<span style="margin-left: 30px">    An asset which contains the emote's source.</span><br></p>
 <h1>Enums</h1>
 <p><span class="h4" id="ChatroomChatMode">
     <span class="class">
         class 
     </span>
     ChatroomChatMode
-</span></p>
+</span>
+<br>
+An enum containing possble chatroom chat mode values.<br>
+<br>
+<span class="h4">Attributes</span><br>
+public: <a href="#ChatroomChatMode" class="hidden"><a href="#ChatroomChatMode" class="hidden"><code>ChatroomChatMode</code></a></a><br>
+<span style="margin-left: 30px">    The public value</span><br>
+privet: <a href="#ChatroomChatMode" class="hidden"><a href="#ChatroomChatMode" class="hidden"><code>ChatroomChatMode</code></a></a><br>
+<span style="margin-left: 30px">    The privet value</span><br></p>
 <h1>Leaderboard</h1>
 <p><span class="h4" id="GiftLeaderboardEntry">
     <span class="class">
         class 
     </span>
     GiftLeaderboardEntry
-</span></p>
+</span>
+<br>
+This dataclass represents a gift leaderboard entry.<br>
+<br>
+<span class="h4">Attributes</span><br>
+user_id: int<br>
+<span style="margin-left: 30px">    The id of the user with this entry</span><br>
+quantity: int<br>
+<span style="margin-left: 30px">    The amount of subs this person has gifted</span><br>
+username: str<br>
+<span style="margin-left: 30px">    The user's username</span><br></p>
 <hr>
 
 <p><span class="h4" id="GiftLeaderboard">
@@ -539,14 +666,60 @@ Forbidden<br>
         class 
     </span>
     GiftLeaderboard
-</span></p>
+</span>
+<br>
+This is a dataclass which reprsents the gift leaderboard for a kick streamer.<br>
+<br>
+<span class="h4">Attributes</span><br>
+streamer: <a href="#User" class="hidden"><a href="#User" class="hidden"><code>User</code></a></a><br>
+<span style="margin-left: 30px">    The streamer that the leaderboard is for</span><br>
+this_week: list[<a href="#GiftLeaderboardEntry" class="hidden"><a href="#GiftLeaderboardEntry" class="hidden"><a href="#GiftLeaderboardEntry" class="hidden"><code>GiftLeaderboardEntry</code></a></a></a>]<br>
+<span style="margin-left: 30px">    The gift leaderboard for the current week</span><br>
+this_month: list[<a href="#GiftLeaderboardEntry" class="hidden"><a href="#GiftLeaderboardEntry" class="hidden"><a href="#GiftLeaderboardEntry" class="hidden"><code>GiftLeaderboardEntry</code></a></a></a>]<br>
+<span style="margin-left: 30px">    The gift leaderboard for the current month</span><br>
+all_time: list[<a href="#GiftLeaderboardEntry" class="hidden"><a href="#GiftLeaderboardEntry" class="hidden"><a href="#GiftLeaderboardEntry" class="hidden"><code>GiftLeaderboardEntry</code></a></a></a>]<br>
+<span style="margin-left: 30px">    The gift leaderboard for all time</span><br></p>
 <h1>Livestream</h1>
 <p><span class="h4" id="Livestream">
     <span class="class">
         class 
     </span>
     Livestream
-</span></p>
+</span>
+<br>
+A dataclass which represents a livestream on kick.<br>
+<br>
+<span class="h4">Attributes</span><br>
+id: int<br>
+<span style="margin-left: 30px">    probably the livestream's id</span><br>
+slug: str<br>
+<span style="margin-left: 30px">    The streamer's slug</span><br>
+channel_id: int<br>
+<span style="margin-left: 30px">    probably the streamer's id or the chatroom id</span><br>
+created_at: datetime.datetime<br>
+<span style="margin-left: 30px">    When the livestream started</span><br>
+title: str<br>
+<span style="margin-left: 30px">    The livestream's title</span><br>
+is_live: bool<br>
+<span style="margin-left: 30px">    If the livestream is currently live</span><br>
+thumbnail: <a href="#Asset" class="hidden"><a href="#Asset" class="hidden"><a href="#Asset" class="hidden"><code>Asset</code></a></a></a> | None<br>
+<span style="margin-left: 30px">    Returns the livestream's thumbnail if it has one</span><br>
+duration: int<br>
+<span style="margin-left: 30px">    Probably how long the livestream is/was in seconds</span><br>
+language: str<br>
+<span style="margin-left: 30px">    The language the livestream is in</span><br>
+is_mature: bool<br>
+<span style="margin-left: 30px">    If the livestream is marked as 18+</span><br>
+viewer_count: int<br>
+<span style="margin-left: 30px">    The amount of people currently watching</span><br>
+tags: list[str]<br>
+<span style="margin-left: 30px">    Tags applied to the livestream</span><br>
+url: str<br>
+<span style="margin-left: 30px">    The livestream's url</span><br>
+embed_url: str<br>
+<span style="margin-left: 30px">    The livestream's player/embed url</span><br>
+categories: list[<a href="#Category" class="hidden"><a href="#Category" class="hidden"><code>Category</code></a></a>]<br>
+<span style="margin-left: 30px">    The categories the livestream is in</span><br></p>
 <h1>Polls</h1>
 <p>{{PollOption}}
 [[PollOption]]</p>
@@ -566,7 +739,37 @@ Forbidden<br>
         class 
     </span>
     Video
-</span></p>
+</span>
+<br>
+This dataclass represents a video on kick<br>
+<br>
+<span class="h4">Attributes</span><br>
+id: int<br>
+<span style="margin-left: 30px">    The video's id</span><br>
+slug: str<br>
+<span style="margin-left: 30px">    the video's slug</span><br>
+channel_id: int<br>
+<span style="margin-left: 30px">    Probably the id of the channel the video is from</span><br>
+created_at: datetime.datetime<br>
+<span style="margin-left: 30px">    When the video was created</span><br>
+updated_at: datetime.datetime<br>
+<span style="margin-left: 30px">    When the video was last updated</span><br>
+title: str<br>
+<span style="margin-left: 30px">    The video's title</span><br>
+live_stream_id: int<br>
+<span style="margin-left: 30px">    The id of the live stream the video is from</span><br>
+thumbnail: <a href="#Asset" class="hidden"><a href="#Asset" class="hidden"><a href="#Asset" class="hidden"><code>Asset</code></a></a></a> | None<br>
+<span style="margin-left: 30px">    The video's thumbnail</span><br>
+duration: int<br>
+<span style="margin-left: 30px">    How long the video is in seconds</span><br>
+language: str<br>
+<span style="margin-left: 30px">    The language the video is in</span><br>
+is_mature: bool<br>
+<span style="margin-left: 30px">    If the video is marked as 18+</span><br>
+viewer_count: int<br>
+<span style="margin-left: 30px">    How many people have seen the video</span><br>
+categories: list[<a href="#Category" class="hidden"><a href="#Category" class="hidden"><code>Category</code></a></a>]<br>
+<span style="margin-left: 30px">    The categories the video is in</span><br></p>
 <h1>Other</h1>
 <p><span class="h4" id="Socials">
     <span class="class">
@@ -580,7 +783,9 @@ Forbidden<br>
         class 
     </span>
     CloudflareBypassException
-</span></p>
+</span>
+<br>
+This error is used when there is an error with the bypass script.<br></p>
 <hr>
 
 <p><span class="h4" id="KickException">
@@ -588,7 +793,9 @@ Forbidden<br>
         class 
     </span>
     KickException
-</span></p>
+</span>
+<br>
+This error is used when there is an error with kick.<br></p>
 <hr>
 
 <p><span class="h4" id="LoginFailure">
@@ -596,7 +803,9 @@ Forbidden<br>
         class 
     </span>
     LoginFailure
-</span></p>
+</span>
+<br>
+This error is used when there is an error with logging in.<br></p>
 <hr>
 
 <p><span class="h4" id="HTTPException">
@@ -604,7 +813,13 @@ Forbidden<br>
         class 
     </span>
     HTTPException
-</span></p>
+</span>
+<br>
+This error is used when an error is ran into when making a request to kick.<br>
+<br>
+<span class="h4">Attributes</span><br>
+status_code: int<br>
+<span style="margin-left: 30px">    The HTTP code</span><br></p>
 <hr>
 
 <p><span class="h4" id="Forbidden">
@@ -612,7 +827,13 @@ Forbidden<br>
         class 
     </span>
     Forbidden
-</span></p>
+</span>
+<br>
+This error is used when kick returns a 403 status code.<br>
+<br>
+<span class="h4">Attributes</span><br>
+status_code: int = 403<br>
+<span style="margin-left: 30px">    The HTTP code</span><br></p>
 <hr>
 
 <p><span class="h4" id="NotFound">
@@ -620,7 +841,13 @@ Forbidden<br>
         class 
     </span>
     NotFound
-</span></p>
+</span>
+<br>
+This error is used when kick returns a 404 status code.<br>
+<br>
+<span class="h4">Attributes</span><br>
+status_code: int = 404<br>
+<span style="margin-left: 30px">    The HTTP code</span><br></p>
 <hr>
 
 <p><span class="h4" id="InternalKickException">
@@ -628,4 +855,10 @@ Forbidden<br>
         class 
     </span>
     InternalKickException
-</span></p></body></html>
+</span>
+<br>
+This error is used when kick returns a a 500 status code, or doesn't connect.<br>
+<br>
+<span class="h4">Attributes</span><br>
+status_code: int = 500<br>
+<span style="margin-left: 30px">    The HTTP code</span><br></p></body></html>
