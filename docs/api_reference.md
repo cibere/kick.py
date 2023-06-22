@@ -5,7 +5,7 @@
 # Client
 
 
-<a href="#Client">
+<a href="#Client" class="hidden">
     <span class="h4" id="Client">
         <span class="class">
             class 
@@ -34,7 +34,7 @@ user: ClientUser | None<br>
 ## Methods
 
 
-<a href="#Client.fetch_user">
+<a href="#Client.fetch_user" class="hidden">
     <span class="h4" id="Client.fetch_user">
         <span class="async">
             async def 
@@ -61,7 +61,7 @@ User<br>
 <span style="margin-left: 30px">    The user object associated with the streamer</span><br>
 
 
-<a href="#Client.get_chatroom">
+<a href="#Client.get_chatroom" class="hidden">
     <span class="h4" id="Client.get_chatroom">
         <span class="def">
             def 
@@ -82,7 +82,7 @@ Chatroom | None<br>
 <span style="margin-left: 30px">    Either the chatroom, or None</span><br>
 
 
-<a href="#Client.get_partial_chatter">
+<a href="#Client.get_partial_chatter" class="hidden">
     <span class="h4" id="Client.get_partial_chatter">
         <span class="def">
             def 
@@ -105,7 +105,7 @@ chatter_name: str<br>
 <span style="margin-left: 30px">    The partial chatter</span><br>
 
 
-<a href="#Client.get_partial_user">
+<a href="#Client.get_partial_user" class="hidden">
     <span class="h4" id="Client.get_partial_user">
         <span class="def">
             def 
@@ -128,7 +128,7 @@ id: int<br>
 <span style="margin-left: 30px">    The partial user</span><br>
 
 
-<a href="#Client.event">
+<a href="#Client.event" class="hidden">
     <span class="h4" id="Client.event">
         <span class="at">
             @
@@ -141,7 +141,7 @@ id: int<br>
 Lets you set an event outside of a subclass.<br>
 
 
-<a href="#Client.login">
+<a href="#Client.login" class="hidden">
     <span class="h4" id="Client.login">
         <span class="async">
             async def 
@@ -159,7 +159,7 @@ credentials: Credentials<br>
 <span style="margin-left: 30px">    The credentials to authenticate yourself with</span><br>
 
 
-<a href="#Client.start">
+<a href="#Client.start" class="hidden">
     <span class="h4" id="Client.start">
         <span class="async">
             async def 
@@ -177,7 +177,7 @@ credentials: Optional[Credentials]<br>
 <span style="margin-left: 30px">    The credentials to authenticate yourself with, if any</span><br>
 
 
-<a href="#Client.login">
+<a href="#Client.login" class="hidden">
     <span class="h4" id="Client.login">
         <span class="async">
             async def 
@@ -195,7 +195,7 @@ credentials: Credentials<br>
 <span style="margin-left: 30px">    The credentials to authenticate yourself with</span><br>
 
 
-<a href="#Client.run">
+<a href="#Client.run" class="hidden">
     <span class="h4" id="Client.run">
         <span class="def">
             def 
@@ -215,7 +215,7 @@ credentials: Optional[Credentials]<br>
 <span style="margin-left: 30px">    The credentials to authenticate yourself with, if any</span><br>
 
 
-<a href="#Client.close">
+<a href="#Client.close" class="hidden">
     <span class="h4" id="Client.close">
         <span class="async">
             async def 
@@ -228,7 +228,7 @@ credentials: Optional[Credentials]<br>
 Closes the HTTPClient, no requests can be made after this.<br>
 
 
-<a href="#Client.on_ready">
+<a href="#Client.on_ready" class="hidden">
     <span class="h4" id="Client.on_ready">
         <span class="async">
             async def 
@@ -242,7 +242,7 @@ on_ready is an event that can be overriden with the <a href="#Client.event" clas
 This is called after the client has started the websocket and is receiving events.<br>
 
 
-<a href="#Client.on_message">
+<a href="#Client.on_message" class="hidden">
     <span class="h4" id="Client.on_message">
         <span class="async">
             async def 
@@ -262,7 +262,7 @@ message: Message<br>
 <hr>
 
 
-<a href="#Credentials">
+<a href="#Credentials" class="hidden">
     <span class="h4" id="Credentials">
         <span class="class">
             class 
@@ -299,7 +299,7 @@ one_time_password: Optional[str]<br>
 <hr>
 
 
-<a href="#Asset">
+<a href="#Asset" class="hidden">
     <span class="h4" id="Asset">
         <span class="class">
             class 
@@ -318,7 +318,7 @@ url: str<br>
 ## Methods
 
 
-<a href="#Asset.read">
+<a href="#Asset.read" class="hidden">
     <span class="h4" id="Asset.read">
         <span class="async">
             async def 
@@ -341,7 +341,7 @@ bytes<br>
 <span style="margin-left: 30px">    The asset's bytes</span><br>
 
 
-<a href="#Asset.save">
+<a href="#Asset.save" class="hidden">
     <span class="h4" id="Asset.save">
         <span class="async">
             async def 
@@ -376,7 +376,7 @@ int<br>
 <hr>
 
 
-<a href="#ChatBadge">
+<a href="#ChatBadge" class="hidden">
     <span class="h4" id="ChatBadge">
         <span class="class">
             class 
@@ -401,7 +401,7 @@ active: bool<br>
 <hr>
 
 
-<a href="#SubscriberBadge">
+<a href="#SubscriberBadge" class="hidden">
     <span class="h4" id="SubscriberBadge">
         <span class="class">
             class 
@@ -426,7 +426,7 @@ image: <a href="#Asset" class="hidden"><a href="#Asset" class="hidden"><a href="
 # Categories
 
 
-<a href="#ParentCategory">
+<a href="#ParentCategory" class="hidden">
     <span class="h4" id="ParentCategory">
         <span class="class">
             class 
@@ -451,7 +451,7 @@ icon: <a href="#Asset" class="hidden"><a href="#Asset" class="hidden"><a href="#
 <hr>
 
 
-<a href="#Category">
+<a href="#Category" class="hidden">
     <span class="h4" id="Category">
         <span class="class">
             class 
@@ -482,7 +482,7 @@ parent: <a href="#ParentCategory" class="hidden">`ParentCategory`</a><br>
 # Chatroom
 
 
-<a href="#Chatroom">
+<a href="#Chatroom" class="hidden">
     <span class="h4" id="Chatroom">
         <span class="class">
             class 
@@ -523,7 +523,7 @@ streamer: <a href="#User" class="hidden"><a href="#User" class="hidden"><a href=
 ## Methods
 
 
-<a href="#Chatroom.connect">
+<a href="#Chatroom.connect" class="hidden">
     <span class="h4" id="Chatroom.connect">
         <span class="async">
             async def 
@@ -536,7 +536,7 @@ streamer: <a href="#User" class="hidden"><a href="#User" class="hidden"><a href=
 Connects to the chatroom, making it so you can now listen for the messages.<br>
 
 
-<a href="#Chatroom.disconnect">
+<a href="#Chatroom.disconnect" class="hidden">
     <span class="h4" id="Chatroom.disconnect">
         <span class="async">
             async def 
@@ -549,7 +549,7 @@ Connects to the chatroom, making it so you can now listen for the messages.<br>
 disconnects to the chatroom, making it so you can no longer listen for the messages.<br>
 
 
-<a href="#Chatroom.send">
+<a href="#Chatroom.send" class="hidden">
     <span class="h4" id="Chatroom.send">
         <span class="async">
             async def 
@@ -574,7 +574,7 @@ Forbidden<br>
 <span style="margin-left: 30px">    You are unauthorized from sending the message</span><br>
 
 
-<a href="#Chatroom.fetch_chatter">
+<a href="#Chatroom.fetch_chatter" class="hidden">
     <span class="h4" id="Chatroom.fetch_chatter">
         <span class="async">
             async def 
@@ -601,7 +601,7 @@ Chatter<br>
 <span style="margin-left: 30px">    The chatter</span><br>
 
 
-<a href="#Chatroom.fetch_bans">
+<a href="#Chatroom.fetch_bans" class="hidden">
     <span class="h4" id="Chatroom.fetch_bans">
         <span class="async">
             async def 
@@ -624,7 +624,7 @@ AsyncIterator[BanEntry]<br>
 <span style="margin-left: 30px">    Yields all of the ban entries</span><br>
 
 
-<a href="#Chatroom.fetch_banned_words">
+<a href="#Chatroom.fetch_banned_words" class="hidden">
     <span class="h4" id="Chatroom.fetch_banned_words">
         <span class="async">
             async def 
@@ -647,7 +647,7 @@ list[str]<br>
 <span style="margin-left: 30px">    A list of the banned words</span><br>
 
 
-<a href="#Chatroom.fetch_rules">
+<a href="#Chatroom.fetch_rules" class="hidden">
     <span class="h4" id="Chatroom.fetch_rules">
         <span class="async">
             async def 
@@ -670,7 +670,7 @@ str<br>
 <span style="margin-left: 30px">    The rules</span><br>
 
 
-<a href="#Chatroom.fetch_poll">
+<a href="#Chatroom.fetch_poll" class="hidden">
     <span class="h4" id="Chatroom.fetch_poll">
         <span class="async">
             async def 
@@ -693,7 +693,7 @@ Poll<br>
 <span style="margin-left: 30px">    The poll</span><br>
 
 
-<a href="#Chatroom.fetch_emotes">
+<a href="#Chatroom.fetch_emotes" class="hidden">
     <span class="h4" id="Chatroom.fetch_emotes">
         <span class="async">
             async def 
@@ -722,7 +722,7 @@ AsyncIterator[Emote]<br>
 # BanEntry
 
 
-<a href="#BanEntry">
+<a href="#BanEntry" class="hidden">
     <span class="h4" id="BanEntry">
         <span class="class">
             class 
@@ -754,7 +754,7 @@ chatroom: Chatroom<br>
 ## Methods
 
 
-<a href="#BanEntry.unban">
+<a href="#BanEntry.unban" class="hidden">
     <span class="h4" id="BanEntry.unban">
         <span class="async">
             async def 
@@ -777,7 +777,7 @@ Forbidden<br>
 # Users
 
 
-<a href="#User">
+<a href="#User" class="hidden">
     <span class="h4" id="User">
         <span class="class">
             class 
@@ -850,7 +850,7 @@ recent_categories: list[<a href="#Category" class="hidden"><a href="#Category" c
 <hr>
 
 
-<a href="#PartialUser">
+<a href="#PartialUser" class="hidden">
     <span class="h4" id="PartialUser">
         <span class="class">
             class 
@@ -871,7 +871,7 @@ username: str<br>
 <hr>
 
 
-<a href="#ClientUser">
+<a href="#ClientUser" class="hidden">
     <span class="h4" id="ClientUser">
         <span class="class">
             class 
@@ -885,7 +885,7 @@ username: str<br>
 ## Methods
 
 
-<a href="#ClientUser.fetch_videos">
+<a href="#ClientUser.fetch_videos" class="hidden">
     <span class="h4" id="ClientUser.fetch_videos">
         <span class="def">
             def 
@@ -899,7 +899,7 @@ username: str<br>
 <hr>
 
 
-<a href="#Chatter">
+<a href="#Chatter" class="hidden">
     <span class="h4" id="Chatter">
         <span class="class">
             class 
@@ -936,7 +936,7 @@ following_since: datetime.datetime | None<br>
 ## Methods
 
 
-<a href="#Chatter.ban">
+<a href="#Chatter.ban" class="hidden">
     <span class="h4" id="Chatter.ban">
         <span class="async">
             async def 
@@ -961,7 +961,7 @@ reason: str<br>
 <span style="margin-left: 30px">    Streamer or user not found</span><br>
 
 
-<a href="#Chatter.unban">
+<a href="#Chatter.unban" class="hidden">
     <span class="h4" id="Chatter.unban">
         <span class="async">
             async def 
@@ -982,7 +982,7 @@ Unbans the chatter from the chatroom<br>
 <span style="margin-left: 30px">    Streamer or user not found</span><br>
 
 
-<a href="#Chatter.timeout">
+<a href="#Chatter.timeout" class="hidden">
     <span class="h4" id="Chatter.timeout">
         <span class="async">
             async def 
@@ -1009,7 +1009,7 @@ reason: str<br>
 <span style="margin-left: 30px">    Streamer or user not found</span><br>
 
 
-<a href="#Chatter.untimeout">
+<a href="#Chatter.untimeout" class="hidden">
     <span class="h4" id="Chatter.untimeout">
         <span class="async">
             async def 
@@ -1032,7 +1032,7 @@ untimeout's the chatter<br>
 <hr>
 
 
-<a href="#PartialChatter">
+<a href="#PartialChatter" class="hidden">
     <span class="h4" id="PartialChatter">
         <span class="class">
             class 
@@ -1053,7 +1053,7 @@ username: str<br>
 ## Methods
 
 
-<a href="#PartialChatter.to_user">
+<a href="#PartialChatter.to_user" class="hidden">
     <span class="h4" id="PartialChatter.to_user">
         <span class="async">
             async def 
@@ -1076,7 +1076,7 @@ Fetches a user object for the chatter<br>
 <span style="margin-left: 30px">    The user</span><br>
 
 
-<a href="#PartialChatter.ban">
+<a href="#PartialChatter.ban" class="hidden">
     <span class="h4" id="PartialChatter.ban">
         <span class="async">
             async def 
@@ -1101,7 +1101,7 @@ reason: str<br>
 <span style="margin-left: 30px">    Streamer or user not found</span><br>
 
 
-<a href="#PartialChatter.unban">
+<a href="#PartialChatter.unban" class="hidden">
     <span class="h4" id="PartialChatter.unban">
         <span class="async">
             async def 
@@ -1122,7 +1122,7 @@ Unbans the chatter from the chatroom<br>
 <span style="margin-left: 30px">    Streamer or user not found</span><br>
 
 
-<a href="#PartialChatter.timeout">
+<a href="#PartialChatter.timeout" class="hidden">
     <span class="h4" id="PartialChatter.timeout">
         <span class="async">
             async def 
@@ -1149,7 +1149,7 @@ reason: str<br>
 <span style="margin-left: 30px">    Streamer or user not found</span><br>
 
 
-<a href="#PartialChatter.untimeout">
+<a href="#PartialChatter.untimeout" class="hidden">
     <span class="h4" id="PartialChatter.untimeout">
         <span class="async">
             async def 
@@ -1172,7 +1172,7 @@ untimeout's the chatter<br>
 <hr>
 
 
-<a href="#Author">
+<a href="#Author" class="hidden">
     <span class="h4" id="Author">
         <span class="class">
             class 
@@ -1197,7 +1197,7 @@ badges: list<br>
 # Messages
 
 
-<a href="#Message">
+<a href="#Message" class="hidden">
     <span class="h4" id="Message">
         <span class="class">
             class 
@@ -1230,7 +1230,7 @@ author: <a href="#Author" class="hidden">`Author`</a><br>
 <hr>
 
 
-<a href="#PartialMessage">
+<a href="#PartialMessage" class="hidden">
     <span class="h4" id="PartialMessage">
         <span class="class">
             class 
@@ -1253,7 +1253,7 @@ author: <a href="#PartialUser" class="hidden"><a href="#PartialUser" class="hidd
 # Emote
 
 
-<a href="#Emote">
+<a href="#Emote" class="hidden">
     <span class="h4" id="Emote">
         <span class="class">
             class 
@@ -1282,7 +1282,7 @@ source: <a href="#Asset" class="hidden"><a href="#Asset" class="hidden"><a href=
 # Enums
 
 
-<a href="#ChatroomChatMode">
+<a href="#ChatroomChatMode" class="hidden">
     <span class="h4" id="ChatroomChatMode">
         <span class="class">
             class 
@@ -1303,7 +1303,7 @@ privet: <a href="#ChatroomChatMode" class="hidden"><a href="#ChatroomChatMode" c
 # Leaderboard
 
 
-<a href="#GiftLeaderboardEntry">
+<a href="#GiftLeaderboardEntry" class="hidden">
     <span class="h4" id="GiftLeaderboardEntry">
         <span class="class">
             class 
@@ -1326,7 +1326,7 @@ username: str<br>
 <hr>
 
 
-<a href="#GiftLeaderboard">
+<a href="#GiftLeaderboard" class="hidden">
     <span class="h4" id="GiftLeaderboard">
         <span class="class">
             class 
@@ -1351,7 +1351,7 @@ all_time: list[<a href="#GiftLeaderboardEntry" class="hidden"><a href="#GiftLead
 # Livestream
 
 
-<a href="#Livestream">
+<a href="#Livestream" class="hidden">
     <span class="h4" id="Livestream">
         <span class="class">
             class 
@@ -1398,7 +1398,7 @@ categories: list[<a href="#Category" class="hidden"><a href="#Category" class="h
 # Polls
 
 
-<a href="#PollOption">
+<a href="#PollOption" class="hidden">
     <span class="h4" id="PollOption">
         <span class="class">
             class 
@@ -1423,7 +1423,7 @@ votes: int<br>
 ## Methods
 
 
-<a href="#PollOption.vote">
+<a href="#PollOption.vote" class="hidden">
     <span class="h4" id="PollOption.vote">
         <span class="async">
             async def 
@@ -1444,7 +1444,7 @@ HTTPException<br>
 <hr>
 
 
-<a href="#Poll">
+<a href="#Poll" class="hidden">
     <span class="h4" id="Poll">
         <span class="class">
             class 
@@ -1475,7 +1475,7 @@ ends_at: datetime.datetime<br>
 ## Methods
 
 
-<a href="#Poll.delete">
+<a href="#Poll.delete" class="hidden">
     <span class="h4" id="Poll.delete">
         <span class="async">
             async def 
@@ -1498,7 +1498,7 @@ HTTPException<br>
 # Videos
 
 
-<a href="#Video">
+<a href="#Video" class="hidden">
     <span class="h4" id="Video">
         <span class="class">
             class 
@@ -1541,7 +1541,7 @@ categories: list[<a href="#Category" class="hidden"><a href="#Category" class="h
 # Other
 
 
-<a href="#Socials">
+<a href="#Socials" class="hidden">
     <span class="h4" id="Socials">
         <span class="class">
             class 
@@ -1570,7 +1570,7 @@ facebook: str<br>
 # Errors
 
 
-<a href="#CloudflareBypassException">
+<a href="#CloudflareBypassException" class="hidden">
     <span class="h4" id="CloudflareBypassException">
         <span class="class">
             class 
@@ -1585,7 +1585,7 @@ This error is used when there is an error with the bypass script.<br>
 <hr>
 
 
-<a href="#KickException">
+<a href="#KickException" class="hidden">
     <span class="h4" id="KickException">
         <span class="class">
             class 
@@ -1600,7 +1600,7 @@ This error is used when there is an error with kick.<br>
 <hr>
 
 
-<a href="#LoginFailure">
+<a href="#LoginFailure" class="hidden">
     <span class="h4" id="LoginFailure">
         <span class="class">
             class 
@@ -1615,7 +1615,7 @@ This error is used when there is an error with logging in.<br>
 <hr>
 
 
-<a href="#HTTPException">
+<a href="#HTTPException" class="hidden">
     <span class="h4" id="HTTPException">
         <span class="class">
             class 
@@ -1634,7 +1634,7 @@ status_code: int<br>
 <hr>
 
 
-<a href="#Forbidden">
+<a href="#Forbidden" class="hidden">
     <span class="h4" id="Forbidden">
         <span class="class">
             class 
@@ -1653,7 +1653,7 @@ status_code: int = 403<br>
 <hr>
 
 
-<a href="#NotFound">
+<a href="#NotFound" class="hidden">
     <span class="h4" id="NotFound">
         <span class="class">
             class 
@@ -1672,7 +1672,7 @@ status_code: int = 404<br>
 <hr>
 
 
-<a href="#InternalKickException">
+<a href="#InternalKickException" class="hidden">
     <span class="h4" id="InternalKickException">
         <span class="class">
             class 
