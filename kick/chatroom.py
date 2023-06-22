@@ -34,8 +34,9 @@ class ChatroomWebSocket:
     async def poll_event(self) -> None:
         raw_msg = await self.ws.receive()
         raw_data = raw_msg.json()
-        msg = raw_data["data"]
-        data = json.loads(msg)
+        data = json.loads(raw_data["data"])
+
+        self.http.client.dispatch("payload_receive", raw_data["event"], data)
 
         match raw_data["event"]:
             case "App\\Events\\ChatMessageEvent":

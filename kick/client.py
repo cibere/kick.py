@@ -272,8 +272,23 @@ class Client:
 
         Parameters
         -----------
-        message: Message
+        message: `Message`
             The message that was received
+        """
+
+    async def on_payload_receive(self, event: str, payload: dict) -> None:
+        """
+        |coro|
+
+        on_payload_receive is an event that can be overriden with the `Client.event` decorator or with a subclass.
+        This is called when an event is received from the websocket.
+
+        Parameters
+        -----------
+        event: str
+            The payload's event
+        payload: dict
+            The payload
         """
 
     def run(
