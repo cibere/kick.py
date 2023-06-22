@@ -55,3 +55,19 @@ class PusherWebSocket:
                 "data": {"auth": "", "channel": f"chatrooms.{chatroom_id}.v2"},
             }
         )
+
+    async def watch_channel(self, channel_id: int) -> None:
+        await self.send_json(
+            {
+                "event": "pusher:subscribe",
+                "data": {"auth": "", "channel": f"channel.{channel_id}"},
+            }
+        )
+
+    async def unwatch_channel(self, channel_id: int) -> None:
+        await self.send_json(
+            {
+                "event": "pusher:subscribe",
+                "data": {"auth": "", "channel": f"channel.{channel_id}"},
+            }
+        )

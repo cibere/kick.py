@@ -106,6 +106,10 @@
 
 |[User.fetch_gift_leaderboard]|
 
+|[User.start_watch]|
+
+|[User.stop_watching]|
+
 <hr>
 
 |[PartialUser]|
