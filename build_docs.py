@@ -4,9 +4,10 @@ import textwrap
 from copy import copy
 from typing import Callable, Type
 
-import markdown
-
 import kick
+
+# import markdown
+
 
 DOC_STRING_REGEX = re.compile(r"\[\[(?P<what>[^\]]*)]]")
 DISPLAY_REGEX = re.compile(r"{{(?P<item>[^}]*)}}")
@@ -26,7 +27,7 @@ IGNORE_FORMAT_TEXT = "!IGNORE-FORMAT"
 
 def convert_file(fp: str) -> None:
     before_fp = fp
-    after_fp = fp.replace(RAW_DOCS_DIR, FINAL_DOCS_DIR).replace(".md", ".html")
+    after_fp = fp.replace(RAW_DOCS_DIR, FINAL_DOCS_DIR)  # .replace(".md", ".html")
 
     with open(before_fp, "r", encoding="utf-8") as f:
         text = f.read()
@@ -108,10 +109,11 @@ def convert_file(fp: str) -> None:
             text = text.replace(f"`{find}`", after)
 
     # Convert to HTML
-    text = markdown.markdown(text)
+    # text = markdown.markdown(text)
 
     with open(after_fp, "w", encoding="utf-8") as f:
-        f.write(f"<html>{HEADER}<body>{text}</body></html>")
+        # f.write(f"<html>{HEADER}<body>{text}</body></html>")
+        f.write(f"{HEADER}\n{text}")
 
 
 files = glob.glob(f"{RAW_DOCS_DIR}/*.md")
