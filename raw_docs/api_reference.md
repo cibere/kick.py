@@ -24,11 +24,17 @@
 
 |[Client.close]|
 
+# Events
+
 |[Client.on_ready]|
 
 |[Client.on_message]|
 
 |[Client.on_livestream_start]|
+
+|[Client.on_follow]|
+
+|[Client.on_unfollow]|
 
 |[Client.on_payload_receive]|
 
