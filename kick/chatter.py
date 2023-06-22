@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING
 from .assets import Asset
 from .badges import ChatBadge
 from .object import HTTPDataclass
-from .user import User
+from .users import User
 from .utils import cached_property
 
 if TYPE_CHECKING:

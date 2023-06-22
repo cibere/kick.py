@@ -11,7 +11,7 @@ from .enums import ChatroomChatMode
 from .message import Message
 from .object import HTTPDataclass
 from .polls import Poll
-from .user import PartialUser
+from .users import PartialUser
 from .utils import cached_property
 
 if TYPE_CHECKING:
@@ -19,7 +19,7 @@ if TYPE_CHECKING:
     from .http import HTTPClient
     from .types.chatroom import BanEntryPayload
     from .types.user import ChatroomPayload
-    from .user import User
+    from .users import User
 
 __all__ = ("Chatroom", "BanEntry")
 
@@ -110,7 +110,11 @@ class BanEntry(HTTPDataclass["BanEntryPayload"]):
         The user the action was towards
         """
 
-        return PartialUser(data=self._data["banned_user"], http=self.http)
+        return PartialUser(
+            id=self._data["banned_user"]["id"],
+            username=self._data["banned_user"]["username"],
+            http=self.http,
+        )
 
     @cached_property
     def banned_by(self) -> PartialUser:
@@ -118,7 +122,11 @@ class BanEntry(HTTPDataclass["BanEntryPayload"]):
         The responsible mod
         """
 
-        return PartialUser(data=self._data["banned_by"], http=self.http)
+        return PartialUser(
+            id=self._data["banned_by"]["id"],
+            username=self._data["banned_by"]["username"],
+            http=self.http,
+        )
 
     @cached_property
     def banned_at(self) -> datetime:
