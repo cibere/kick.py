@@ -159,6 +159,8 @@ class User:
     -----------
     id: int
         The user's id
+    channel_id: int
+        The user's channel id
     username: str
         The user's name
     state: str
@@ -215,6 +217,10 @@ class User:
     def id(self) -> int:
         return self._data["user_id"]
 
+    @property
+    def channel_id(self) -> int:
+        return self._data["id"]
+    
     @property
     def playback_url(self) -> str:
         return self._data["playback_url"]
