@@ -15,47 +15,97 @@ __all__ = ("Livestream",)
 
 
 class Livestream(HTTPDataclass["LivestreamPayload"]):
+    """
+    A dataclass which represents a livestream on kick.
+
+    Attributes
+    -----------
+    id: int
+        probably the livestream's id
+    slug: str
+        The streamer's slug
+    channel_id: int
+        probably the streamer's id or the chatroom id
+    created_at: datetime.datetime
+        When the livestream started
+    title: str
+        The livestream's title
+    is_live: bool
+        If the livestream is currently live
+    thumbnail: `Asset` | None
+        Returns the livestream's thumbnail if it has one
+    duration: int
+        Probably how long the livestream is/was in seconds
+    language: str
+        The language the livestream is in
+    is_mature: bool
+        If the livestream is marked as 18+
+    viewer_count: int
+        The amount of people currently watching
+    tags: list[str]
+        Tags applied to the livestream
+    url: str
+        The livestream's url
+    embed_url: str
+        The livestream's player/embed url
+    categories: list[`Category`]
+        The categories the livestream is in
+    """
+
     @property
     def id(self) -> int:
+        """
+        probably the livestream's id
+        """
+
         return self._data["id"]
 
     @property
-    def username(self) -> str:
+    def slug(self) -> str:
+        """
+        The streamer's slug
+        """
+
         return self._data["slug"]
 
     @property
     def channel_id(self) -> int:
+        """
+        probably the streamer's id or the chatroom id
+        """
+
         return self._data["channel_id"]
 
     @cached_property
     def created_at(self) -> datetime:
+        """
+        When the livestream started
+        """
+
         return datetime.fromisoformat(self._data["created_at"])
 
     @property
-    def session_title(self) -> str:
+    def title(self) -> str:
+        """
+        The livestream's title
+        """
+
         return self._data["session_title"]
 
     @property
     def is_live(self) -> bool:
+        """
+        If the livestream is currently live
+        """
+
         return self._data["is_live"]
-
-    @property
-    def risk_level_id(self) -> Any:
-        """THIS IS RAW DATA, UNKNOWN ON WHAT IT RETURNS"""
-        return self._data["risk_level_id"]
-
-    @property
-    def source(self) -> Any:
-        """THIS IS RAW DATA, UNKNOWN ON WHAT IT RETURNS"""
-        return self._data["source"]
-
-    @property
-    def twitch_channel(self) -> Any:
-        """THIS IS RAW DATA, UNKNOWN ON WHAT IT RETURNS"""
-        return self._data["twitch_channel"]
 
     @cached_property
     def thumbnail(self) -> Asset | None:
+        """
+        Returns the livestream's thumbnail if it has one
+        """
+
         return (
             None
             if self._data["thumbnail"] is None
@@ -64,39 +114,70 @@ class Livestream(HTTPDataclass["LivestreamPayload"]):
 
     @property
     def duration(self) -> int:
+        """
+        Probably how long the livestream is/was in seconds
+        """
+
         return self._data["duration"]
 
     @property
     def language(self) -> str:
+        """
+        The language the livestream is in
+        """
+
         return self._data["language"]
 
     @property
     def is_mature(self) -> bool:
+        """
+        If the livestream is marked as 18+
+        """
+
         return self._data["is_mature"]
 
     @property
     def viewer_count(self) -> int:
+        """
+        The amount of people currently watching
+        """
+
         return self._data["viewer_count"]
 
     @property
-    def tags(self) -> list[Any]:
-        """THIS IS RAW DATA, UNKNOWN ON WHAT IT RETURNS BESIDES `list`"""
+    def tags(self) -> list[str]:
+        """
+        Tags applied to the livestream
+        """
+
         return self._data["tags"]
 
     @cached_property
     def url(self) -> str:
-        return f"https://kick.com/{self.username}"
+        """
+        The livestream's url
+        """
+
+        return f"https://kick.com/{self.slug}"
 
     @cached_property
     def embed_url(self) -> str:
-        return f"https://player.kick.com/{self.username}"
+        """
+        The livestream's player/embed url
+        """
+
+        return f"https://player.kick.com/{self.slug}"
 
     @cached_property
     def categories(self) -> list[Category]:
+        """
+        The categories the livestream is in
+        """
+
         return [Category(data=c, http=self.http) for c in self._data["categories"]]
 
     def __eq__(self, other: object) -> bool:
         return isinstance(other, self.__class__) and other.id == self.id
 
     def __repr__(self) -> str:
-        return f"<Livestream id={self.id} title={self.session_title} streamer={self.username}>"
+        return f"<Livestream id={self.id} title={self.title} streamer={self.slug}>"

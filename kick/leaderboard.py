@@ -13,16 +13,41 @@ __all__ = ("GiftLeaderboard", "GiftLeaderboardEntry")
 
 
 class GiftLeaderboardEntry(BaseDataclass["GiftEntryPayload"]):
+    """
+    This dataclass represents a gift leaderboard entry.
+
+    Attributes
+    -----------
+    user_id: int
+        The id of the user with this entry
+    quantity: int
+        The amount of subs this person has gifted
+    username: str
+        The user's username
+    """
+
     @property
     def user_id(self) -> int:
+        """
+        The id of the user with this entry
+        """
+
         return self._data["user_id"]
 
     @property
     def quantity(self) -> int:
+        """
+        The amount of subs this person has gifted
+        """
+
         return self._data["quantity"]
 
     @property
     def username(self) -> str:
+        """
+        The user's username
+        """
+
         return self._data["username"]
 
     def __repr__(self) -> str:
@@ -30,6 +55,21 @@ class GiftLeaderboardEntry(BaseDataclass["GiftEntryPayload"]):
 
 
 class GiftLeaderboard(BaseDataclass["LeaderboardPayload"]):
+    """
+    This is a dataclass which reprsents the gift leaderboard for a kick streamer.
+
+    Attributes
+    -----------
+    streamer: `User`
+        The streamer that the leaderboard is for
+    this_week: list[`GiftLeaderboardEntry`]
+        The gift leaderboard for the current week
+    this_month: list[`GiftLeaderboardEntry`]
+        The gift leaderboard for the current month
+    all_time: list[`GiftLeaderboardEntry`]
+        The gift leaderboard for all time
+    """
+
     streamer: User
 
     @cached_property

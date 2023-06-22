@@ -14,6 +14,21 @@ __all__ = ("PollOption", "Poll")
 
 
 class PollOption(HTTPDataclass["PollOptionPayload"]):
+    """
+    This dataclass represents a chatroom `Poll`'s option on kick.
+
+    Attributes
+    -----------
+    chatroom: `Chatroom`
+        The chatroom the poll is in
+    id: int
+        The option's id
+    label: str
+        The option's label
+    votes: int
+        The amount of votes the option has
+    """
+
     chatroom: Chatroom
 
     @property
@@ -58,6 +73,27 @@ class PollOption(HTTPDataclass["PollOptionPayload"]):
 
 
 class Poll(HTTPDataclass["CreatePollPayload"]):
+    """
+    This dataclass represents a poll in a chatroom on kick.
+
+    Attributes
+    -----------
+    chatroom: `Chatroom`
+        The chatroom the poll is in
+    title: str
+        The poll's title
+    options: list[`PollOption`]
+        The poll's options
+    duration: int
+        How long the poll will last in seconds
+    result_display_duration: int
+        How long the poll will display the results in seconds
+    has_voted: bool
+        if you've voted yet
+    ends_at: datetime.datetime
+        When the poll ends at
+    """
+
     chatroom: Chatroom
 
     @property
@@ -76,6 +112,10 @@ class Poll(HTTPDataclass["CreatePollPayload"]):
 
     @cached_property
     def options(self) -> list[PollOption]:
+        """
+        The poll's options
+        """
+
         return list(self._get_options())
 
     @property

@@ -14,6 +14,21 @@ __all__ = ("Category", "ParentCategory")
 
 
 class ParentCategory(HTTPDataclass["ParentCategoryPayload"]):
+    """
+    A dataclass which represents one of kick's main categories
+
+    Attributes
+    -----------
+    id: int
+        The categorie's ID
+    name: str
+        The categorie's name
+    slug: str
+        The categorie's slug
+    icon: `Asset`
+        The categorie's icon
+    """
+
     @property
     def id(self) -> int:
         """
@@ -54,6 +69,27 @@ class ParentCategory(HTTPDataclass["ParentCategoryPayload"]):
 
 
 class Category(HTTPDataclass["CategoryPayload"]):
+    """
+    A dataclass which represents one of kick's sub categories
+
+    Attributes
+    -----------
+    id: int
+        The categorie's ID?
+    category_id: str
+        The categorie's ID?
+    slug: str
+        The categorie's slug
+    name: str
+        The categorie's name
+    tags: list[str]
+        A list of the categorie's tags
+    description: str | None
+        The categorie's description, if any
+    parent: `ParentCategory`
+        The categorie's parent category.
+    """
+
     @property
     def id(self) -> int:
         """
@@ -105,12 +141,6 @@ class Category(HTTPDataclass["CategoryPayload"]):
         """
 
         return self._data["description"]
-
-    @property
-    def deleted_at(self) -> Any:
-        """THIS IS RAW DATA, UNKNOWN ON WHAT IT RETURNS"""
-
-        return self._data["deleted_at"]
 
     @cached_property
     def parent(self) -> ParentCategory:
