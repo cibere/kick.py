@@ -28,6 +28,8 @@
 
 |[Client.on_message]|
 
+|[Client.on_livestream_start]|
+
 <hr>
 
 |[Credentials]|

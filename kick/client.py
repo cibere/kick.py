@@ -7,6 +7,7 @@ from typing import TYPE_CHECKING, Any, Callable, Coroutine, TypeVar
 
 from .chatter import PartialChatter
 from .http import HTTPClient
+from .livestream import PartialLivestream
 from .message import Message
 from .users import ClientUser, PartialUser, User
 from .utils import MISSING, decorator, setup_logging
@@ -94,6 +95,7 @@ class Client:
         self._options = options
         self.http = HTTPClient(self)
         self._chatrooms: dict[int, Chatroom] = {}
+        self._watched_users: dict[int, User] = {}
         self.user: ClientUser | None = None
 
         LOGGER.warning(
@@ -289,6 +291,19 @@ class Client:
             The payload's event
         payload: dict
             The payload
+        """
+
+    async def on_livestream_start(self, livestream: PartialLivestream) -> None:
+        """
+        |coro|
+
+        on_livestream_start is an event that can be overriden with the `Client.event` decorator or with a subclass.
+        This is called when a livestream starts
+
+        Parameters
+        -----------
+        livestream: `PartialLivestream`
+            The livestream
         """
 
     def run(
