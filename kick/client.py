@@ -298,12 +298,38 @@ class Client:
         |coro|
 
         on_livestream_start is an event that can be overriden with the `Client.event` decorator or with a subclass.
-        This is called when a livestream starts
+        This is called when a user that is being watched starts streaming
 
         Parameters
         -----------
         livestream: `PartialLivestream`
             The livestream
+        """
+
+    async def on_follow(self, streamer: User) -> None:
+        """
+        |coro|
+
+        on_livestream_start is an event that can be overriden with the `Client.event` decorator or with a subclass.
+        This is called when someone starts following a streamer that is being watched.
+
+        Parameters
+        -----------
+        streamer: `User`
+            The streamer
+        """
+
+    async def on_unfollow(self, streamer: User) -> None:
+        """
+        |coro|
+
+        on_livestream_start is an event that can be overriden with the `Client.event` decorator or with a subclass.
+        This is called when someone stops following a streamer that is being watched.
+
+        Parameters
+        -----------
+        streamer: `PartialLivestream`
+            The streamer
         """
 
     def run(
