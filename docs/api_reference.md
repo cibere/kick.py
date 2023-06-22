@@ -249,7 +249,7 @@ on_livestream_start is an event that can be overriden with the <a href="#Client.
 This is called when someone starts following a streamer that is being watched.<br>
 <br>
 <span class="h4">Parameters</span><br>
-streamer: <a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden">`User`</a></a></a></a></a></a><br>
+streamer: <a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden">`User`</a></a></a></a></a></a></a><br>
 <span style="margin-left: 30px">    The streamer</span><br>
 
 
@@ -480,7 +480,195 @@ description: str | None<br>
 parent: <a href="#ParentCategory" class="hidden">`ParentCategory`</a><br>
 <span style="margin-left: 30px">    The categorie's parent category.</span><br>
 
-# Chatroom
+# Chatrooms
+
+
+<a href="#PartialChatroom" class="h2 hidden" id="PartialChatroom">
+    <span class="class">
+        class 
+    </span>
+    PartialChatroom
+</a>
+<br>
+A dataclass that represents a kick chatroom.<br>
+<br>
+<span class="h4">Attributes</span><br>
+id: int<br>
+<span style="margin-left: 30px">    The chatroom's id</span><br>
+streamer: <a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden">`User`</a></a></a></a></a></a></a><br>
+<span style="margin-left: 30px">    The user who this chatroom belongs to</span><br>
+
+## Methods
+
+
+<a href="#PartialChatroom.connect" class="h3 hidden" id="PartialChatroom.connect">
+    <span class="async">
+        async def 
+    </span>
+    PartialChatroom.connect
+</a>
+<br>
+Connects to the chatroom, making it so you can now listen for the messages.<br>
+
+
+<a href="#PartialChatroom.disconnect" class="h3 hidden" id="PartialChatroom.disconnect">
+    <span class="async">
+        async def 
+    </span>
+    PartialChatroom.disconnect
+</a>
+<br>
+disconnects to the chatroom, making it so you can no longer listen for the messages.<br>
+
+
+<a href="#PartialChatroom.send" class="h3 hidden" id="PartialChatroom.send">
+    <span class="async">
+        async def 
+    </span>
+    PartialChatroom.send
+</a>
+<br>
+Sends a message in the chatroom<br>
+<br>
+<span class="h4">Parameters</span><br>
+content: str<br>
+<span style="margin-left: 30px">    The message's content</span><br>
+<br>
+<span class="h4">Raises</span><br>
+NotFound<br>
+<span style="margin-left: 30px">    Streamer or chatter not found</span><br>
+HTTPException<br>
+<span style="margin-left: 30px">    Sending the message failed</span><br>
+Forbidden<br>
+<span style="margin-left: 30px">    You are unauthorized from sending the message</span><br>
+
+
+<a href="#PartialChatroom.fetch_chatter" class="h3 hidden" id="PartialChatroom.fetch_chatter">
+    <span class="async">
+        async def 
+    </span>
+    PartialChatroom.fetch_chatter
+</a>
+<br>
+Fetches a chatroom's chatter<br>
+<br>
+<span class="h4">Parameters</span><br>
+chatter_name: str<br>
+<span style="margin-left: 30px">    The chatter's username</span><br>
+<br>
+<span class="h4">Raises</span><br>
+NotFound<br>
+<span style="margin-left: 30px">    Streamer or chatter not found</span><br>
+HTTPException<br>
+<span style="margin-left: 30px">    Fetching the chatter failed</span><br>
+<br>
+<span class="h4">Returns</span><br>
+Chatter<br>
+<span style="margin-left: 30px">    The chatter</span><br>
+
+
+<a href="#PartialChatroom.fetch_bans" class="h3 hidden" id="PartialChatroom.fetch_bans">
+    <span class="async">
+        async def 
+    </span>
+    PartialChatroom.fetch_bans
+</a>
+<br>
+Fetches the chatroom's bans<br>
+<br>
+<span class="h4">Raises</span><br>
+NotFound<br>
+<span style="margin-left: 30px">    Streamer Not Found</span><br>
+HTTPException<br>
+<span style="margin-left: 30px">    Fetching the bans failed</span><br>
+<br>
+<span class="h4">Returns</span><br>
+AsyncIterator[BanEntry]<br>
+<span style="margin-left: 30px">    Yields all of the ban entries</span><br>
+
+
+<a href="#PartialChatroom.fetch_banned_words" class="h3 hidden" id="PartialChatroom.fetch_banned_words">
+    <span class="async">
+        async def 
+    </span>
+    PartialChatroom.fetch_banned_words
+</a>
+<br>
+Fetches the chatroom's banned words<br>
+<br>
+<span class="h4">Raises</span><br>
+NotFound<br>
+<span style="margin-left: 30px">    Streamer Not Found</span><br>
+HTTPException<br>
+<span style="margin-left: 30px">    Fetching the words failed</span><br>
+<br>
+<span class="h4">Returns</span><br>
+list[str]<br>
+<span style="margin-left: 30px">    A list of the banned words</span><br>
+
+
+<a href="#PartialChatroom.fetch_rules" class="h3 hidden" id="PartialChatroom.fetch_rules">
+    <span class="async">
+        async def 
+    </span>
+    PartialChatroom.fetch_rules
+</a>
+<br>
+Fetches the chatroom's rules<br>
+<br>
+<span class="h4">Raises</span><br>
+NotFound<br>
+<span style="margin-left: 30px">    Streamer Not Found</span><br>
+HTTPException<br>
+<span style="margin-left: 30px">    Fetching the rules failed</span><br>
+<br>
+<span class="h4">Returns</span><br>
+str<br>
+<span style="margin-left: 30px">    The rules</span><br>
+
+
+<a href="#PartialChatroom.fetch_poll" class="h3 hidden" id="PartialChatroom.fetch_poll">
+    <span class="async">
+        async def 
+    </span>
+    PartialChatroom.fetch_poll
+</a>
+<br>
+Gets a poll from the chatroom<br>
+<br>
+<span class="h4">Raises</span><br>
+NotFound<br>
+<span style="margin-left: 30px">    There is no poll in the current chatroom or Streamer Not Found</span><br>
+HTTPException<br>
+<span style="margin-left: 30px">    Fetching the poll failed</span><br>
+<br>
+<span class="h4">Returns</span><br>
+Poll<br>
+<span style="margin-left: 30px">    The poll</span><br>
+
+
+<a href="#PartialChatroom.fetch_emotes" class="h3 hidden" id="PartialChatroom.fetch_emotes">
+    <span class="async">
+        async def 
+    </span>
+    PartialChatroom.fetch_emotes
+</a>
+<br>
+Fetches the emotes from the current chatroom.<br>
+<br>
+<span class="h4">Parameters</span><br>
+include_global: bool = False<br>
+<span style="margin-left: 30px">    Wether to include global emotes or not</span><br>
+<br>
+<span class="h4">Raises</span><br>
+NotFound<br>
+<span style="margin-left: 30px">    Streamer Not Found</span><br>
+HTTPException<br>
+<span style="margin-left: 30px">    Fetching the bans failed</span><br>
+<br>
+<span class="h4">Returns</span><br>
+AsyncIterator[Emote]<br>
+<span style="margin-left: 30px">    Yields each emote. Starting with from the chatroom, then global</span><br>
 
 
 <a href="#Chatroom" class="h2 hidden" id="Chatroom">
@@ -515,7 +703,7 @@ message_interval: int<br>
 <span style="margin-left: 30px">    Unknown on what this is</span><br>
 following_min_duration: int<br>
 <span style="margin-left: 30px">    Unknown on what this is</span><br>
-streamer: <a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden">`User`</a></a></a></a></a></a><br>
+streamer: <a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden">`User`</a></a></a></a></a></a></a><br>
 <span style="margin-left: 30px">    The user who this chatroom belongs to</span><br>
 
 ## Methods
@@ -1024,7 +1212,7 @@ Fetches a user object for the chatter<br>
 <span style="margin-left: 30px">    User not found</span><br>
 <br>
 <span class="h4">Returns</span><br>
-<a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden">`User`</a></a></a></a></a></a><br>
+<a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden">`User`</a></a></a></a></a></a></a><br>
 <span style="margin-left: 30px">    The user</span><br>
 
 
@@ -1150,7 +1338,7 @@ Fetches a user object for the author<br>
 <span style="margin-left: 30px">    User Not Found</span><br>
 <br>
 <span class="h4">Returns</span><br>
-<a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden">`User`</a></a></a></a></a></a><br>
+<a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden">`User`</a></a></a></a></a></a></a><br>
 <span style="margin-left: 30px">    The user</span><br>
 
 # Messages
@@ -1280,7 +1468,7 @@ username: str<br>
 This is a dataclass which reprsents the gift leaderboard for a kick streamer.<br>
 <br>
 <span class="h4">Attributes</span><br>
-streamer: <a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden">`User`</a></a></a></a></a></a><br>
+streamer: <a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden">`User`</a></a></a></a></a></a></a><br>
 <span style="margin-left: 30px">    The streamer that the leaderboard is for</span><br>
 this_week: list[<a href="#GiftLeaderboardEntry" class="hidden"><a href="#GiftLeaderboardEntry" class="hidden"><a href="#GiftLeaderboardEntry" class="hidden">`GiftLeaderboardEntry`</a></a></a>]<br>
 <span style="margin-left: 30px">    The gift leaderboard for the current week</span><br>
@@ -1310,7 +1498,7 @@ title: str<br>
 <span style="margin-left: 30px">    The livestream's title</span><br>
 created_at: datetime.datetime<br>
 <span style="margin-left: 30px">    When the livestream started</span><br>
-streamer: <a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden">`User`</a></a></a></a></a></a> | None<br>
+streamer: <a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden">`User`</a></a></a></a></a></a></a> | None<br>
 <span style="margin-left: 30px">    The livestream's streaner</span><br>
 
 
