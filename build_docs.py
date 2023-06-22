@@ -17,7 +17,7 @@ CODEBLOCK_REGEX = re.compile(r"`(?P<code>[^`]*)`")
 
 HEADER = """
 <head>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="style.css">
 </head>"""
 RAW_DOCS_DIR = "raw_docs"
 FINAL_DOCS_DIR = "docs"
