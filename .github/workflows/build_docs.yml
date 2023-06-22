@@ -27,7 +27,6 @@ jobs:
       - name: Install dependencies
         id: install-deps
         run: |
-          pip install -U markdown
           pip install -U -r requirements.txt
 
       - name: Build Docs
