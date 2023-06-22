@@ -249,7 +249,7 @@ on_livestream_start is an event that can be overriden with the <a href="#Client.
 This is called when someone starts following a streamer that is being watched.<br>
 <br>
 <span class="h4">Parameters</span><br>
-streamer: <a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden">`User`</a></a></a></a></a><br>
+streamer: <a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden">`User`</a></a></a></a></a></a><br>
 <span style="margin-left: 30px">    The streamer</span><br>
 
 
@@ -515,7 +515,7 @@ message_interval: int<br>
 <span style="margin-left: 30px">    Unknown on what this is</span><br>
 following_min_duration: int<br>
 <span style="margin-left: 30px">    Unknown on what this is</span><br>
-streamer: <a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden">`User`</a></a></a></a></a><br>
+streamer: <a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden">`User`</a></a></a></a></a></a><br>
 <span style="margin-left: 30px">    The user who this chatroom belongs to</span><br>
 
 ## Methods
@@ -920,11 +920,11 @@ reason: str<br>
 <span style="margin-left: 30px">    The reason for the ban</span><br>
 <br>
 <span class="h4">Raises</span><br>
-<a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden">`HTTPException`</a></a></a></a></a></a></a></a></a><br>
+<a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden">`HTTPException`</a></a></a></a></a></a></a></a></a></a><br>
 <span style="margin-left: 30px">    Banning the user failed</span><br>
 <a href="#Forbidden" class="hidden"><a href="#Forbidden" class="hidden"><a href="#Forbidden" class="hidden"><a href="#Forbidden" class="hidden"><a href="#Forbidden" class="hidden"><a href="#Forbidden" class="hidden"><a href="#Forbidden" class="hidden"><a href="#Forbidden" class="hidden">`Forbidden`</a></a></a></a></a></a></a></a><br>
 <span style="margin-left: 30px">    You are unauthorized from banning the user</span><br>
-<a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden">`NotFound`</a></a></a></a></a></a></a></a></a><br>
+<a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden">`NotFound`</a></a></a></a></a></a></a></a></a></a><br>
 <span style="margin-left: 30px">    Streamer or user not found</span><br>
 
 
@@ -938,11 +938,11 @@ reason: str<br>
 Unbans the chatter from the chatroom<br>
 <br>
 <span class="h4">Raises</span><br>
-<a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden">`HTTPException`</a></a></a></a></a></a></a></a></a><br>
+<a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden">`HTTPException`</a></a></a></a></a></a></a></a></a></a><br>
 <span style="margin-left: 30px">    Unbanning the user failed</span><br>
 <a href="#Forbidden" class="hidden"><a href="#Forbidden" class="hidden"><a href="#Forbidden" class="hidden"><a href="#Forbidden" class="hidden"><a href="#Forbidden" class="hidden"><a href="#Forbidden" class="hidden"><a href="#Forbidden" class="hidden"><a href="#Forbidden" class="hidden">`Forbidden`</a></a></a></a></a></a></a></a><br>
 <span style="margin-left: 30px">    You are unauthorized from unbanning the user</span><br>
-<a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden">`NotFound`</a></a></a></a></a></a></a></a></a><br>
+<a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden">`NotFound`</a></a></a></a></a></a></a></a></a></a><br>
 <span style="margin-left: 30px">    Streamer or user not found</span><br>
 
 
@@ -962,11 +962,11 @@ reason: str<br>
 <span style="margin-left: 30px">    The reason for the timeout</span><br>
 <br>
 <span class="h4">Raises</span><br>
-<a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden">`HTTPException`</a></a></a></a></a></a></a></a></a><br>
+<a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden">`HTTPException`</a></a></a></a></a></a></a></a></a></a><br>
 <span style="margin-left: 30px">    timing out the user failed</span><br>
 <a href="#Forbidden" class="hidden"><a href="#Forbidden" class="hidden"><a href="#Forbidden" class="hidden"><a href="#Forbidden" class="hidden"><a href="#Forbidden" class="hidden"><a href="#Forbidden" class="hidden"><a href="#Forbidden" class="hidden"><a href="#Forbidden" class="hidden">`Forbidden`</a></a></a></a></a></a></a></a><br>
 <span style="margin-left: 30px">    You are unauthorized from timing out the user</span><br>
-<a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden">`NotFound`</a></a></a></a></a></a></a></a></a><br>
+<a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden">`NotFound`</a></a></a></a></a></a></a></a></a></a><br>
 <span style="margin-left: 30px">    Streamer or user not found</span><br>
 
 
@@ -980,11 +980,11 @@ reason: str<br>
 untimeout's the chatter<br>
 <br>
 <span class="h4">Raises</span><br>
-<a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden">`HTTPException`</a></a></a></a></a></a></a></a></a><br>
+<a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden">`HTTPException`</a></a></a></a></a></a></a></a></a></a><br>
 <span style="margin-left: 30px">    untimeouting the user failed</span><br>
 <a href="#Forbidden" class="hidden"><a href="#Forbidden" class="hidden"><a href="#Forbidden" class="hidden"><a href="#Forbidden" class="hidden"><a href="#Forbidden" class="hidden"><a href="#Forbidden" class="hidden"><a href="#Forbidden" class="hidden"><a href="#Forbidden" class="hidden">`Forbidden`</a></a></a></a></a></a></a></a><br>
 <span style="margin-left: 30px">    You are unauthorized from untimeouting the user</span><br>
-<a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden">`NotFound`</a></a></a></a></a></a></a></a></a><br>
+<a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden">`NotFound`</a></a></a></a></a></a></a></a></a></a><br>
 <span style="margin-left: 30px">    Streamer or user not found</span><br>
 
 <hr>
@@ -1018,13 +1018,13 @@ username: str<br>
 Fetches a user object for the chatter<br>
 <br>
 <span class="h4">Raises</span><br>
-<a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden">`HTTPException`</a></a></a></a></a></a></a></a></a><br>
+<a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden">`HTTPException`</a></a></a></a></a></a></a></a></a></a><br>
 <span style="margin-left: 30px">    Fetching the user failed</span><br>
-<a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden">`NotFound`</a></a></a></a></a></a></a></a></a><br>
+<a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden">`NotFound`</a></a></a></a></a></a></a></a></a></a><br>
 <span style="margin-left: 30px">    User not found</span><br>
 <br>
 <span class="h4">Returns</span><br>
-<a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden">`User`</a></a></a></a></a><br>
+<a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden">`User`</a></a></a></a></a></a><br>
 <span style="margin-left: 30px">    The user</span><br>
 
 
@@ -1042,11 +1042,11 @@ reason: str<br>
 <span style="margin-left: 30px">    The reason for the ban</span><br>
 <br>
 <span class="h4">Raises</span><br>
-<a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden">`HTTPException`</a></a></a></a></a></a></a></a></a><br>
+<a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden">`HTTPException`</a></a></a></a></a></a></a></a></a></a><br>
 <span style="margin-left: 30px">    Banning the user failed</span><br>
 <a href="#Forbidden" class="hidden"><a href="#Forbidden" class="hidden"><a href="#Forbidden" class="hidden"><a href="#Forbidden" class="hidden"><a href="#Forbidden" class="hidden"><a href="#Forbidden" class="hidden"><a href="#Forbidden" class="hidden"><a href="#Forbidden" class="hidden">`Forbidden`</a></a></a></a></a></a></a></a><br>
 <span style="margin-left: 30px">    You are unauthorized from banning the user</span><br>
-<a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden">`NotFound`</a></a></a></a></a></a></a></a></a><br>
+<a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden">`NotFound`</a></a></a></a></a></a></a></a></a></a><br>
 <span style="margin-left: 30px">    Streamer or user not found</span><br>
 
 
@@ -1060,11 +1060,11 @@ reason: str<br>
 Unbans the chatter from the chatroom<br>
 <br>
 <span class="h4">Raises</span><br>
-<a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden">`HTTPException`</a></a></a></a></a></a></a></a></a><br>
+<a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden">`HTTPException`</a></a></a></a></a></a></a></a></a></a><br>
 <span style="margin-left: 30px">    Unbanning the user failed</span><br>
 <a href="#Forbidden" class="hidden"><a href="#Forbidden" class="hidden"><a href="#Forbidden" class="hidden"><a href="#Forbidden" class="hidden"><a href="#Forbidden" class="hidden"><a href="#Forbidden" class="hidden"><a href="#Forbidden" class="hidden"><a href="#Forbidden" class="hidden">`Forbidden`</a></a></a></a></a></a></a></a><br>
 <span style="margin-left: 30px">    You are unauthorized from unbanning the user</span><br>
-<a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden">`NotFound`</a></a></a></a></a></a></a></a></a><br>
+<a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden">`NotFound`</a></a></a></a></a></a></a></a></a></a><br>
 <span style="margin-left: 30px">    Streamer or user not found</span><br>
 
 
@@ -1084,11 +1084,11 @@ reason: str<br>
 <span style="margin-left: 30px">    The reason for the timeout</span><br>
 <br>
 <span class="h4">Raises</span><br>
-<a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden">`HTTPException`</a></a></a></a></a></a></a></a></a><br>
+<a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden">`HTTPException`</a></a></a></a></a></a></a></a></a></a><br>
 <span style="margin-left: 30px">    timing out the user failed</span><br>
 <a href="#Forbidden" class="hidden"><a href="#Forbidden" class="hidden"><a href="#Forbidden" class="hidden"><a href="#Forbidden" class="hidden"><a href="#Forbidden" class="hidden"><a href="#Forbidden" class="hidden"><a href="#Forbidden" class="hidden"><a href="#Forbidden" class="hidden">`Forbidden`</a></a></a></a></a></a></a></a><br>
 <span style="margin-left: 30px">    You are unauthorized from timing out the user</span><br>
-<a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden">`NotFound`</a></a></a></a></a></a></a></a></a><br>
+<a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden">`NotFound`</a></a></a></a></a></a></a></a></a></a><br>
 <span style="margin-left: 30px">    Streamer or user not found</span><br>
 
 
@@ -1102,11 +1102,11 @@ reason: str<br>
 untimeout's the chatter<br>
 <br>
 <span class="h4">Raises</span><br>
-<a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden">`HTTPException`</a></a></a></a></a></a></a></a></a><br>
+<a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden">`HTTPException`</a></a></a></a></a></a></a></a></a></a><br>
 <span style="margin-left: 30px">    untimeouting the user failed</span><br>
 <a href="#Forbidden" class="hidden"><a href="#Forbidden" class="hidden"><a href="#Forbidden" class="hidden"><a href="#Forbidden" class="hidden"><a href="#Forbidden" class="hidden"><a href="#Forbidden" class="hidden"><a href="#Forbidden" class="hidden"><a href="#Forbidden" class="hidden">`Forbidden`</a></a></a></a></a></a></a></a><br>
 <span style="margin-left: 30px">    You are unauthorized from untimeouting the user</span><br>
-<a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden">`NotFound`</a></a></a></a></a></a></a></a></a><br>
+<a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden">`NotFound`</a></a></a></a></a></a></a></a></a></a><br>
 <span style="margin-left: 30px">    Streamer or user not found</span><br>
 
 <hr>
@@ -1130,6 +1130,28 @@ color: str<br>
 <span style="margin-left: 30px">    The authors... color?</span><br>
 badges: list<br>
 <span style="margin-left: 30px">    Unknown</span><br>
+
+## Methods
+
+
+<a href="#Author.to_user" class="h3 hidden" id="Author.to_user">
+    <span class="async">
+        async def 
+    </span>
+    Author.to_user
+</a>
+<br>
+Fetches a user object for the author<br>
+<br>
+<span class="h4">Raises</span><br>
+<a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden"><a href="#HTTPException" class="hidden">`HTTPException`</a></a></a></a></a></a></a></a></a></a><br>
+<span style="margin-left: 30px">    Fetching the user failed</span><br>
+<a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden"><a href="#NotFound" class="hidden">`NotFound`</a></a></a></a></a></a></a></a></a></a><br>
+<span style="margin-left: 30px">    User Not Found</span><br>
+<br>
+<span class="h4">Returns</span><br>
+<a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden">`User`</a></a></a></a></a></a><br>
+<span style="margin-left: 30px">    The user</span><br>
 
 # Messages
 
@@ -1258,7 +1280,7 @@ username: str<br>
 This is a dataclass which reprsents the gift leaderboard for a kick streamer.<br>
 <br>
 <span class="h4">Attributes</span><br>
-streamer: <a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden">`User`</a></a></a></a></a><br>
+streamer: <a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden">`User`</a></a></a></a></a></a><br>
 <span style="margin-left: 30px">    The streamer that the leaderboard is for</span><br>
 this_week: list[<a href="#GiftLeaderboardEntry" class="hidden"><a href="#GiftLeaderboardEntry" class="hidden"><a href="#GiftLeaderboardEntry" class="hidden">`GiftLeaderboardEntry`</a></a></a>]<br>
 <span style="margin-left: 30px">    The gift leaderboard for the current week</span><br>
@@ -1288,7 +1310,7 @@ title: str<br>
 <span style="margin-left: 30px">    The livestream's title</span><br>
 created_at: datetime.datetime<br>
 <span style="margin-left: 30px">    When the livestream started</span><br>
-streamer: <a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden">`User`</a></a></a></a></a> | None<br>
+streamer: <a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden">`User`</a></a></a></a></a></a> | None<br>
 <span style="margin-left: 30px">    The livestream's streaner</span><br>
 
 
