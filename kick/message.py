@@ -9,27 +9,49 @@ from .utils import cached_property
 
 if TYPE_CHECKING:
     from .chatroom import Chatroom
-    from .types.message import (
-        AuthorPayload,
-        MessagePayload,
-        ReplyMetaData,
-        ReplyOriginalSender,
-    )
+    from .types.message import AuthorPayload, MessagePayload, ReplyMetaData
 
 __all__ = ("Author", "Message", "PartialMessage")
 
 
 class Author(BaseDataclass["AuthorPayload"]):
+    """
+    Represents the author of a message on kick
+
+    Attributes
+    -----------
+    id: int
+        The author's id
+    slug: str
+        The author's slug
+    color: str
+        The authors... color?
+    badges: list
+        Unknown
+    """
+
     @property
     def id(self) -> int:
+        """
+        The author's id
+        """
+
         return self._data["id"]
 
     @property
-    def username(self) -> str:
+    def slug(self) -> str:
+        """
+        The author's slug
+        """
+
         return self._data["slug"]
 
     @property
     def color(self) -> str:
+        """
+        The authors... color?
+        """
+
         return self._data["identity"]["color"]
 
     @property
@@ -41,23 +63,48 @@ class Author(BaseDataclass["AuthorPayload"]):
         return isinstance(other, self.__class__) and other.id == self.id
 
     def __str__(self) -> str:
-        return self.username
+        return self.slug
 
     def __repr__(self) -> str:
-        return f"<Author id={self.id!r} username={self.username!r}>"
+        return f"<Author id={self.id!r} slug={self.slug!r}>"
 
 
 class PartialMessage(HTTPDataclass["ReplyMetaData"]):
+    """
+    This represents a partial message. Mainly used as the message someone is replying too.
+
+    Attributes
+    -----------
+    id: str
+        The message's id
+    content: str
+        The message's content
+    author: `PartialUser`
+        The message's author
+    """
+
     @property
     def id(self) -> str:
+        """
+        The message's id
+        """
+
         return self._data["original_message"]["id"]
 
     @property
     def content(self) -> str:
+        """
+        The message's content
+        """
+
         return self._data["original_message"]["content"]
 
     @cached_property
     def author(self) -> PartialUser:
+        """
+        The message's author
+        """
+
         return PartialUser(data=self._data["original_sender"], http=self.http)
 
     def __eq__(self, other: object) -> bool:
@@ -68,16 +115,51 @@ class PartialMessage(HTTPDataclass["ReplyMetaData"]):
 
 
 class Message(HTTPDataclass["MessagePayload"]):
+    """
+    Represents a message sent on kick
+
+    Attributes
+    -----------
+    id: str
+        the message's id
+    is_reply: bool
+        If the message is replying to any message
+    references: `PartialMessage` | None
+        If the message is replying to a message, a `PartialMessage` object is returned. Otherwise None
+    chatroom_id: int
+        The id of the chatroom the message was sent in
+    chatroom: `Chatroom` | None
+        The chatroom the message was sent in.
+    content: str
+        The message's content
+    created_at: datetime.datetime
+        When the message was sent
+    author: `Author`
+        The message's author
+    """
+
     @property
     def id(self) -> str:
+        """
+        the message's id
+        """
+
         return self._data["id"]
 
     @cached_property
     def is_reply(self) -> bool:
+        """
+        If the message is replying to any message
+        """
+
         return bool(self._data.get("metadata"))
 
     @cached_property
     def references(self) -> PartialMessage | None:
+        """
+        If the message is replying to a message, a `PartialMessage` object is returned. Otherwise None
+        """
+
         data = self._data.get("metadata")
         if not data:
             return
@@ -85,22 +167,42 @@ class Message(HTTPDataclass["MessagePayload"]):
 
     @property
     def chatroom_id(self) -> int:
+        """
+        The id of the chatroom the message was sent in
+        """
+
         return self._data["chatroom_id"]
 
     @property
     def chatroom(self) -> Chatroom | None:
+        """
+        The chatroom the message was sent in.
+        """
+
         return self.http.client.get_chatroom(self.chatroom_id)
 
     @property
     def content(self) -> str:
+        """
+        The message's content
+        """
+
         return self._data["content"]
 
     @cached_property
     def created_at(self) -> datetime:
+        """
+        When the message was sent
+        """
+
         return datetime.fromisoformat(self._data["created_at"])
 
     @cached_property
     def author(self) -> Author:
+        """
+        The message's author
+        """
+
         return Author(data=self._data["sender"])
 
     def __eq__(self, other: object) -> bool:

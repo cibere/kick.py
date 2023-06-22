@@ -64,30 +64,76 @@ class ChatroomWebSocket:
 
 
 class BanEntry(HTTPDataclass["BanEntryPayload"]):
+    """
+    A dataclass which represents a ban entry on kick.
+    This includes timeouts.
+
+    Attributes
+    -----------
+    reason: str
+        The reason for the ban/timeout
+    is_permanent: bool
+        wether the ban is permanent. True == ban, false == timeout
+    user: `PartialUser`
+        The user the action was towards
+    banned_by: `PartialUser`
+        The responsible mod
+    expires_at: datetime.datetime | None
+        when the timeout expires at. None for a ban
+    banned_at: datetime.datetime
+        When the action happened
+    chatroom: Chatroom
+        The chatroom the action happened in
+    """
+
     chatroom: Chatroom
 
     @property
     def reason(self) -> str:
+        """
+        The reason for the ban/timeout
+        """
+
         return self._data["ban"]["reason"]
 
     @property
     def is_permanent(self) -> bool:
+        """
+        wether the ban is permanent. True == ban, false == timeout
+        """
+
         return self._data["ban"]["permanent"]
 
     @cached_property
     def user(self) -> PartialUser:
+        """
+        The user the action was towards
+        """
+
         return PartialUser(data=self._data["banned_user"], http=self.http)
 
     @cached_property
     def banned_by(self) -> PartialUser:
+        """
+        The responsible mod
+        """
+
         return PartialUser(data=self._data["banned_by"], http=self.http)
 
     @cached_property
     def banned_at(self) -> datetime:
+        """
+        When the action happened
+        """
+
         return datetime.fromisoformat(self._data["ban"]["banned_at"])
 
     @cached_property
     def expires_at(self) -> datetime | None:
+        """
+        when the timeout expires at. None for a ban
+        """
+
         return (
             None
             if self.is_permanent is True
@@ -114,50 +160,125 @@ class BanEntry(HTTPDataclass["BanEntryPayload"]):
 
 
 class Chatroom(HTTPDataclass["ChatroomPayload"]):
+    """
+    A dataclass that represents a kick chatroom.
+
+    Attributes
+    -----------
+    id: int
+        The chatroom's id
+    chatable_type: str
+        The chatroom's type
+    created_at: datetime.datetime
+        When the chatroom was created
+    updated_at: datetime.datetime
+        When the chatroom was last updated
+    chat_mode: ChatroomChatMode
+        The mode the chatroom is in
+    slowmode: bool
+        Wether slowmode is enabled
+    followers_mode: bool
+        Wether followers_mode is enabled
+    subscribers_mode: bool
+        Wether subscribers_mode is enabled
+    emotes_mode: bool
+        Wether emotes_mode is enabled
+    message_interval: int
+        Unknown on what this is
+    following_min_duration: int
+        Unknown on what this is
+    streamer: `User`
+        The user who this chatroom belongs to
+    """
+
     streamer: User
 
     @property
     def id(self) -> int:
+        """
+        The chatroom's id
+        """
+
         return self._data["id"]
 
     @property
     def chatable_type(self) -> str:
+        """
+        The chatroom's type
+        """
+
         return self._data["chatable_type"]
 
     @cached_property
     def created_at(self) -> datetime:
+        """
+        When the chatroom was created
+        """
+
         return datetime.fromisoformat(self._data["created_at"])
 
     @cached_property
     def updated_at(self) -> datetime:
+        """
+        When the chatroom was last updated
+        """
+
         return datetime.fromisoformat(self._data["updated_at"])
 
     @property
     def chat_mode(self) -> ChatroomChatMode:
+        """
+        The mode the chatroom is in
+        """
+
         return ChatroomChatMode(self._data["chat_mode"])
 
     @property
     def slowmode(self) -> bool:
+        """
+        Wether slowmode is enabled
+        """
+
         return self._data["slow_mode"]
 
     @property
     def followers_mode(self) -> bool:
+        """
+        Wether followers_mode is enabled
+        """
+
         return self._data["followers_mode"]
 
     @property
     def subscribers_mode(self) -> bool:
+        """
+        Wether subscribers_mode is enabled
+        """
+
         return self._data["subscribers_mode"]
 
     @property
     def emotes_mode(self) -> bool:
+        """
+        Wether emotes_mode is enabled
+        """
+
         return self._data["emotes_mode"]
 
     @property
     def message_interval(self) -> int:
+        """
+        Unknown on what this is
+        """
+
         return self._data["message_interval"]
 
     @property
     def following_min_duration(self) -> int:
+        """
+        Unknown on what this is
+        """
+
         return self._data["following_min_duration"]
 
     async def connect(self) -> None:

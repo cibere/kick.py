@@ -16,6 +16,11 @@ __all__ = ("Asset",)
 class Asset:
     """
     A class which repersents a kick asset.
+
+    Attributes
+    -----------
+    url: str
+        The asset's url
     """
 
     def __init__(self, *, url: str, http: HTTPClient) -> None:

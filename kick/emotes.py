@@ -13,28 +13,71 @@ __all__ = ("Emote",)
 
 
 class Emote(HTTPDataclass["EmotePayload"]):
+    """
+    A dataclass which represents an emote on kick.
+
+    Attributes
+    -----------
+    id: int
+        The emote's id
+    is_global: bool
+        If the emote is a global emote, or from a channel
+    channel_id: int | None
+        returns the channel_id the emote is from, or None if global
+    name: str
+        The emote's name
+    subscribers_only: bool
+        If you have to be a subscriber of the channel to use it. False for global emotes
+    source: `Asset`
+        An asset which contains the emote's source.
+    """
+
     @property
     def id(self) -> int:
+        """
+        The emote's id
+        """
+
         return self._data["id"]
 
     @cached_property
     def is_global(self) -> bool:
+        """
+        If the emote is a global emote, or from a channel
+        """
+
         return bool(self._data["channel_id"])
 
     @property
     def channel_id(self) -> int | None:
+        """
+        returns the channel_id the emote is from, or None if global
+        """
+
         return self._data["channel_id"]
 
     @property
     def name(self) -> str:
+        """
+        The emote's name
+        """
+
         return self._data["name"]
 
     @property
     def subscribers_only(self) -> bool:
+        """
+        If you have to be a subscriber of the channel to use it. False for global emotes
+        """
+
         return self._data["subscribers_only"]
 
     @cached_property
     def source(self) -> Asset:
+        """
+        An asset which contains the emote's source.
+        """
+
         return Asset._from_emote(self.id, http=self.http)
 
     def __eq__(self, other: object) -> bool:

@@ -17,22 +17,65 @@ __all__ = ("Chatter",)
 
 
 class Chatter(HTTPDataclass["ChatterPayload"]):
+    """
+    A dataclass which respresents a chatter on kick
+
+    Attributes
+    -----------
+    chatroom: Chatroom
+        The chatroom the chatter is in
+    id: int
+        The chatter's id
+    username: str
+        The chatter's username
+    slug: str
+        The chatter' slug
+    avatar: `Asset` | None
+        The chatter's avatar, if any
+    is_staff: bool
+        If the chatter is a staff member in the chatroom
+    is_owner: bool
+        If the chatter is the chatroom owner
+    is_mod: bool
+        If the chatter is a mod in the chatroom
+    badges: list[`ChatBadge`]
+        The chat badges the chatter has
+    following_since: datetime.datetime | None
+        when the chatter started following the streamer
+    """
+
     chatroom: Chatroom
 
     @property
     def id(self) -> int:
+        """
+        The chatter's id
+        """
+
         return self._data["id"]
 
     @property
     def username(self) -> str:
+        """
+        The chatter's username
+        """
+
         return self._data["username"]
 
     @property
     def slug(self) -> str:
+        """
+        The chatter' slug
+        """
+
         return self._data["slug"]
 
     @cached_property
-    def profile_pic(self) -> Asset | None:
+    def avatar(self) -> Asset | None:
+        """
+        The chatter's avatar, if any
+        """
+
         return (
             None
             if self._data["profile_pic"] is None
@@ -41,22 +84,42 @@ class Chatter(HTTPDataclass["ChatterPayload"]):
 
     @property
     def is_staff(self) -> bool:
+        """
+        If the chatter is a staff member in the chatroom
+        """
+
         return self._data["is_staff"]
 
     @property
-    def is_channel_owner(self) -> bool:
+    def is_owner(self) -> bool:
+        """
+        If the chatter is the chatroom owner
+        """
+
         return self._data["is_channel_owner"]
 
     @property
     def is_mod(self) -> bool:
+        """
+        If the chatter is a mod in the chatroom
+        """
+
         return self._data["is_moderator"]
 
     @cached_property
     def badges(self) -> list[ChatBadge]:
+        """
+        The chat badges the chatter has
+        """
+
         return [ChatBadge(data=c) for c in self._data["badges"]]
 
     @cached_property
     def following_since(self) -> datetime | None:
+        """
+        when the chatter started following the streamer
+        """
+
         raw = self._data["following_since"]
         if raw is None:
             return
@@ -186,4 +249,4 @@ class Chatter(HTTPDataclass["ChatterPayload"]):
         return self.username
 
     def __repr__(self) -> str:
-        return f"<Chatter id={self.id!r} username={self.username!r} profile_pic={self.profile_pic!r} is_staff={self.is_staff!r} is_channel_owner={self.is_channel_owner!r} is_mod={self.is_mod!r}>"
+        return f"<Chatter id={self.id!r} username={self.username!r} avatar={self.avatar!r} is_staff={self.is_staff!r} is_owner={self.is_owner!r} is_mod={self.is_mod!r}>"
