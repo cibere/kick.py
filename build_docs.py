@@ -70,6 +70,7 @@ def convert_file(fp: str) -> None:
             else:
                 doc = copy(item.__doc__ or "")
                 class_ = ""
+                tag = 3
 
                 if doc and doc.splitlines()[1].strip() == "|coro|":
                     prefix = "async def "
@@ -82,6 +83,7 @@ def convert_file(fp: str) -> None:
                     class_ = "at"
                 elif isinstance(item, Type):
                     prefix = "class "
+                    tag = 2
                 elif isinstance(item, Callable):
                     prefix = "def "
                 else:
@@ -91,7 +93,7 @@ def convert_file(fp: str) -> None:
                     class_ = prefix.split(" ")[0]
 
                 after = f"""
-                <a href="#{find}" class="h3 hidden" id="{find}">
+                <a href="#{find}" class="h{tag} hidden" id="{find}">
                     <span class="{class_}">
                         {prefix}
                     </span>
