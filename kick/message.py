@@ -3,8 +3,8 @@ from __future__ import annotations
 from datetime import datetime
 from typing import TYPE_CHECKING
 
-from .object import BaseDataclass, HTTPDataclass
-from .users import PartialUser
+from .object import HTTPDataclass
+from .users import PartialUser, User
 from .utils import cached_property
 
 if TYPE_CHECKING:
@@ -14,7 +14,7 @@ if TYPE_CHECKING:
 __all__ = ("Author", "Message", "PartialMessage")
 
 
-class Author(BaseDataclass["AuthorPayload"]):
+class Author(HTTPDataclass["AuthorPayload"]):
     """
     Represents the author of a message on kick
 
@@ -58,6 +58,27 @@ class Author(BaseDataclass["AuthorPayload"]):
     def badges(self) -> list:
         """THIS IS RAW DATA"""
         return self._data["identity"]["badges"]
+
+    async def to_user(self) -> User:
+        """
+        |coro|
+
+        Fetches a user object for the author
+
+        Raises
+        -----------
+        `HTTPException`
+            Fetching the user failed
+        `NotFound`
+            User Not Found
+
+        Returns
+        -----------
+        `User`
+            The user
+        """
+
+        return await self.http.client.fetch_user(self.slug)
 
     def __eq__(self, other: object) -> bool:
         return isinstance(other, self.__class__) and other.id == self.id
@@ -207,7 +228,7 @@ class Message(HTTPDataclass["MessagePayload"]):
         The message's author
         """
 
-        return Author(data=self._data["sender"])
+        return Author(data=self._data["sender"], http=self.http)
 
     def __eq__(self, other: object) -> bool:
         return isinstance(other, self.__class__) and other.id == self.id
