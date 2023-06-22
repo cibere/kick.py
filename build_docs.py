@@ -91,12 +91,15 @@ def convert_file(fp: str) -> None:
                     class_ = prefix.split(" ")[0]
 
                 after = f"""
-                <span class="h4" id="{find}">
-                    <span class="{class_}">
-                        {prefix}
+                <a href="#{find}">
+                    <span class="h4" id="{find}">
+                        <span class="{class_}">
+                            {prefix}
+                        </span>
+                        {find}
                     </span>
-                    {find}
-                </span>"""
+                </a>
+                """
                 text = text.replace("{{x}}".replace("x", find), textwrap.dedent(after))
 
         for find in H3_REGEX.findall(text):
