@@ -73,6 +73,46 @@ Chatroom | None<br>
 <span style="margin-left: 30px">    Either the chatroom, or None</span><br>
 
 
+<span class="h4" id="Client.get_partial_chatter">
+    <span class="def">
+        def 
+    </span>
+    Client.get_partial_chatter
+</span>
+<br>
+Gets a partial chatter instance by the streamer and chatter names provided.<br>
+<br>
+<span class="h4">Parameters</span><br>
+streamer_name: str<br>
+<span style="margin-left: 30px">    The streamer's username or slug</span><br>
+chatter_name: str<br>
+<span style="margin-left: 30px">    The chatter's username or slug</span><br>
+<br>
+<span class="h4">Returns</span><br>
+<a href="#PartialChatter" class="hidden">`PartialChatter`</a><br>
+<span style="margin-left: 30px">    The partial chatter</span><br>
+
+
+<span class="h4" id="Client.get_partial_user">
+    <span class="def">
+        def 
+    </span>
+    Client.get_partial_user
+</span>
+<br>
+Gets a partial user instance by the username and id provided.<br>
+<br>
+<span class="h4">Parameters</span><br>
+username: str<br>
+<span style="margin-left: 30px">    The user's name</span><br>
+id: int<br>
+<span style="margin-left: 30px">    The user's id</span><br>
+<br>
+<span class="h4">Returns</span><br>
+<a href="#PartialUser" class="hidden"><a href="#PartialUser" class="hidden"><a href="#PartialUser" class="hidden"><a href="#PartialUser" class="hidden">`PartialUser`</a></a></a></a><br>
+<span style="margin-left: 30px">    The partial user</span><br>
+
+
 <span class="h4" id="Client.event">
     <span class="at">
         @
@@ -530,9 +570,9 @@ reason: str<br>
 <span style="margin-left: 30px">    The reason for the ban/timeout</span><br>
 is_permanent: bool<br>
 <span style="margin-left: 30px">    wether the ban is permanent. True == ban, false == timeout</span><br>
-user: <a href="#PartialUser" class="hidden"><a href="#PartialUser" class="hidden"><a href="#PartialUser" class="hidden">`PartialUser`</a></a></a><br>
+user: <a href="#PartialUser" class="hidden"><a href="#PartialUser" class="hidden"><a href="#PartialUser" class="hidden"><a href="#PartialUser" class="hidden">`PartialUser`</a></a></a></a><br>
 <span style="margin-left: 30px">    The user the action was towards</span><br>
-banned_by: <a href="#PartialUser" class="hidden"><a href="#PartialUser" class="hidden"><a href="#PartialUser" class="hidden">`PartialUser`</a></a></a><br>
+banned_by: <a href="#PartialUser" class="hidden"><a href="#PartialUser" class="hidden"><a href="#PartialUser" class="hidden"><a href="#PartialUser" class="hidden">`PartialUser`</a></a></a></a><br>
 <span style="margin-left: 30px">    The responsible mod</span><br>
 expires_at: datetime.datetime | None<br>
 <span style="margin-left: 30px">    when the timeout expires at. None for a ban</span><br>
@@ -625,23 +665,11 @@ recent_categories: list[<a href="#Category" class="hidden"><a href="#Category" c
 
 ## Methods
 
+{{User.fetch_videos}}
+[[User.fetch_videos]]
 
-<span class="h4" id="User.fetch_videos">
-    <span class="def">
-        def 
-    </span>
-    User.fetch_videos
-</span>
-
-
-
-<span class="h4" id="User.fetch_gift_leaderboard">
-    <span class="def">
-        def 
-    </span>
-    User.fetch_gift_leaderboard
-</span>
-
+{{User.fetch_gift_leaderboard}}
+[[User.fetch_gift_leaderboard]]
 
 <hr>
 
@@ -687,6 +715,42 @@ username: str<br>
 
 {{Chatter}}
 [[Chatter]]
+
+## Methods
+
+{{Chatter.ban}}
+[[Chatter.ban]]
+
+{{Chatter.unban}}
+[[Chatter.unban]]
+
+{{Chatter.timeout}}
+[[Chatter.timeout]]
+
+{{Chatter.untimeout}}
+[[Chatter.untimeout]]
+
+<hr>
+
+{{PartialChatter}}
+[[PartialChatter]]
+
+## Methods
+
+{{PartialChatter.to_user}}
+[[PartialChatter.to_user]]
+
+{{PartialChatter.ban}}
+[[PartialChatter.ban]]
+
+{{PartialChatter.unban}}
+[[PartialChatter.unban]]
+
+{{PartialChatter.timeout}}
+[[PartialChatter.timeout]]
+
+{{PartialChatter.untimeout}}
+[[PartialChatter.untimeout]]
 
 <hr>
 
@@ -757,7 +821,7 @@ id: str<br>
 <span style="margin-left: 30px">    The message's id</span><br>
 content: str<br>
 <span style="margin-left: 30px">    The message's content</span><br>
-author: <a href="#PartialUser" class="hidden"><a href="#PartialUser" class="hidden"><a href="#PartialUser" class="hidden">`PartialUser`</a></a></a><br>
+author: <a href="#PartialUser" class="hidden"><a href="#PartialUser" class="hidden"><a href="#PartialUser" class="hidden"><a href="#PartialUser" class="hidden">`PartialUser`</a></a></a></a><br>
 <span style="margin-left: 30px">    The message's author</span><br>
 
 # Emote
