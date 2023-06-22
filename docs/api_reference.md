@@ -202,7 +202,7 @@ Closes the HTTPClient, no requests can be made after this.<br>
     Client.on_ready
 </a>
 <br>
-on_ready is an event that can be overriden with the <a href="#Client.event" class="hidden"><a href="#Client.event" class="hidden">`Client.event`</a></a> decorator or with a subclass.<br>
+on_ready is an event that can be overriden with the <a href="#Client.event" class="hidden"><a href="#Client.event" class="hidden"><a href="#Client.event" class="hidden">`Client.event`</a></a></a> decorator or with a subclass.<br>
 This is called after the client has started the websocket and is receiving events.<br>
 
 
@@ -213,12 +213,27 @@ This is called after the client has started the websocket and is receiving event
     Client.on_message
 </a>
 <br>
-on_ready is an event that can be overriden with the <a href="#Client.event" class="hidden"><a href="#Client.event" class="hidden">`Client.event`</a></a> decorator or with a subclass.<br>
+on_ready is an event that can be overriden with the <a href="#Client.event" class="hidden"><a href="#Client.event" class="hidden"><a href="#Client.event" class="hidden">`Client.event`</a></a></a> decorator or with a subclass.<br>
 This is called when a message is received over the websocket<br>
 <br>
 <span class="h4">Parameters</span><br>
-message: Message<br>
+message: <a href="#Message" class="hidden">`Message`</a><br>
 <span style="margin-left: 30px">    The message that was received</span><br>
+
+
+<a href="#Client.on_livestream_start" class="h3 hidden" id="Client.on_livestream_start">
+    <span class="async">
+        async def 
+    </span>
+    Client.on_livestream_start
+</a>
+<br>
+on_livestream_start is an event that can be overriden with the <a href="#Client.event" class="hidden"><a href="#Client.event" class="hidden"><a href="#Client.event" class="hidden">`Client.event`</a></a></a> decorator or with a subclass.<br>
+This is called when a livestream starts<br>
+<br>
+<span class="h4">Parameters</span><br>
+livestream: <a href="#PartialLivestream" class="hidden">`PartialLivestream`</a><br>
+<span style="margin-left: 30px">    The livestream</span><br>
 
 <hr>
 
@@ -451,7 +466,7 @@ message_interval: int<br>
 <span style="margin-left: 30px">    Unknown on what this is</span><br>
 following_min_duration: int<br>
 <span style="margin-left: 30px">    Unknown on what this is</span><br>
-streamer: <a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden">`User`</a></a></a><br>
+streamer: <a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden">`User`</a></a></a></a><br>
 <span style="margin-left: 30px">    The user who this chatroom belongs to</span><br>
 
 ## Methods
@@ -940,7 +955,7 @@ Fetches a user object for the chatter<br>
 <span style="margin-left: 30px">    User not found</span><br>
 <br>
 <span class="h4">Returns</span><br>
-<a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden">`User`</a></a></a><br>
+<a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden">`User`</a></a></a></a><br>
 <span style="margin-left: 30px">    The user</span><br>
 
 
@@ -1174,7 +1189,7 @@ username: str<br>
 This is a dataclass which reprsents the gift leaderboard for a kick streamer.<br>
 <br>
 <span class="h4">Attributes</span><br>
-streamer: <a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden">`User`</a></a></a><br>
+streamer: <a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden">`User`</a></a></a></a><br>
 <span style="margin-left: 30px">    The streamer that the leaderboard is for</span><br>
 this_week: list[<a href="#GiftLeaderboardEntry" class="hidden"><a href="#GiftLeaderboardEntry" class="hidden"><a href="#GiftLeaderboardEntry" class="hidden">`GiftLeaderboardEntry`</a></a></a>]<br>
 <span style="margin-left: 30px">    The gift leaderboard for the current week</span><br>
@@ -1183,7 +1198,29 @@ this_month: list[<a href="#GiftLeaderboardEntry" class="hidden"><a href="#GiftLe
 all_time: list[<a href="#GiftLeaderboardEntry" class="hidden"><a href="#GiftLeaderboardEntry" class="hidden"><a href="#GiftLeaderboardEntry" class="hidden">`GiftLeaderboardEntry`</a></a></a>]<br>
 <span style="margin-left: 30px">    The gift leaderboard for all time</span><br>
 
-# Livestream
+# Livestreams
+
+
+<a href="#PartialLivestream" class="h2 hidden" id="PartialLivestream">
+    <span class="class">
+        class 
+    </span>
+    PartialLivestream
+</a>
+<br>
+A dataclass which represents a partial livestream on kick.<br>
+<br>
+<span class="h4">Attributes</span><br>
+id: int<br>
+<span style="margin-left: 30px">    The livestream's id</span><br>
+channel_id: int<br>
+<span style="margin-left: 30px">    The livestream's channel id</span><br>
+title: str<br>
+<span style="margin-left: 30px">    The livestream's title</span><br>
+created_at: datetime.datetime<br>
+<span style="margin-left: 30px">    When the livestream started</span><br>
+streamer: <a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden">`User`</a></a></a></a> | None<br>
+<span style="margin-left: 30px">    The livestream's streaner</span><br>
 
 
 <a href="#Livestream" class="h2 hidden" id="Livestream">
