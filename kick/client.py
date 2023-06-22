@@ -5,9 +5,10 @@ import logging
 from logging import getLogger
 from typing import TYPE_CHECKING, Any, Callable, Coroutine, TypeVar
 
+from .chatter import PartialChatter
 from .http import HTTPClient
 from .message import Message
-from .user import ClientUser, User
+from .users import ClientUser, PartialUser, User
 from .utils import MISSING, decorator, setup_logging
 
 if TYPE_CHECKING:
@@ -115,6 +116,48 @@ class Client:
         """
 
         return self._chatrooms.get(chatroom_id)
+
+    def get_partial_user(self, *, username: str, id: int) -> PartialUser:
+        """
+        Gets a partial user instance by the username and id provided.
+
+        Parameters
+        -----------
+        username: str
+            The user's name
+        id: int
+            The user's id
+
+        Returns
+        -----------
+        `PartialUser`
+            The partial user
+        """
+
+        return PartialUser(username=username, id=id, http=self.http)
+
+    def get_partial_chatter(
+        self, *, streamer_name: str, chatter_name: str
+    ) -> PartialChatter:
+        """
+        Gets a partial chatter instance by the streamer and chatter names provided.
+
+        Parameters
+        -----------
+        streamer_name: str
+            The streamer's username or slug
+        chatter_name: str
+            The chatter's username or slug
+
+        Returns
+        -----------
+        `PartialChatter`
+            The partial chatter
+        """
+
+        return PartialChatter(
+            streamer_name=streamer_name, chatter_name=chatter_name, http=self.http
+        )
 
     async def fetch_user(self, name: str, /) -> User:
         """
