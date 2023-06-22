@@ -29,7 +29,7 @@ Kick.py _will_ be an async api wrapper for [kick.com](https://kick.com) once the
 
 > !**This project is still in early alpha, so it might not work as expected but here is how installation goes.**
 
-Install from github \*requires [git](https://git-scm.com/) to be installed\*
+Install from github _requires [git](https://git-scm.com/) to be installed_
 
 ```bash
 pip install git+https://github.com/cibere/kick.py
