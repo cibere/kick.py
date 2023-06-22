@@ -9,7 +9,7 @@ from .users import User
 from .utils import cached_property
 
 if TYPE_CHECKING:
-    from .chatroom import Chatroom
+    from .chatroom import Chatroom, PartialChatroom
     from .http import HTTPClient
     from .types.user import ChatterPayload
 
@@ -182,13 +182,17 @@ class Chatter(PartialChatter):
     """
 
     def __init__(
-        self, *, data: ChatterPayload, http: HTTPClient, chatroom: Chatroom
+        self,
+        *,
+        data: ChatterPayload,
+        http: HTTPClient,
+        chatroom: Chatroom | PartialChatroom,
     ) -> None:
         self._data = data
-        self.chatroom: Chatroom = chatroom
+        self.chatroom: Chatroom | PartialChatroom = chatroom
 
         super().__init__(
-            streamer_name=chatroom.streamer.username,
+            streamer_name=chatroom.streamer_name,
             chatter_name=data["username"],
             http=http,
         )

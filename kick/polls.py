@@ -7,7 +7,7 @@ from .object import HTTPDataclass
 from .utils import cached_property
 
 if TYPE_CHECKING:
-    from .chatroom import Chatroom
+    from .chatroom import Chatroom, PartialChatroom
     from .types.chatroom import CreatePollPayload, PollOptionPayload
 
 __all__ = ("PollOption", "Poll")
@@ -29,7 +29,7 @@ class PollOption(HTTPDataclass["PollOptionPayload"]):
         The amount of votes the option has
     """
 
-    chatroom: Chatroom
+    chatroom: Chatroom | PartialChatroom
 
     @property
     def id(self) -> int:
@@ -69,7 +69,7 @@ class PollOption(HTTPDataclass["PollOptionPayload"]):
             Deleting the poll failed
         """
 
-        await self.http.vote_for_poll(self.chatroom.streamer.slug, self.id)
+        await self.http.vote_for_poll(self.chatroom.streamer_name, self.id)
 
 
 class Poll(HTTPDataclass["CreatePollPayload"]):
@@ -94,7 +94,7 @@ class Poll(HTTPDataclass["CreatePollPayload"]):
         When the poll ends at
     """
 
-    chatroom: Chatroom
+    chatroom: Chatroom | PartialChatroom
 
     @property
     def title(self) -> str:
@@ -167,4 +167,4 @@ class Poll(HTTPDataclass["CreatePollPayload"]):
             Deleting the poll failed
         """
 
-        await self.http.delete_poll(self.chatroom.streamer.slug)
+        await self.http.delete_poll(self.chatroom.streamer_name)
