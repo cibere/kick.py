@@ -1,26 +1,15 @@
 from __future__ import annotations
 
 import json
-from datetime import datetime
-from typing import TYPE_CHECKING, AsyncIterator
+from typing import TYPE_CHECKING
 
 from aiohttp import ClientWebSocketResponse as WebSocketResponse
 
-from .emotes import Emote
-from .enums import ChatroomChatMode
 from .livestream import PartialLivestream
 from .message import Message
-from .object import HTTPDataclass
-from .polls import Poll
-from .users import PartialUser
-from .utils import cached_property
 
 if TYPE_CHECKING:
-    from .chatter import Chatter
     from .http import HTTPClient
-    from .types.chatroom import BanEntryPayload
-    from .types.user import ChatroomPayload
-    from .users import User
 
 __all__ = ()
 
