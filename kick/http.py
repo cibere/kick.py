@@ -3,7 +3,7 @@ from __future__ import annotations
 import asyncio
 import json
 import logging
-from typing import TYPE_CHECKING, Any, Coroutine, TypeVar, Union, Optional
+from typing import TYPE_CHECKING, Any, Coroutine, Optional, TypeVar, Union
 
 from aiohttp import ClientConnectionError, ClientResponse, ClientSession
 
@@ -31,6 +31,7 @@ if TYPE_CHECKING:
         ChatroomRulesPayload,
         CreatePollPayload,
         DeletePollPayload,
+        EditChatroomSettingsPayload,
         GetBannedUsersPayload,
         UnbanChatterPayload,
     )
@@ -423,7 +424,38 @@ class HTTPClient:
             Route("GET", f"/channels/{streamer}/polls"),
         )
 
-    def edit_chatroom(self, streamer: str, payload: dict) -> Response:
+    def edit_chatroom(
+        self,
+        streamer: str,
+        followers_only_mode: Optional[bool] = None,
+        emotes_only_mode: Optional[bool] = None,
+        subscribers_only_mode: Optional[bool] = None,
+        slow_mode_enabled: Optional[bool] = None,
+        slow_mode_interval: Optional[int] = None,
+        following_min_duration: Optional[int] = None,
+    ) -> Response[EditChatroomSettingsPayload]:
+        payload = {}
+
+        if followers_only_mode is not None:
+            payload["followers_mode"] = followers_only_mode
+
+        if emotes_only_mode is not None:
+            payload["emotes_mode"] = emotes_only_mode
+
+        if subscribers_only_mode is not None:
+            payload["subscribers_mode"] = subscribers_only_mode
+
+        if slow_mode_enabled is not None:
+            payload["slow_mode"] = slow_mode_enabled
+            if slow_mode_enabled and slow_mode_interval is not None:
+                payload["message_interval"] = slow_mode_interval
+
+        if following_min_duration is not None:
+            payload["following_min_duration "] = following_min_duration
+
+        if not payload:
+            raise ValueError("No valid parameters provided for chatroom editing.")
+
         return self.request(
             Route("PUT", f"/channels/{streamer}/chatroom"),
             json=payload,

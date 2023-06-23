@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from datetime import datetime
-from typing import TYPE_CHECKING, AsyncIterator
+from typing import TYPE_CHECKING, AsyncIterator, Optional
 
 from kick.http import HTTPClient
 
@@ -123,7 +123,6 @@ class BanEntry(HTTPDataclass["BanEntryPayload"]):
         """
 
         await self.http.unban_user(self.chatroom.streamer_name, self.user.username)
-
 
 
 class PartialChatroom:
@@ -343,10 +342,6 @@ class PartialChatroom:
                 yield Emote(data=emote, http=self.http)
 
 
-
-
-
-
 class Chatroom(PartialChatroom):
     """
     A dataclass that represents a kick chatroom.
@@ -482,21 +477,43 @@ class Chatroom(PartialChatroom):
 
         return self._data["following_min_duration"]
 
-    async def edit(self) -> None:
+    async def edit(
+        self,
+        *,
+        followers_only_mode: Optional[bool] = None,
+        emotes_only_mode: Optional[bool] = None,
+        subscribers_only_mode: Optional[bool] = None,
+        slow_mode_enabled: Optional[bool] = None,
+        slow_mode_interval: Optional[int] = None,
+    ) -> None:
         """
         |coro|
 
-        Edits the chatroom.
+        Edits the chatroom's settings
+
+        Parameters
+        -----------
+        followers_only_mode: Optional[bool] = None
+            Lets you enable/disable followers only mode.
+        emotes_only_mode: Optional[bool] = None
+            Lets you enable/disable emotes only mode.
+        subscribers_only_mode: Optional[bool] = None
+            Lets you enable/disable subscribers only mode.
+        slow_mode_enabled: Optional[bool] = None
+            Lets you enable/disable slow_mode only mode.
+        slow_mode_interval: Optional[int] = None
+            Lets you set the slow mode interval
 
         Raises
         -----------
-        NotFound
+        `NotFound`
             Streamer not found
-        HTTPException
+        `HTTPException`
             Editing the chatroom failed
-        Forbidden
+        `Forbidden`
             You are unauthorized from editing the chatroom.
         """
+
         streamer_name = self.streamer_name
 
         payload = {}
@@ -519,11 +536,8 @@ class Chatroom(PartialChatroom):
 
         await self.http.edit_chatroom(streamer_name, payload)
 
-
     def __eq__(self, other: object) -> bool:
         return isinstance(other, self.__class__) and other.id == self.id
 
     def __repr__(self) -> str:
         return f"<{self.__class__.__name__} id={self.id!r} streamer={self.streamer_name!r}>"
-
-
