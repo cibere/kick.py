@@ -93,3 +93,23 @@ class CreatePollDataPayload(TypedDict):
 class CreatePollPayload(TypedDict):
     status: StatusPayload
     data: CreatePollDataPayload
+
+
+class ChatroomSettingPayload(TypedDict):
+    enabled: bool
+
+
+class FollowersModeStatusPayload(ChatroomSettingPayload):
+    min_duration: int
+
+
+class SlowModeStatusPayload(ChatroomSettingPayload):
+    message_interval: int
+
+
+class EditChatroomSettingsPayload(TypedDict):
+    id: int
+    slow_mode: SlowModeStatusPayload
+    subscribers_mode: ChatroomSettingPayload
+    followers_mode: FollowersModeStatusPayload
+    emotes_mode: ChatroomSettingPayload
