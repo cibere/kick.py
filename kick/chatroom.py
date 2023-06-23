@@ -31,7 +31,7 @@ class BanEntry(HTTPDataclass["BanEntryPayload"]):
     reason: str
         The reason for the ban/timeout
     is_permanent: bool
-        wether the ban is permanent. True == ban, false == timeout
+        Whether the ban is permanent. True == ban, false == timeout
     user: `PartialUser`
         The user the action was towards
     banned_by: `PartialUser`
@@ -57,7 +57,7 @@ class BanEntry(HTTPDataclass["BanEntryPayload"]):
     @property
     def is_permanent(self) -> bool:
         """
-        wether the ban is permanent. True == ban, false == timeout
+        Whether the ban is permanent. True == ban, false == timeout
         """
 
         return self._data["ban"]["permanent"]
@@ -97,7 +97,7 @@ class BanEntry(HTTPDataclass["BanEntryPayload"]):
     @cached_property
     def expires_at(self) -> datetime | None:
         """
-        when the timeout expires at. None for a ban
+        When the timeout expires at. None for a ban
         """
 
         return (
@@ -123,6 +123,7 @@ class BanEntry(HTTPDataclass["BanEntryPayload"]):
         """
 
         await self.http.unban_user(self.chatroom.streamer_name, self.user.username)
+
 
 
 class PartialChatroom:
@@ -156,7 +157,7 @@ class PartialChatroom:
         """
         |coro|
 
-        disconnects to the chatroom, making it so you can no longer listen for the messages.
+        Disconnects to the chatroom, making it so you can no longer listen for the messages.
         """
 
         await self.http.ws.unsubscribe_to_chatroom(self.id)
@@ -319,7 +320,7 @@ class PartialChatroom:
         Parameters
         -----------
         include_global: bool = False
-            Wether to include global emotes or not
+            Whether to include global emotes or not
 
         Raises
         -----------
@@ -341,11 +342,9 @@ class PartialChatroom:
             for emote in data[1]["emotes"]:
                 yield Emote(data=emote, http=self.http)
 
-    def __eq__(self, other: object) -> bool:
-        return isinstance(other, self.__class__) and other.id == self.id
 
-    def __repr__(self) -> str:
-        return f"<{self.__class__.__name__} id={self.id!r} streamer={self.streamer_name!r}>"
+
+
 
 
 class Chatroom(PartialChatroom):
@@ -365,15 +364,17 @@ class Chatroom(PartialChatroom):
     chat_mode: ChatroomChatMode
         The mode the chatroom is in
     slowmode: bool
-        Wether slowmode is enabled
+        Whether slowmode is enabled
     followers_mode: bool
-        Wether followers_mode is enabled
+        Whether followers_mode is enabled
     subscribers_mode: bool
-        Wether subscribers_mode is enabled
+        Whether subscribers_mode is enabled
     emotes_mode: bool
-        Wether emotes_mode is enabled
+        Whether emotes_mode is enabled
+    slow_mode: bool
+        Whether slow_mode is enabled
     message_interval: int
-        Unknown on what this is
+        Interval at which messages can be sent when slow_mode is enabled
     following_min_duration: int
         Unknown on what this is
     streamer: `User`
@@ -428,7 +429,7 @@ class Chatroom(PartialChatroom):
     @property
     def slowmode(self) -> bool:
         """
-        Wether slowmode is enabled
+        Whether slowmode is enabled
         """
 
         return self._data["slow_mode"]
@@ -436,7 +437,7 @@ class Chatroom(PartialChatroom):
     @property
     def followers_mode(self) -> bool:
         """
-        Wether followers_mode is enabled
+        Whether followers_mode is enabled
         """
 
         return self._data["followers_mode"]
@@ -444,7 +445,7 @@ class Chatroom(PartialChatroom):
     @property
     def subscribers_mode(self) -> bool:
         """
-        Wether subscribers_mode is enabled
+        Whether subscribers_mode is enabled
         """
 
         return self._data["subscribers_mode"]
@@ -452,15 +453,23 @@ class Chatroom(PartialChatroom):
     @property
     def emotes_mode(self) -> bool:
         """
-        Wether emotes_mode is enabled
+        Whether emotes_mode is enabled
         """
 
         return self._data["emotes_mode"]
 
     @property
+    def slow_mode(self) -> bool:
+        """
+        Whether slow_mode is enabled
+        """
+
+        return self._data["slow_mode"]
+
+    @property
     def message_interval(self) -> int:
         """
-        Unknown on what this is
+        Interval at which messages can be sent when slow_mode is enabled
         """
 
         return self._data["message_interval"]
@@ -472,3 +481,49 @@ class Chatroom(PartialChatroom):
         """
 
         return self._data["following_min_duration"]
+
+    async def edit(self) -> None:
+        """
+        |coro|
+
+        Edits the chatroom.
+
+        Raises
+        -----------
+        NotFound
+            Streamer not found
+        HTTPException
+            Editing the chatroom failed
+        Forbidden
+            You are unauthorized from editing the chatroom.
+        """
+        streamer_name = self.streamer_name
+
+        payload = {}
+        if self.followers_mode is not None:
+            payload["followers_mode"] = self.followers_mode
+
+        if self.emotes_mode is not None:
+            payload["emotes_mode"] = self.emotes_mode
+
+        if self.subscribers_mode is not None:
+            payload["subscribers_mode"] = self.subscribers_mode
+
+        if self.slow_mode is not None:
+            payload["slow_mode"] = self.slow_mode
+            if self.slow_mode and self.message_interval is not None:
+                payload["message_interval"] = self.message_interval
+
+        if not payload:
+            raise ValueError("No valid parameters provided for chatroom editing.")
+
+        await self.http.edit_chatroom(streamer_name, payload)
+
+
+    def __eq__(self, other: object) -> bool:
+        return isinstance(other, self.__class__) and other.id == self.id
+
+    def __repr__(self) -> str:
+        return f"<{self.__class__.__name__} id={self.id!r} streamer={self.streamer_name!r}>"
+
+
