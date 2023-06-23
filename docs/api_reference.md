@@ -518,7 +518,7 @@ Connects to the chatroom, making it so you can now listen for the messages.<br>
     PartialChatroom.disconnect
 </a>
 <br>
-disconnects to the chatroom, making it so you can no longer listen for the messages.<br>
+Disconnects to the chatroom, making it so you can no longer listen for the messages.<br>
 
 
 <a href="#PartialChatroom.send" class="h3 hidden" id="PartialChatroom.send">
@@ -658,7 +658,7 @@ Fetches the emotes from the current chatroom.<br>
 <br>
 <span class="h4">Parameters</span><br>
 include_global: bool = False<br>
-<span style="margin-left: 30px">    Wether to include global emotes or not</span><br>
+<span style="margin-left: 30px">    Whether to include global emotes or not</span><br>
 <br>
 <span class="h4">Raises</span><br>
 NotFound<br>
@@ -692,15 +692,17 @@ updated_at: datetime.datetime<br>
 chat_mode: ChatroomChatMode<br>
 <span style="margin-left: 30px">    The mode the chatroom is in</span><br>
 slowmode: bool<br>
-<span style="margin-left: 30px">    Wether slowmode is enabled</span><br>
+<span style="margin-left: 30px">    Whether slowmode is enabled</span><br>
 followers_mode: bool<br>
-<span style="margin-left: 30px">    Wether followers_mode is enabled</span><br>
+<span style="margin-left: 30px">    Whether followers_mode is enabled</span><br>
 subscribers_mode: bool<br>
-<span style="margin-left: 30px">    Wether subscribers_mode is enabled</span><br>
+<span style="margin-left: 30px">    Whether subscribers_mode is enabled</span><br>
 emotes_mode: bool<br>
-<span style="margin-left: 30px">    Wether emotes_mode is enabled</span><br>
+<span style="margin-left: 30px">    Whether emotes_mode is enabled</span><br>
+slow_mode: bool<br>
+<span style="margin-left: 30px">    Whether slow_mode is enabled</span><br>
 message_interval: int<br>
-<span style="margin-left: 30px">    Unknown on what this is</span><br>
+<span style="margin-left: 30px">    Interval at which messages can be sent when slow_mode is enabled</span><br>
 following_min_duration: int<br>
 <span style="margin-left: 30px">    Unknown on what this is</span><br>
 streamer: <a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden"><a href="#User" class="hidden">`User`</a></a></a></a></a></a></a><br>
@@ -726,7 +728,7 @@ Connects to the chatroom, making it so you can now listen for the messages.<br>
     Chatroom.disconnect
 </a>
 <br>
-disconnects to the chatroom, making it so you can no longer listen for the messages.<br>
+Disconnects to the chatroom, making it so you can no longer listen for the messages.<br>
 
 
 <a href="#Chatroom.send" class="h3 hidden" id="Chatroom.send">
@@ -866,7 +868,7 @@ Fetches the emotes from the current chatroom.<br>
 <br>
 <span class="h4">Parameters</span><br>
 include_global: bool = False<br>
-<span style="margin-left: 30px">    Wether to include global emotes or not</span><br>
+<span style="margin-left: 30px">    Whether to include global emotes or not</span><br>
 <br>
 <span class="h4">Raises</span><br>
 NotFound<br>
@@ -895,7 +897,7 @@ This includes timeouts.<br>
 reason: str<br>
 <span style="margin-left: 30px">    The reason for the ban/timeout</span><br>
 is_permanent: bool<br>
-<span style="margin-left: 30px">    wether the ban is permanent. True == ban, false == timeout</span><br>
+<span style="margin-left: 30px">    Whether the ban is permanent. True == ban, false == timeout</span><br>
 user: <a href="#PartialUser" class="hidden"><a href="#PartialUser" class="hidden"><a href="#PartialUser" class="hidden"><a href="#PartialUser" class="hidden">`PartialUser`</a></a></a></a><br>
 <span style="margin-left: 30px">    The user the action was towards</span><br>
 banned_by: <a href="#PartialUser" class="hidden"><a href="#PartialUser" class="hidden"><a href="#PartialUser" class="hidden"><a href="#PartialUser" class="hidden">`PartialUser`</a></a></a></a><br>
