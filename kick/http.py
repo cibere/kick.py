@@ -3,7 +3,7 @@ from __future__ import annotations
 import asyncio
 import json
 import logging
-from typing import TYPE_CHECKING, Any, Coroutine, TypeVar, Union
+from typing import TYPE_CHECKING, Any, Coroutine, TypeVar, Union, Optional
 
 from aiohttp import ClientConnectionError, ClientResponse, ClientSession
 
@@ -421,6 +421,12 @@ class HTTPClient:
     def get_poll(self, streamer: str) -> Response[CreatePollPayload]:
         return self.request(
             Route("GET", f"/channels/{streamer}/polls"),
+        )
+
+    def edit_chatroom(self, streamer: str, payload: dict) -> Response:
+        return self.request(
+            Route("PUT", f"/channels/{streamer}/chatroom"),
+            json=payload,
         )
 
     def reply_to_message(
