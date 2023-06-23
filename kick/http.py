@@ -72,14 +72,18 @@ async def json_or_text(response: ClientResponse, /) -> Union[dict[str, Any], str
 
 async def error_or_text(data: Union[dict, str]) -> str:
     if isinstance(data, dict):
-        return data["message"]
-    else:
-        return data
+        if "status" in data:
+            return data["status"]["message"]
+        elif "error" in data:
+            return data["error"]
+        elif "message" in data:
+            return data["message"]
+    return f"{data}"
 
 
 async def error_or_nothing(data: Union[dict, str]) -> str:
     if isinstance(data, dict):
-        return data["message"]
+        return await error_or_text(data)
     else:
         return ""
 
