@@ -83,7 +83,7 @@ class BanEntry(HTTPDataclass["BanEntryPayload"]):
         return PartialUser(
             id=self._data["banned_by"]["id"],
             username=self._data["banned_by"]["username"],
-            http=self.http,
+            http=self.htt,
         )
 
     @cached_property
