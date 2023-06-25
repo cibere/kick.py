@@ -382,14 +382,6 @@ class Chatroom(PartialChatroom):
         self.streamer = streamer
 
     @property
-    def id(self) -> int:
-        """
-        The chatroom's id
-        """
-
-        return self._data["id"]
-
-    @property
     def chatable_type(self) -> str:
         """
         The chatroom's type
