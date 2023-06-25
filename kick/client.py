@@ -5,6 +5,7 @@ import logging
 from logging import getLogger
 from typing import TYPE_CHECKING, Any, Callable, Coroutine, TypeVar
 
+from .chatroom import Chatroom, PartialChatroom
 from .chatter import PartialChatter
 from .http import HTTPClient
 from .livestream import PartialLivestream
@@ -14,8 +15,6 @@ from .utils import MISSING, decorator, setup_logging
 
 if TYPE_CHECKING:
     from typing_extensions import Self
-
-    from .chatroom import Chatroom, PartialChatroom
 
 EventT = TypeVar("EventT", bound=Callable[..., Coroutine[Any, Any, None]])
 LOGGER = getLogger(__name__)
