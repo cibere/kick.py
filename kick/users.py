@@ -260,8 +260,8 @@ class User:
     @cached_property
     def online_banner(self) -> Asset | None:
         return (
-            Asset(url=self._data["banner_image"]["url"], http=self.http)
-            if self._data["banner_image"]
+            Asset(url=self._data["banner_image"]["url"], http=self.http)  # type: ignore
+            if self._data.get("banner_image", None)
             else None
         )
 
