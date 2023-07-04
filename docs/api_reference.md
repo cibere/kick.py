@@ -23,6 +23,8 @@ whitelisted: bool = False<br>
 <span style="margin-left: 30px">    If you have been api whitelisted. If set to True, the bypass script will not be used.</span><br>
 bypass_port: int = 9090<br>
 <span style="margin-left: 30px">    The port the bypass script is running on. Defaults to 9090</span><br>
+bypass_host: str = "http://localhost"<br>
+<span style="margin-left: 30px">    The host of the bypass script.</span><br>
 <br>
 <span class="h4">Attributes</span><br>
 user: ClientUser | None<br>
