@@ -121,6 +121,7 @@ class HTTPClient:
         self.user_agent = f"Kick.py V{__version__} (github.com/cibere/kick.py)"
 
         self.bypass_port = client._options.get("bypass_port", 9090)
+        self.bypass_host = client._options.get("bypass_host", "http://localhost")
         self.whitelisted = client._options.get("whitelisted", False)
 
     async def regen_token_coro(self) -> None:
@@ -239,7 +240,7 @@ class HTTPClient:
                     route.method,
                     url
                     if self.whitelisted is True
-                    else f"http://localhost:{self.bypass_port}/request?url={url}",
+                    else f"{self.bypass_host}:{self.bypass_port}/request?url={url}",
                     headers=headers,
                     cookies=cookies,
                     **kwargs,
