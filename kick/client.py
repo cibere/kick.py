@@ -83,6 +83,8 @@ class Client:
         If you have been api whitelisted. If set to True, the bypass script will not be used.
     bypass_port: int = 9090
         The port the bypass script is running on. Defaults to 9090
+    bypass_host: str = "http://localhost"
+        The host of the bypass script.
 
     Attributes
     -----------
