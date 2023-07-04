@@ -4,6 +4,8 @@
 </head>
 # Kick.py
 
+<a href="https://discord.gg/AGuwPB2XfV"><img src="https://discord.com/api/guilds/1046574190242828349/embed.png" alt="Discord Server Invite"></a>
+
 Kick.py _will_ be an async api wrapper for [kick.com](https://kick.com) once the api is public, and is documented. Though once its there, I will gladly accept help in making this :D
 
 ## Table Of Contents
