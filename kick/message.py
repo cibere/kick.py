@@ -45,6 +45,14 @@ class Author(HTTPDataclass["AuthorPayload"]):
         """
 
         return self._data["slug"]
+    
+    @property
+    def username(self) -> str:
+        """
+        The author's username
+        """
+
+        return self._data["username"]
 
     @property
     def color(self) -> str:
