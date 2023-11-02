@@ -107,6 +107,14 @@ class Livestream(HTTPDataclass["LivestreamPayload"]):
         return self._data["slug"]
 
     @property
+    def username(self) -> str:
+        """
+        The streamer's username
+        """
+
+        return self._data["username"]
+
+    @property
     def channel_id(self) -> int:
         """
         probably the streamer's id or the chatroom id
