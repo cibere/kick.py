@@ -24,6 +24,8 @@ class Author(HTTPDataclass["AuthorPayload"]):
         The author's id
     slug: str
         The author's slug
+    username: str
+        The author's username
     color: str
         The authors... color?
     badges: list
