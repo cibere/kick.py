@@ -1318,6 +1318,8 @@ id: int<br>
 <span style="margin-left: 30px">    The author's id</span><br>
 slug: str<br>
 <span style="margin-left: 30px">    The author's slug</span><br>
+username: str<br>
+<span style="margin-left: 30px">    The author's username</span><br>
 color: str<br>
 <span style="margin-left: 30px">    The authors... color?</span><br>
 badges: list<br>
@@ -1520,6 +1522,8 @@ id: int<br>
 <span style="margin-left: 30px">    probably the livestream's id</span><br>
 slug: str<br>
 <span style="margin-left: 30px">    The streamer's slug</span><br>
+username: str<br>
+<span style="margin-left: 30px">    The streamer's username</span><br>
 channel_id: int<br>
 <span style="margin-left: 30px">    probably the streamer's id or the chatroom id</span><br>
 created_at: datetime.datetime<br>
