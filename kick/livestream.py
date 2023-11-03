@@ -62,6 +62,8 @@ class Livestream(HTTPDataclass["LivestreamPayload"]):
         probably the livestream's id
     slug: str
         The streamer's slug
+    username: str
+        The streamer's username
     channel_id: int
         probably the streamer's id or the chatroom id
     created_at: datetime.datetime
@@ -105,6 +107,14 @@ class Livestream(HTTPDataclass["LivestreamPayload"]):
         """
 
         return self._data["slug"]
+
+    @property
+    def username(self) -> str:
+        """
+        The streamer's username
+        """
+
+        return self._data["username"]
 
     @property
     def channel_id(self) -> int:
