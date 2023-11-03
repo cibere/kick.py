@@ -24,6 +24,8 @@ class Author(HTTPDataclass["AuthorPayload"]):
         The author's id
     slug: str
         The author's slug
+    username: str
+        The author's username
     color: str
         The authors... color?
     badges: list
@@ -45,6 +47,14 @@ class Author(HTTPDataclass["AuthorPayload"]):
         """
 
         return self._data["slug"]
+    
+    @property
+    def username(self) -> str:
+        """
+        The author's username
+        """
+
+        return self._data["username"]
 
     @property
     def color(self) -> str:
