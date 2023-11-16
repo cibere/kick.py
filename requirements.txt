@@ -1,2 +1,2 @@
+curl_cffi
 aiohttp
-click

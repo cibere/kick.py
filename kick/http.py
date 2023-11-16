@@ -4,8 +4,8 @@ import asyncio
 import json
 import logging
 from typing import TYPE_CHECKING, Any, Coroutine, Optional, TypeVar, Union
-
-from aiohttp import ClientConnectionError, ClientResponse, ClientSession
+from curl_cffi.requests import AsyncSession as CurlSession, Response as CurlResponse
+import aiohttp
 
 from . import __version__
 from .errors import (
@@ -57,8 +57,8 @@ class="w-64 lg:w-[526px]"
 """.strip()
 
 
-async def json_or_text(response: ClientResponse, /) -> Union[dict[str, Any], str]:
-    text = await response.text()
+def json_or_text(response: CurlResponse, /) -> Union[dict[str, Any], str]:
+    text = response.text
     try:
         try:
             return json.loads(text)
@@ -108,7 +108,8 @@ class Route:
 
 class HTTPClient:
     def __init__(self, client: Client):
-        self.__session: ClientSession = MISSING
+        self.__curl_session: CurlSession = MISSING
+        self.__aiohttp_session: aiohttp.ClientSession = MISSING
         self.ws: PusherWebSocket = MISSING
         self.client = client
 
@@ -118,11 +119,7 @@ class HTTPClient:
         self.__regex_token_task: asyncio.Task | None = None
         self._credentials: Credentials | None = None
 
-        self.user_agent = f"Kick.py V{__version__} (github.com/cibere/kick.py)"
-
-        self.bypass_port = client._options.get("bypass_port", 9090)
-        self.bypass_host = client._options.get("bypass_host", "http://localhost")
-        self.whitelisted = client._options.get("whitelisted", False)
+        self.user_agent = client._options.get("user_agent", f"Kick.py V{__version__} (github.com/cibere/kick.py)")
 
     async def regen_token_coro(self) -> None:
         await asyncio.sleep(2419200)  # 28 days just to be safe
@@ -132,8 +129,10 @@ class HTTPClient:
 
     async def close(self) -> None:
         LOGGER.info("Closing HTTP Client...")
-        if self.__session is not MISSING:
-            await self.__session.close()
+        if self.__curl_session is not MISSING:
+            self.__curl_session.close()
+        if self.__aiohttp_session is not MISSING:
+            await self.__aiohttp_session.close()
         if self.ws is not MISSING:
             await self.ws.close()
 
@@ -192,12 +191,12 @@ class HTTPClient:
 
     async def start(self) -> None:
         LOGGER.debug(
-            f"Starting HTTP client. Whitelisted: {self.whitelisted}, Bypass Port: {self.bypass_port}"
+            f"Starting HTTP client."
         )
-        if self.__session is MISSING:
-            self.__session = ClientSession()
+        if self.__aiohttp_session is MISSING:
+            self.__aiohttp_session = aiohttp.ClientSession()
 
-        actual_ws = await self.__session.ws_connect(
+        actual_ws = await self.__aiohttp_session.ws_connect(
             f"wss://ws-us2.pusher.com/app/eb1d5f283081a78b932c?protocol=7&client=js&version=7.6.0&flash=false"
         )
         self.ws = PusherWebSocket(actual_ws, http=self)
@@ -205,8 +204,8 @@ class HTTPClient:
         await self.ws.start()
 
     async def request(self, route: Route, **kwargs) -> Any:
-        if self.__session is MISSING:
-            self.__session = ClientSession()
+        if self.__curl_session is MISSING:
+            self.__curl_session = CurlSession()
 
         headers = kwargs.pop("headers", {})
         headers["User-Agent"] = self.user_agent
@@ -225,7 +224,7 @@ class HTTPClient:
         if "json" in kwargs:
             headers["Content-Type"] = "application/json"
 
-        res: ClientResponse | None = None
+        res: CurlResponse | None = None
         data: str | dict | None = None
 
         for current_try in range(3):
@@ -235,32 +234,22 @@ class HTTPClient:
             LOGGER.debug(
                 f"Making request to {route.method} {url}. headers: {headers}, params: {kwargs.get('params', None)}, json: {kwargs.get('json', None)}"
             )
-            try:
-                res = await self.__session.request(
-                    route.method,
-                    url
-                    if self.whitelisted is True
-                    else f"{self.bypass_host}:{self.bypass_port}/request?url={url}",
-                    headers=headers,
-                    cookies=cookies,
-                    **kwargs,
-                )
-            except ClientConnectionError:
-                if self.whitelisted is True:
-                    raise InternalKickException("Could Not Connect To Kick") from None
-                else:
-                    raise CloudflareBypassException(
-                        "Could Not Connect To Bypass Script"
-                    ) from None
+            res = await self.__curl_session.request(
+                route.method,
+                url,
+                headers=headers,
+                cookies=cookies,
+                **kwargs,
+            )
 
             if res is not None:
                 self.xsrf_token = str(
                     getattr(res.cookies.get("XSRF-TOKEN", MISSING), "value", MISSING)
                 )
 
-                data = await json_or_text(res)
+                data = json_or_text(res)
 
-                if res.status == 429:
+                if res.status_code == 429:
                     self.globally_locked = True
                     LOGGER.warning(
                         f"We have been ratelimited at {route.method} {route.url}. Waiting five seconds before trying again...",
@@ -271,13 +260,13 @@ class HTTPClient:
                 else:
                     self.globally_locked = False
 
-                if 300 > res.status >= 200:
+                if 300 > res.status_code >= 200:
                     return data
 
-                match res.status:
+                match res.status_code:
                     case 400:
                         error = await error_or_text(data)
-                        raise HTTPException(error, res.status)
+                        raise HTTPException(error, res.status_code)
                     case 403:
                         raise Forbidden(await error_or_nothing(data))
                     case 404:
@@ -300,10 +289,10 @@ class HTTPClient:
         if res is not None and data is not None:
             txt = await error_or_text(data)
 
-            if res.status >= 500:
+            if res.status_code >= 500:
                 raise InternalKickException(txt)
 
-            raise HTTPException(txt, res.status)
+            raise HTTPException(txt, res.status_code)
 
         raise RuntimeError("Unreachable situation occured in http handling")
 
@@ -489,20 +478,20 @@ class HTTPClient:
         return self.request(Route.root("GET", "/api/v1/user"))
 
     async def get_asset(self, url: str) -> bytes:
-        if self.__session is MISSING:
-            self.__session = ClientSession()
+        if self.__curl_session is MISSING:
+            self.__curl_session = CurlSession()
 
-        res = await self.__session.request("GET", url)
-        match res.status:
+        res = await self.__curl_session.request("GET", url)
+        match res.status_code:
             case 200:
-                return await res.read()
+                return res.content
             case 403:
                 raise Forbidden()
             case 404:
                 raise NotFound("Asset Not Found")
             case 500:
-                data = await json_or_text(res)
+                data = json_or_text(res)
                 error = await error_or_text(data)
                 raise InternalKickException(error)
             case other:
-                raise HTTPException(await res.text(), other)
+                raise HTTPException(res.text, other)
