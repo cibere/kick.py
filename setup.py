@@ -44,6 +44,7 @@ if version.endswith(("a", "b", "rc")):
     except Exception:
         pass
 
+PACKAGES = ["kick", "kick.types"]
 
 setuptools.setup(
     name="kick.py",
@@ -57,7 +58,7 @@ setuptools.setup(
     version="0.0.1",
     python_requires=">=3.11",
     install_requires=REQUIREMENTS,
-    packages=["kick"],
+    packages=PACKAGES,
     description="",
     long_description=LONG_DESCRIPTION,
     long_description_content_type="text/markdown",
