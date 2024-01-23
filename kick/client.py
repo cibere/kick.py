@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING, Any, Callable, Coroutine, TypeVar
 from .chatroom import Chatroom, PartialChatroom
 from .chatter import PartialChatter
 from .http import HTTPClient
-from .livestream import PartialLivestream
+from .livestream import PartialLivestream, Endstream
 from .message import Message
 from .users import ClientUser, PartialUser, User
 from .utils import MISSING, decorator, setup_logging
@@ -329,7 +329,18 @@ class Client:
         livestream: `PartialLivestream`
             The livestream
         """
+    async def on_livestream_end(self, StreamEnd: Endstream) -> None:
+        """
+        |coro|
 
+        on_livestream_start is an event that can be overriden with the `Client.event` decorator or with a subclass.
+        This is called when a user that is being watched starts streaming
+
+        Parameters
+        -----------
+        livestream: `PartialLivestream`
+            The livestream
+        """
     async def on_follow(self, streamer: User) -> None:
         """
         |coro|

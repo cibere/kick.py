@@ -11,10 +11,10 @@ from .utils import cached_property
 if TYPE_CHECKING:
     from .http import HTTPClient
     from .types.videos import LivestreamPayload
-    from .types.ws import PartialLivestreamPayload
+    from .types.ws import PartialLivestreamPayload, StreamEndPayload
     from .users import User
 
-__all__ = ("Livestream", "PartialLivestream")
+__all__ = ("Livestream", "PartialLivestream", "Endstream")
 
 
 class PartialLivestream:
@@ -229,3 +229,30 @@ class Livestream(HTTPDataclass["LivestreamPayload"]):
 
     def __repr__(self) -> str:
         return f"<Livestream id={self.id} title={self.title} streamer={self.slug}>"
+
+class Endstream:
+    """
+    A dataclass which represents a livestream end on kick.
+
+    Attributes
+    -----------
+    id: int
+        The livestream's id
+    channel_id: int
+        The livestream's channel id
+    title: str
+        The livestream's title
+    streamer: `User` | None
+        The livestream's streaner
+    """
+
+    def __init__(self, *, data: StreamEndPayload, http: HTTPClient) -> None:
+        self._data = data
+        self.http = http
+
+        self.id: int = data["id"]
+        self.channel_id: int = data["channel"]["id"]
+
+    @property
+    def streamer(self) -> User | None:
+        return self.http.client._watched_users.get(self.channel_id)

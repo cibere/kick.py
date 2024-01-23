@@ -18,3 +18,9 @@ class FollowersUpdatePayload(TypedDict):
     username: None | str
     created_at: int
     followed: bool
+
+
+class StreamEndPayload(TypedDict):
+    id: int
+    channel_id: int
+    is_banned: bool
