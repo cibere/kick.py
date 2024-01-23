@@ -24,3 +24,4 @@ class StreamEndPayload(TypedDict):
     id: int
     channel_id: int
     is_banned: bool
+    username: None | str
