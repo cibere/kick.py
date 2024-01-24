@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING
 
 from aiohttp import ClientWebSocketResponse as WebSocketResponse
 
-from .livestream import PartialLivestream, Endstream
+from .livestream import PartialLivestream, LivestreamEnd
 from .message import Message
 
 if TYPE_CHECKING:
@@ -47,7 +47,7 @@ class PusherWebSocket:
 
                 self.http.client.dispatch(event, user)
             case "App\\Events\\StopStreamBroadcast":
-                Endstreams = Endstream(data=data["livestream"], http=self.http)
+                Endstreams = LivestreamEnd(data=data["livestream"], http=self.http)
                 self.http.client.dispatch("livestream_end", Endstreams)
     async def start(self) -> None:
         while not self.ws.closed:

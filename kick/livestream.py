@@ -11,7 +11,7 @@ from .utils import cached_property
 if TYPE_CHECKING:
     from .http import HTTPClient
     from .types.videos import LivestreamPayload
-    from .types.ws import PartialLivestreamPayload, StreamEndPayload
+    from .types.ws import PartialLivestreamPayload, LivestreamEndPayload
     from .users import User
 
 __all__ = ("Livestream", "PartialLivestream", "Endstream")
@@ -230,7 +230,7 @@ class Livestream(HTTPDataclass["LivestreamPayload"]):
     def __repr__(self) -> str:
         return f"<Livestream id={self.id} title={self.title} streamer={self.slug}>"
 
-class Endstream:
+class LivestreamEnd(HTTPDataclass["LivestreamEndPayload"]):
     """
     A dataclass which represents a livestream end on kick.
 
@@ -245,13 +245,12 @@ class Endstream:
     streamer: `User` | None
         The livestream's streaner
     """
-
-    def __init__(self, *, data: StreamEndPayload, http: HTTPClient) -> None:
-        self._data = data
-        self.http = http
-
-        self.id: int = data["id"]
-        self.channel_id: int = data["channel"]["id"]
+    @property
+    def id(self) -> int:
+        return self._data["id"]
+    @property
+    def channel_id(self):
+        return self._data["channel"]["id"]
 
     @property
     def streamer(self) -> User | None:

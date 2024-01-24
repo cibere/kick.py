@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING, Any, Callable, Coroutine, TypeVar
 from .chatroom import Chatroom, PartialChatroom
 from .chatter import PartialChatter
 from .http import HTTPClient
-from .livestream import PartialLivestream, Endstream
+from .livestream import PartialLivestream, LivestreamEnd
 from .message import Message
 from .users import ClientUser, PartialUser, User
 from .utils import MISSING, decorator, setup_logging
@@ -329,7 +329,7 @@ class Client:
         livestream: `PartialLivestream`
             The livestream
         """
-    async def on_livestream_end(self, StreamEnd: Endstream) -> None:
+    async def on_livestream_end(self, livestream_End: LivestreamEnd) -> None:
         """
         |coro|
 
