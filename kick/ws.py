@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING
 
 from aiohttp import ClientWebSocketResponse as WebSocketResponse
 
-from .livestream import PartialLivestream
+from .livestream import PartialLivestream, LivestreamEnd
 from .message import Message
 
 if TYPE_CHECKING:
@@ -31,10 +31,10 @@ class PusherWebSocket:
 
         match raw_data["event"]:
             case "App\\Events\\ChatMessageEvent":
-                msg = Message(data=data["livestream"], http=self.http)
+                msg = Message(data=data, http=self.http)
                 self.http.client.dispatch("message", msg)
             case "App\\Events\\StreamerIsLive":
-                livestream = PartialLivestream(data=data, http=self.http)
+                livestream = PartialLivestream(data=data["livestream"], http=self.http)
                 self.http.client.dispatch("livestream_start", livestream)
             case "App\\Events\\FollowersUpdated":
                 user = self.http.client._watched_users[data["channel_id"]]
@@ -46,7 +46,9 @@ class PusherWebSocket:
                     user._data["followers_count"] -= 1
 
                 self.http.client.dispatch(event, user)
-
+            case "App\\Events\\StopStreamBroadcast":
+                livestream = LivestreamEnd(data=data["livestream"], http=self.http)
+                self.http.client.dispatch("livestream_end", livestream)
     async def start(self) -> None:
         while not self.ws.closed:
             await self.poll_event()

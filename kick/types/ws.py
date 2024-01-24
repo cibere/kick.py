@@ -18,3 +18,8 @@ class FollowersUpdatePayload(TypedDict):
     username: None | str
     created_at: int
     followed: bool
+
+
+class LivestreamEndPayload(TypedDict):
+    id: int
+    channel_id: int
