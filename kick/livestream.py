@@ -14,7 +14,7 @@ if TYPE_CHECKING:
     from .types.ws import PartialLivestreamPayload, LivestreamEndPayload
     from .users import User
 
-__all__ = ("Livestream", "PartialLivestream", "Endstream")
+__all__ = ("Livestream", "PartialLivestream", "LivestreamEnd")
 
 
 class PartialLivestream:
