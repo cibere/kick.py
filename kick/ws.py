@@ -47,8 +47,8 @@ class PusherWebSocket:
 
                 self.http.client.dispatch(event, user)
             case "App\\Events\\StopStreamBroadcast":
-                Endstreams = LivestreamEnd(data=data["livestream"], http=self.http)
-                self.http.client.dispatch("livestream_end", Endstreams)
+                livestream = LivestreamEnd(data=data["livestream"], http=self.http)
+                self.http.client.dispatch("livestream_end", livestream)
     async def start(self) -> None:
         while not self.ws.closed:
             await self.poll_event()

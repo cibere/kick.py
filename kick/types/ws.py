@@ -23,4 +23,3 @@ class FollowersUpdatePayload(TypedDict):
 class LivestreamEndPayload(TypedDict):
     id: int
     channel_id: int
-    is_banned: bool
