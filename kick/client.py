@@ -10,12 +10,8 @@ from .chatter import PartialChatter
 from .http import HTTPClient
 from .livestream import PartialLivestream
 from .message import Message
-<<<<<<< HEAD
-from .users import ClientUser, PartialUser, User, StreamInfo
-=======
+from .users import ClientUser, PartialUser, User, StreamInfo, DestinationInfo
 from .categories import CategorySearch
-from .users import ClientUser, PartialUser, User, DestinationInfo
->>>>>>> main
 from .utils import MISSING, decorator, setup_logging
 
 if TYPE_CHECKING:
