@@ -229,7 +229,7 @@ class Client:
 
         Returns
         -----------
-        DesetinationInfo
+        DestinationInfo
         """
 
         data = await self.http.get_stream_destination_url_and_key()
