@@ -94,7 +94,7 @@ def create_file(port: int, fp: str, proxy: str | None) -> None:
 @bypass.command(help="installs the script's dependencys", name="install")
 def install_dependencys() -> None:
     print("Running go init...")
-    subprocess.run(["/usr/bin/go", "mod", "init", "example/project-name"])
+    subprocess.run(["go", "mod", "init", "example/project-name"])
     print("Installing CycleTLS...")
     subprocess.run(["go", "get", "github.com/Danny-Dasilva/CycleTLS/cycletls"])
     print("Installing gin...")
