@@ -141,6 +141,12 @@ class ClientUserPayload(TypedDict):
     roles: list  # Unknown
     profilepic: str | None
 
+class StreamInfoPayload(TypedDict):
+    title: str
+    subcategoryId: int
+    category: str
+    language: str
+    is_mature: bool
 
 class DestinationInfoPayload(TypedDict):
     rtmp_publish_path: str
