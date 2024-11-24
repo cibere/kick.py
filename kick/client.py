@@ -10,6 +10,7 @@ from .chatter import PartialChatter
 from .http import HTTPClient
 from .livestream import PartialLivestream
 from .message import Message
+from .categories import CategorySearch
 from .users import ClientUser, PartialUser, User, DestinationInfo
 from .utils import MISSING, decorator, setup_logging
 
@@ -213,6 +214,20 @@ class Client:
         user = User(data=data, http=self.http)
         return user
 
+    async def search_categories(self, query: str, /) -> CategorySearch:
+        """
+        |coro|
+
+        Searches for categories/games on Kick.
+
+        Parameters
+        -----------
+        query: str
+            The search query string
+        """
+        data = await self.http.search_categories(query)
+        return CategorySearch(data=data)
+
     async def fetch_stream_url_and_key(self) -> DestinationInfo:
         """
         |coro|
@@ -223,6 +238,13 @@ class Client:
         Raises
         -----------
         HTTPException
+            Search request failed
+
+        Returns
+        -----------
+        SearchResponse
+            The search results containing matching categories
+
             Fetching Failed
         Forbidden
             You are not authenticated
