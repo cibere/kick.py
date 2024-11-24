@@ -247,29 +247,35 @@ class HTTPClient:
                 await asyncio.sleep(2)
 
             # Handle URL construction
-            from urllib.parse import quote
+            # Handle URL construction
+            from urllib.parse import quote, urlencode
             final_url = url
             
+            # Build the complete URL with parameters
             if 'params' in kwargs:
-                from urllib.parse import urlencode
                 params = kwargs['params']
                 params_str = urlencode(params, quote_via=quote)
                 final_url = f"{url}?{params_str}"
-                
+            
+            # If using bypass, encode the complete URL
             if not self.whitelisted:
                 final_url = f"{self.bypass_host}:{self.bypass_port}/request?url={quote(final_url)}"
-                
+            
             LOGGER.debug(f"Using {'bypass' if not self.whitelisted else 'direct'} URL: {final_url}")
             
-            # Remove params from kwargs if we're using bypass to prevent duplication
-            if not self.whitelisted and kwargs.get('_bypass_params'):
-                kwargs.pop('params', None)
-            kwargs.pop('_bypass_params', None)
-            
-            
-            LOGGER.debug(
-                f"Making request to {route.method} {final_url}. headers: {headers}, params: {kwargs.get('params', None)}, json: {kwargs.get('json', None)}"
-            )
+            # Use the final_url instead of the original url
+            try:
+                res = await self.__session.request(
+                    route.method,
+                    final_url,
+                    headers=headers,
+                    cookies=cookies,
+                    **{k: v for k, v in kwargs.items() if k != 'params'}
+                )
+            except ClientConnectionError:
+                LOGGER.debug(
+                    f"Making request to {route.method} {final_url}. headers: {headers}, params: {kwargs.get('params', None)}, json: {kwargs.get('json', None)}"
+                )
             try:
                 res = await self.__session.request(
                     route.method,
