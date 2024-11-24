@@ -495,13 +495,6 @@ class HTTPClient:
         return self.request(Route.root("GET", "/api/v1/user"))
 
     def get_stream_destination_url_and_key(self) -> Response[DestinationInfoPayload]:
-        """Gets the authenticated user's stream URL and key.
-
-        Returns
-        -------
-        StreamURLKeyPayload
-            The stream URL and key information containing the publish URL and token
-        """
         return self.request(Route.root("GET", "/stream/publish_token"))
 
     async def get_asset(self, url: str) -> bytes:
