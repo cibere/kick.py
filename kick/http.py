@@ -494,7 +494,7 @@ class HTTPClient:
     def get_me(self) -> Response[ClientUserPayload]:
         return self.request(Route.root("GET", "/api/v1/user"))
 
-    def get_stream_destination_url_and_key(self) -> Response[DestinationInfoPayload]:
+    def fetch_stream_destination_url_and_key(self) -> Response[DestinationInfoPayload]:
         return self.request(Route.root("GET", "/stream/publish_token"))
 
     async def get_asset(self, url: str) -> bytes:
