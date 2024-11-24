@@ -19,8 +19,9 @@ if TYPE_CHECKING:
     from .types.user import ClientUserPayload, InnerUser, UserPayload
     from .types.user import DestinationInfoPayload, StreamInfoPayload
 
-__all__ = ("StreamInfo", "Socials", "PartialUser", "User", "ClientUser")
-
+__all__ = ("DestinationInfo", "StreamInfo", 
+           "Socials", "PartialUser", "User", 
+           "ClientUser")
 
 class StreamInfo(BaseDataclass["StreamInfoPayload"]):
     """
@@ -57,11 +58,6 @@ class StreamInfo(BaseDataclass["StreamInfoPayload"]):
     def category(self) -> str:
         """The stream category"""
         return self._data["category"]
-
-__all__ = ("DestinationInfo", "StreamInfo", 
-           "Socials", "PartialUser", "User", 
-           "ClientUser")
-
 
 class DestinationInfo(BaseDataclass["DestinationInfoPayload"]):
     """

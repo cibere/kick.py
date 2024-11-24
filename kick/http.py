@@ -225,9 +225,15 @@ class HTTPClient:
 
         print(route.url)
         headers = kwargs.pop("headers", {})
-        headers["User-Agent"] = self.user_agent
-        headers["Accepts"] = "application/json"
-        headers["X-TYPESENSE-API-KEY"] = "nXIMW0iEN6sMujFYjFuhdrSwVow3pDQu"
+        # Base headers
+        base_headers = {
+            "User-Agent": self.user_agent,
+            "Accept": "application/json",
+            "X-TYPESENSE-API-KEY": "nXIMW0iEN6sMujFYjFuhdrSwVow3pDQu"
+        }
+        # Update with any route-specific headers
+        base_headers.update(headers)
+        headers = base_headers
 
         cookies = kwargs.pop("cookies", {})
 
@@ -299,6 +305,7 @@ class HTTPClient:
                 )
 
                 data = await json_or_text(res)
+                print(data)
 
                 if res.status == 429:
                     self.globally_locked = True
@@ -529,7 +536,27 @@ class HTTPClient:
         return self.request(Route.root("GET", "/api/v1/user"))
 
     def set_stream_info(self, info) -> Response[StreamInfoPayload]:
-       return self.request(Route.root("PUT", "/stream/info"), json=info) 
+       """Update stream information
+       
+       Parameters
+       ----------
+       info : dict
+           The stream information to update
+           
+       Returns
+       -------
+       StreamInfoPayload
+           The updated stream information
+       """
+       return self.request(
+           Route.root("PUT", "/stream/info"), 
+           json=info,
+           headers={
+               "Accept": "application/json",
+               "Content-Type": "application/json",
+               "X-Requested-With": "XMLHttpRequest"
+           }
+       )
 
     def search_categories(self, query: str) -> Response[CategorySearchResponse]:
         """Search for categories/games on Kick"""
