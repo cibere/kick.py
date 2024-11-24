@@ -45,6 +45,7 @@ if TYPE_CHECKING:
     )
     from .types.user import ChatterPayload, ClientUserPayload, UserPayload
     from .types.videos import GetVideosPayload
+    from .types.search import CategorySearchResponse
 
     T = TypeVar("T")
     Response = Coroutine[Any, Any, T]
@@ -90,6 +91,7 @@ async def error_or_nothing(data: Union[dict, str]) -> str:
 
 class Route:
     DOMAIN: str = "https://kick.com"
+    SEARCH_DOMAIN: str = "https://search.kick.com"
     BASE: str = f"{DOMAIN}/api/v2"
 
     def __init__(self, method: str, path: str) -> None:
@@ -102,7 +104,15 @@ class Route:
         self = cls.__new__(cls)
         self.path = path
         self.method = method
-        self.url = self.DOMAIN + path
+        self.url = cls.DOMAIN + path
+        return self
+
+    @classmethod
+    def search(cls, method: str, path: str) -> Self:
+        self = cls.__new__(cls)
+        self.path = path
+        self.method = method
+        self.url = cls.SEARCH_DOMAIN + path
         return self
 
 
@@ -488,6 +498,14 @@ class HTTPClient:
     def get_me(self) -> Response[ClientUserPayload]:
         return self.request(Route.root("GET", "/api/v1/user"))
 
+    def search_categories(self, query: str) -> Response[CategorySearchResponse]:
+        """Search for categories/games on Kick"""
+        return self.request(
+            Route.search(
+                "GET",
+                f"/collections/subcategory_index/documents/search?q={query}&collections=subcategory&preset=category_list"
+            )
+        )
     async def get_asset(self, url: str) -> bytes:
         if self.__session is MISSING:
             self.__session = ClientSession()
