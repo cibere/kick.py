@@ -50,7 +50,6 @@ if TYPE_CHECKING:
         DestinationInfoPayload,
     )
     from .types.videos import GetVideosPayload
-    from .types.search import CategorySearchResponse
 
     T = TypeVar("T")
     Response = Coroutine[Any, Any, T]
@@ -222,7 +221,6 @@ class HTTPClient:
         if self.__session is MISSING:
             self.__session = ClientSession()
 
-        print(route.url)
         headers = kwargs.pop("headers", {})
         headers["User-Agent"] = self.user_agent
         headers["Accepts"] = "application/json"
