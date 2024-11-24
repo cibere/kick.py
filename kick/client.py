@@ -10,7 +10,8 @@ from .chatter import PartialChatter
 from .http import HTTPClient
 from .livestream import PartialLivestream
 from .message import Message
-from .users import ClientUser, PartialUser, User
+from .users import ClientUser, PartialUser, User, StreamInfo, DestinationInfo
+from .categories import CategorySearch
 from .utils import MISSING, decorator, setup_logging
 
 if TYPE_CHECKING:
@@ -212,6 +213,58 @@ class Client:
         data = await self.http.get_user(name)
         user = User(data=data, http=self.http)
         return user
+
+    async def set_stream_info(self, title, language, category, is_mature) -> StreamInfo:
+        data = await self.http.set_stream_info({
+            "title": title,
+            "language": language,
+            "is_mature": is_mature,
+            "category": category
+            })
+        return StreamInfo(data=data)
+
+    async def search_categories(self, query: str, /) -> CategorySearch:
+        """
+        |coro|
+
+        Searches for categories/games on Kick.
+
+        Parameters
+        -----------
+        query: str
+            The search query string
+        """
+        data = await self.http.search_categories(query)
+        return CategorySearch(data=data)
+
+    async def fetch_stream_url_and_key(self) -> DestinationInfo:
+        """
+        |coro|
+
+        Fetches your stream URL and stream key from the API.
+        You must be authenticated to use this endpoint.
+
+        Raises
+        -----------
+        HTTPException
+            Search request failed
+
+        Returns
+        -----------
+        SearchResponse
+            The search results containing matching categories
+
+            Fetching Failed
+        Forbidden
+            You are not authenticated
+
+        Returns
+        -----------
+        str
+        """
+
+        data = await self.http.get_stream_destination_url_and_key()
+        return DestinationInfo(data=data)
 
     def dispatch(self, event_name: str, *args, **kwargs) -> None:
         event_name = f"on_{event_name}"
