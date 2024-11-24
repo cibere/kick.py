@@ -50,6 +50,7 @@ if TYPE_CHECKING:
         StreamInfoPayload,
         DestinationInfoPayload,
     )
+    from .types.categories import CategorySearchResponse
     from .types.videos import GetVideosPayload
 
     T = TypeVar("T")
@@ -218,6 +219,18 @@ class HTTPClient:
         self.client.dispatch("ready")
         await self.ws.start()
 
+    def _build_url(self, base_url: str, params: Optional[dict[str, Any]] = None) -> str:
+        """Helper to build URL with parameters and handle bypass if needed"""
+        if params:
+            from urllib.parse import urlencode
+            base_url = f"{base_url}?{urlencode(params)}"
+        
+        if not self.whitelisted:
+            from urllib.parse import quote
+            return f"{self.bypass_host}:{self.bypass_port}/request?url={quote(base_url)}"
+        return base_url
+
+
     async def request(self, route: Route, **kwargs) -> Any:
         if self.__session is MISSING:
             self.__session = ClientSession()
@@ -256,12 +269,13 @@ class HTTPClient:
             LOGGER.debug(
                 f"Making request to {route.method} {url}. headers: {headers}, params: {kwargs.get('params', None)}, json: {kwargs.get('json', None)}"
             )
+            params = kwargs.pop('params', None)
+            final_url = self._build_url(url, params)
+            
             try:
                 res = await self.__session.request(
                     route.method,
-                    url
-                    if self.whitelisted is True
-                    else f"{self.bypass_host}:{self.bypass_port}/request?url={url}",
+                    final_url,
                     headers=headers,
                     cookies=cookies,
                     **kwargs,
@@ -544,7 +558,6 @@ class HTTPClient:
         return self.request(
             Route.search("GET", "/collections/subcategory_index/documents/search"),
             params=params,
-            _bypass_params=True  # Flag to prevent param duplication
         )
 
     def get_stream_destination_url_and_key(self) -> Response[DestinationInfoPayload]:
