@@ -43,7 +43,12 @@ if TYPE_CHECKING:
         ReplyOriginalSender,
         V1MessageSentPayload,
     )
-    from .types.user import ChatterPayload, ClientUserPayload, UserPayload
+    from .types.user import (
+        ChatterPayload,
+        ClientUserPayload,
+        UserPayload,
+        DestinationInfoPayload,
+    )
     from .types.videos import GetVideosPayload
     from .types.search import CategorySearchResponse
 
@@ -61,10 +66,9 @@ class="w-64 lg:w-[526px]"
 async def json_or_text(response: ClientResponse, /) -> Union[dict[str, Any], str]:
     text = await response.text()
     try:
-        try:
-            return json.loads(text)
-        except json.JSONDecodeError:
-            pass
+        return json.loads(text)
+    except json.JSONDecodeError:
+        pass
     except KeyError:
         pass
 
@@ -271,7 +275,11 @@ class HTTPClient:
             try:
                 res = await self.__session.request(
                     route.method,
-                    final_url,
+                    (
+                        url
+                        if self.whitelisted is True
+                        else f"{self.bypass_host}:{self.bypass_port}/request?url={url}"
+                    ),
                     headers=headers,
                     cookies=cookies,
                     **kwargs,
@@ -532,6 +540,17 @@ class HTTPClient:
             params=params,
             _bypass_params=True  # Flag to prevent param duplication
         )
+
+    def get_stream_destination_url_and_key(self) -> Response[DestinationInfoPayload]:
+        """Gets the authenticated user's stream URL and key.
+
+        Returns
+        -------
+        StreamURLKeyPayload
+            The stream URL and key information containing the publish URL and token
+        """
+        return self.request(Route.root("GET", "/stream/publish_token"))
+
     async def get_asset(self, url: str) -> bytes:
         if self.__session is MISSING:
             self.__session = ClientSession()

@@ -10,8 +10,8 @@ from .chatter import PartialChatter
 from .http import HTTPClient
 from .livestream import PartialLivestream
 from .message import Message
-from .users import ClientUser, PartialUser, User
 from .categories import CategorySearch
+from .users import ClientUser, PartialUser, User, DestinationInfo
 from .utils import MISSING, decorator, setup_logging
 
 if TYPE_CHECKING:
@@ -224,6 +224,16 @@ class Client:
         -----------
         query: str
             The search query string
+        """
+        data = await self.http.search_categories(query)
+        return CategorySearch(data=data)
+
+    async def fetch_stream_url_and_key(self) -> DestinationInfo:
+        """
+        |coro|
+
+        Fetches your stream URL and stream key from the API.
+        You must be authenticated to use this endpoint.
 
         Raises
         -----------
@@ -234,10 +244,18 @@ class Client:
         -----------
         SearchResponse
             The search results containing matching categories
+
+            Fetching Failed
+        Forbidden
+            You are not authenticated
+
+        Returns
+        -----------
+        str
         """
 
-        data = await self.http.search_categories(query)
-        return CategorySearch(data=data)
+        data = await self.http.get_stream_destination_url_and_key()
+        return DestinationInfo(data=data)
 
     def dispatch(self, event_name: str, *args, **kwargs) -> None:
         event_name = f"on_{event_name}"
