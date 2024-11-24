@@ -10,7 +10,7 @@ from .chatter import PartialChatter
 from .http import HTTPClient
 from .livestream import PartialLivestream
 from .message import Message
-from .users import ClientUser, PartialUser, User
+from .users import ClientUser, PartialUser, User, DestinationInfo
 from .utils import MISSING, decorator, setup_logging
 
 if TYPE_CHECKING:
@@ -212,6 +212,28 @@ class Client:
         data = await self.http.get_user(name)
         user = User(data=data, http=self.http)
         return user
+
+    async def fetch_stream_url_and_key(self) -> DestinationInfo:
+        """
+        |coro|
+
+        Fetches your stream URL and stream key from the API.
+        You must be authenticated to use this endpoint.
+
+        Raises
+        -----------
+        HTTPException
+            Fetching Failed
+        Forbidden
+            You are not authenticated
+
+        Returns
+        -----------
+        str
+        """
+
+        data = await self.http.get_stream_destination_url_and_key()
+        return DestinationInfo(data=data)
 
     def dispatch(self, event_name: str, *args, **kwargs) -> None:
         event_name = f"on_{event_name}"
