@@ -1,16 +1,20 @@
-
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, List
+from typing import TYPE_CHECKING, List, Dict
 
 from .object import BaseDataclass
 
 if TYPE_CHECKING:
     from .types.categories import Category as CategoryPayload
-    from .types.categories import InnerCategory, CategorySearchResponse, CategorySearchHit
+    from .types.categories import (
+        InnerCategory, 
+        CategorySearchResponse, 
+        CategorySearchHit as CategorySearchHitPayload,
+        CategorySearchDocument as CategorySearchDocumentPayload,
+        CategorySearchHighlight as CategorySearchHighlightPayload
+    )
 
-__all__ = ("Category", "CategorySearch")
-
+__all__ = ("Category", "CategorySearch", "CategorySearchDocument", "CategorySearchHighlight", "CategorySearchHit")
 
 class Category(BaseDataclass["CategoryPayload"]):
     """
@@ -110,7 +114,7 @@ class CategorySearch(BaseDataclass["CategorySearchResponse"]):
 
     @property
     def hits(self) -> List[CategorySearchHit]:
-        return self._data["hits"]
+        return [CategorySearchHit(data=hit) for hit in self._data["hits"]]
 
     @property
     def out_of(self) -> int:
@@ -130,3 +134,155 @@ class CategorySearch(BaseDataclass["CategorySearchResponse"]):
 
     def __repr__(self) -> str:
         return f"<CategorySearch found={self.found!r} page={self.page!r}>"
+
+
+class CategorySearchDocument(BaseDataclass["CategorySearchDocumentPayload"]):
+    """
+    A dataclass which represents Category data from search API
+
+    Attributes
+    id: str
+        The category's ID
+    name: str
+        The category's name
+    slug: str
+        The category's slug
+    description: str
+        The category's description
+    -----------
+    category_id: int
+        The category's internal ID
+    is_live: bool
+        Whether the category is currently live
+    is_mature: bool
+        Whether the category is marked as mature
+    parent: str
+        The parent category name
+    src: str
+        The source URL for category image
+    srcset: str
+        The source set for responsive images
+    """
+
+    def __init__(self, *, data: CategorySearchDocumentPayload) -> None:
+        super().__init__(data=data)
+
+    def id(self) -> str:
+        return self._data["id"]
+
+    @property
+    def name(self) -> str:
+        return self._data["name"]
+
+    @property
+    def slug(self) -> str:
+        return self._data["slug"]
+
+    @property
+    def description(self) -> str | None:
+        return self._data.get("description")
+
+    @property
+    def category_id(self) -> int:
+        return self._data["category_id"]
+
+    @property
+    def is_live(self) -> bool:
+        return self._data["is_live"]
+
+    @property
+    def is_mature(self) -> bool:
+        return self._data["is_mature"]
+
+    @property
+    def parent(self) -> str:
+        return self._data["parent"]
+
+    @property
+    def src(self) -> str:
+        return self._data["src"]
+
+    @property
+    def srcset(self) -> str:
+        return self._data["srcset"]
+
+    def __repr__(self) -> str:
+        return f"<CategorySearchDocument id={self.category_id!r}>"
+
+
+class CategorySearchHighlight(BaseDataclass["CategorySearchHighlightPayload"]):
+    """
+    A dataclass which represents search highlight information
+
+    Attributes
+    -----------
+    field: str
+        The field that was matched
+    matched_tokens: List[str]
+        List of tokens that matched the search
+    snippet: str
+        A snippet of the matched text
+    """
+
+    def __init__(self, *, data: CategorySearchHighlightPayload) -> None:
+        super().__init__(data=data)
+
+    @property
+    def field(self) -> str:
+        return self._data["field"]
+
+    @property
+    def matched_tokens(self) -> List[str]:
+        return self._data["matched_tokens"]
+
+    @property
+    def snippet(self) -> str:
+        return self._data["snippet"]
+
+    def __repr__(self) -> str:
+        return f"<CategorySearchHighlight field={self.field!r}>"
+
+
+class CategorySearchHit(BaseDataclass["CategorySearchHitPayload"]):
+    """
+    A dataclass which represents an individual search result
+
+    Attributes
+    -----------
+    document: CategorySearchDocument
+        The category document data
+    highlight: Dict
+        Raw highlight information
+    highlights: List[CategorySearchHighlight]
+        Processed highlight information
+    text_match: int
+        Text match score
+    text_match_info: Dict
+        Additional text match information
+    """
+
+    def __init__(self, *, data: CategorySearchHitPayload) -> None:
+        super().__init__(data=data)
+
+    @property
+    def document(self) -> CategorySearchDocument:
+        return CategorySearchDocument(data=self._data["document"])
+
+    @property
+    def highlight(self) -> Dict:
+        return self._data["highlight"]
+
+    @property
+    def highlights(self) -> List[CategorySearchHighlight]:
+        return [CategorySearchHighlight(data=h) for h in self._data["highlights"]]
+
+    @property
+    def text_match(self) -> int:
+        return self._data["text_match"]
+
+    @property
+    def text_match_info(self) -> Dict:
+        return self._data["text_match_info"]
+
+    def __repr__(self) -> str:
+        return f"<CategorySearchHit document={self.document!r}>"

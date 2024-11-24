@@ -11,7 +11,7 @@ from .http import HTTPClient
 from .livestream import PartialLivestream
 from .message import Message
 from .users import ClientUser, PartialUser, User
-from .categories import CategorySearchResponsePayload
+from .categories import CategorySearch
 from .utils import MISSING, decorator, setup_logging
 
 if TYPE_CHECKING:
@@ -214,7 +214,7 @@ class Client:
         user = User(data=data, http=self.http)
         return user
 
-    async def search_categories(self, query: str, /) -> CategorySearchResponsePayload:
+    async def search_categories(self, query: str, /) -> CategorySearch:
         """
         |coro|
 
@@ -237,7 +237,7 @@ class Client:
         """
 
         data = await self.http.search_categories(query)
-        return CategorySearchResponsePayload(data=data, http=self.http)
+        return CategorySearch(data=data)
 
     def dispatch(self, event_name: str, *args, **kwargs) -> None:
         event_name = f"on_{event_name}"

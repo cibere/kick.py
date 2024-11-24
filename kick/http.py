@@ -218,9 +218,11 @@ class HTTPClient:
         if self.__session is MISSING:
             self.__session = ClientSession()
 
+        print(route.url)
         headers = kwargs.pop("headers", {})
         headers["User-Agent"] = self.user_agent
         headers["Accepts"] = "application/json"
+        headers["X-TYPESENSE-API-KEY"] = "nXIMW0iEN6sMujFYjFuhdrSwVow3pDQu"
 
         cookies = kwargs.pop("cookies", {})
 
@@ -242,15 +244,34 @@ class HTTPClient:
             while self.globally_locked is True:
                 await asyncio.sleep(2)
 
+            # Handle URL construction
+            from urllib.parse import quote
+            final_url = url
+            
+            if 'params' in kwargs:
+                from urllib.parse import urlencode
+                params = kwargs['params']
+                params_str = urlencode(params, quote_via=quote)
+                final_url = f"{url}?{params_str}"
+                
+            if not self.whitelisted:
+                final_url = f"{self.bypass_host}:{self.bypass_port}/request?url={quote(final_url)}"
+                
+            LOGGER.debug(f"Using {'bypass' if not self.whitelisted else 'direct'} URL: {final_url}")
+            
+            # Remove params from kwargs if we're using bypass to prevent duplication
+            if not self.whitelisted and kwargs.get('_bypass_params'):
+                kwargs.pop('params', None)
+            kwargs.pop('_bypass_params', None)
+            
+            
             LOGGER.debug(
-                f"Making request to {route.method} {url}. headers: {headers}, params: {kwargs.get('params', None)}, json: {kwargs.get('json', None)}"
+                f"Making request to {route.method} {final_url}. headers: {headers}, params: {kwargs.get('params', None)}, json: {kwargs.get('json', None)}"
             )
             try:
                 res = await self.__session.request(
                     route.method,
-                    url
-                    if self.whitelisted is True
-                    else f"{self.bypass_host}:{self.bypass_port}/request?url={url}",
+                    final_url,
                     headers=headers,
                     cookies=cookies,
                     **kwargs,
@@ -500,11 +521,16 @@ class HTTPClient:
 
     def search_categories(self, query: str) -> Response[CategorySearchResponse]:
         """Search for categories/games on Kick"""
+        params = {
+            "query_by": "name,slug",  # Specify fields to search in
+            "q": query,
+            "collections": "subcategory",
+            "preset": "category_list"
+        }
         return self.request(
-            Route.search(
-                "GET",
-                f"/collections/subcategory_index/documents/search?q={query}&collections=subcategory&preset=category_list"
-            )
+            Route.search("GET", "/collections/subcategory_index/documents/search"),
+            params=params,
+            _bypass_params=True  # Flag to prevent param duplication
         )
     async def get_asset(self, url: str) -> bytes:
         if self.__session is MISSING:

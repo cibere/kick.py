@@ -2,7 +2,7 @@ from typing import List, TypedDict
 
 class BaseCategoryFields(TypedDict):
     """Base fields shared between category types"""
-    id: str | int  # Can be str in search, int in regular API
+    id: str
     name: str
     slug: str
     description: str | None
