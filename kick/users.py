@@ -16,9 +16,46 @@ from .videos import Video
 if TYPE_CHECKING:
     from .chatroom import Chatroom
     from .http import HTTPClient
-    from .types.user import ClientUserPayload, InnerUser, UserPayload
+    from .types.user import ClientUserPayload, InnerUser, UserPayload, StreamInfoPayload
 
-__all__ = ("User", "Socials", "PartialUser", "ClientUser")
+__all__ = ("StreamInfo", "Socials", "PartialUser", "User", "ClientUser")
+
+
+class StreamInfo(BaseDataclass["StreamInfoPayload"]):
+    """
+    Information about a user's stream settings
+    
+    Attributes
+    -----------
+    title: str
+        The stream title
+    language: str
+        The stream language
+    is_mature: bool
+        Whether the stream is marked as mature
+    category: str
+        The stream category
+    """
+    
+    @property
+    def title(self) -> str:
+        """The stream title"""
+        return self._data["title"]
+    
+    @property
+    def language(self) -> str:
+        """The stream language"""
+        return self._data["language"]
+    
+    @property
+    def is_mature(self) -> bool:
+        """Whether the stream is marked as mature"""
+        return self._data["is_mature"]
+    
+    @property
+    def category(self) -> str:
+        """The stream category"""
+        return self._data["category"]
 
 
 class Socials(BaseDataclass["InnerUser | ClientUserPayload"]):

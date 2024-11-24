@@ -10,7 +10,7 @@ from .chatter import PartialChatter
 from .http import HTTPClient
 from .livestream import PartialLivestream
 from .message import Message
-from .users import ClientUser, PartialUser, User
+from .users import ClientUser, PartialUser, User, StreamInfo
 from .utils import MISSING, decorator, setup_logging
 
 if TYPE_CHECKING:
@@ -212,6 +212,15 @@ class Client:
         data = await self.http.get_user(name)
         user = User(data=data, http=self.http)
         return user
+
+    async def set_stream_info(self, title, language, category, is_mature) -> StreamInfo:
+        data = await self.http.set_stream_info({
+            "title": title,
+            "language": language,
+            "is_mature": is_mature,
+            "category": category
+            })
+        return StreamInfo(data=data)
 
     def dispatch(self, event_name: str, *args, **kwargs) -> None:
         event_name = f"on_{event_name}"
