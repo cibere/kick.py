@@ -47,9 +47,11 @@ if TYPE_CHECKING:
         ChatterPayload,
         ClientUserPayload,
         UserPayload,
-        StreamInfoPayload
+        StreamInfoPayload,
+        DestinationInfoPayload,
     )
     from .types.videos import GetVideosPayload
+    from .types.search import CategorySearchResponse
 
     T = TypeVar("T")
     Response = Coroutine[Any, Any, T]
@@ -94,6 +96,7 @@ async def error_or_nothing(data: Union[dict, str]) -> str:
 
 class Route:
     DOMAIN: str = "https://kick.com"
+    SEARCH_DOMAIN: str = "https://search.kick.com"
     BASE: str = f"{DOMAIN}/api/v2"
 
     def __init__(self, method: str, path: str) -> None:
@@ -106,7 +109,15 @@ class Route:
         self = cls.__new__(cls)
         self.path = path
         self.method = method
-        self.url = self.DOMAIN + path
+        self.url = cls.DOMAIN + path
+        return self
+
+    @classmethod
+    def search(cls, method: str, path: str) -> Self:
+        self = cls.__new__(cls)
+        self.path = path
+        self.method = method
+        self.url = cls.SEARCH_DOMAIN + path
         return self
 
 
@@ -212,9 +223,11 @@ class HTTPClient:
         if self.__session is MISSING:
             self.__session = ClientSession()
 
+        print(route.url)
         headers = kwargs.pop("headers", {})
         headers["User-Agent"] = self.user_agent
         headers["Accepts"] = "application/json"
+        headers["X-TYPESENSE-API-KEY"] = "nXIMW0iEN6sMujFYjFuhdrSwVow3pDQu"
 
         cookies = kwargs.pop("cookies", {})
 
@@ -236,8 +249,29 @@ class HTTPClient:
             while self.globally_locked is True:
                 await asyncio.sleep(2)
 
+            # Handle URL construction
+            from urllib.parse import quote
+            final_url = url
+            
+            if 'params' in kwargs:
+                from urllib.parse import urlencode
+                params = kwargs['params']
+                params_str = urlencode(params, quote_via=quote)
+                final_url = f"{url}?{params_str}"
+                
+            if not self.whitelisted:
+                final_url = f"{self.bypass_host}:{self.bypass_port}/request?url={quote(final_url)}"
+                
+            LOGGER.debug(f"Using {'bypass' if not self.whitelisted else 'direct'} URL: {final_url}")
+            
+            # Remove params from kwargs if we're using bypass to prevent duplication
+            if not self.whitelisted and kwargs.get('_bypass_params'):
+                kwargs.pop('params', None)
+            kwargs.pop('_bypass_params', None)
+            
+            
             LOGGER.debug(
-                f"Making request to {route.method} {url}. headers: {headers}, params: {kwargs.get('params', None)}, json: {kwargs.get('json', None)}"
+                f"Making request to {route.method} {final_url}. headers: {headers}, params: {kwargs.get('params', None)}, json: {kwargs.get('json', None)}"
             )
             try:
                 res = await self.__session.request(
@@ -496,6 +530,30 @@ class HTTPClient:
 
     def set_stream_info(self, info) -> Response[StreamInfoPayload]:
        return self.request(Route.root("PUT", "/stream/info"), json=info) 
+
+    def search_categories(self, query: str) -> Response[CategorySearchResponse]:
+        """Search for categories/games on Kick"""
+        params = {
+            "query_by": "name,slug",  # Specify fields to search in
+            "q": query,
+            "collections": "subcategory",
+            "preset": "category_list"
+        }
+        return self.request(
+            Route.search("GET", "/collections/subcategory_index/documents/search"),
+            params=params,
+            _bypass_params=True  # Flag to prevent param duplication
+        )
+
+    def get_stream_destination_url_and_key(self) -> Response[DestinationInfoPayload]:
+        """Gets the authenticated user's stream URL and key.
+
+        Returns
+        -------
+        StreamURLKeyPayload
+            The stream URL and key information containing the publish URL and token
+        """
+        return self.request(Route.root("GET", "/stream/publish_token"))
 
     async def get_asset(self, url: str) -> bytes:
         if self.__session is MISSING:
