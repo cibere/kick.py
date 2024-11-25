@@ -4,12 +4,13 @@ import asyncio
 import json
 import logging
 from typing import TYPE_CHECKING, Any, Coroutine, Optional, TypeVar, Union
+from curl_cffi import requests as requests_ORI
 
 from aiohttp import ClientConnectionError, ClientResponse, ClientSession
 
 from . import __version__
 from .errors import (
-    CloudflareBypassException,
+    # CloudflareBypassException,
     Forbidden,
     HTTPException,
     InternalKickException,
@@ -58,7 +59,7 @@ class="w-64 lg:w-[526px]"
 
 
 async def json_or_text(response: ClientResponse, /) -> Union[dict[str, Any], str]:
-    text = await response.text()
+    text = response.text
     try:
         try:
             return json.loads(text)
@@ -236,22 +237,21 @@ class HTTPClient:
                 f"Making request to {route.method} {url}. headers: {headers}, params: {kwargs.get('params', None)}, json: {kwargs.get('json', None)}"
             )
             try:
-                res = await self.__session.request(
+                res = await requests_ORI.AsyncSession().request(
                     route.method,
-                    url
-                    if self.whitelisted is True
-                    else f"{self.bypass_host}:{self.bypass_port}/request?url={url}",
+                    url,
                     headers=headers,
                     cookies=cookies,
+                    impersonate="safari15_3",
                     **kwargs,
                 )
             except ClientConnectionError:
                 if self.whitelisted is True:
                     raise InternalKickException("Could Not Connect To Kick") from None
-                else:
-                    raise CloudflareBypassException(
-                        "Could Not Connect To Bypass Script"
-                    ) from None
+                # else:
+                #     raise CloudflareBypassException(
+                #         "Could Not Connect To Bypass Script"
+                #     ) from None
 
             if res is not None:
                 self.xsrf_token = str(
@@ -260,7 +260,7 @@ class HTTPClient:
 
                 data = await json_or_text(res)
 
-                if res.status == 429:
+                if res.status_code == 429:
                     self.globally_locked = True
                     LOGGER.warning(
                         f"We have been ratelimited at {route.method} {route.url}. Waiting five seconds before trying again...",
@@ -271,13 +271,13 @@ class HTTPClient:
                 else:
                     self.globally_locked = False
 
-                if 300 > res.status >= 200:
+                if 300 > res.status_code >= 200:
                     return data
 
-                match res.status:
+                match res.status_code:
                     case 400:
                         error = await error_or_text(data)
-                        raise HTTPException(error, res.status)
+                        raise HTTPException(error, res.status_code)
                     case 403:
                         raise Forbidden(await error_or_nothing(data))
                     case 404:
@@ -300,10 +300,10 @@ class HTTPClient:
         if res is not None and data is not None:
             txt = await error_or_text(data)
 
-            if res.status >= 500:
+            if res.status_code >= 500:
                 raise InternalKickException(txt)
 
-            raise HTTPException(txt, res.status)
+            raise HTTPException(txt, res.status_code)
 
         raise RuntimeError("Unreachable situation occured in http handling")
 
@@ -493,7 +493,7 @@ class HTTPClient:
             self.__session = ClientSession()
 
         res = await self.__session.request("GET", url)
-        match res.status:
+        match res.status_code:
             case 200:
                 return await res.read()
             case 403:
