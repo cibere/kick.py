@@ -140,3 +140,8 @@ class ClientUserPayload(TypedDict):
     streamer_channel: ClientUserStreamerChannelsPayload
     roles: list  # Unknown
     profilepic: str | None
+
+
+class DestinationInfoPayload(TypedDict):
+    rtmp_publish_path: str
+    rtmp_stream_token: str
