@@ -16,9 +16,14 @@ from .videos import Video
 if TYPE_CHECKING:
     from .chatroom import Chatroom
     from .http import HTTPClient
-    from .types.user import ClientUserPayload, InnerUser, UserPayload
+    from .types.user import (
+        ClientUserPayload,
+        InnerUser,
+        UserPayload,
+        StreamInfoPayload,
+    )
 
-__all__ = ("User", "Socials", "PartialUser", "ClientUser")
+__all__ = ("User", "Socials", "PartialUser", "ClientUser", "StreamInfo")
 
 
 class Socials(BaseDataclass["InnerUser | ClientUserPayload"]):
@@ -358,6 +363,48 @@ class User:
 
         await self.http.ws.unwatch_channel(self.channel_id)
         self.http.client._watched_users.pop(self.channel_id)
+
+class StreamInfo(BaseDataclass["StreamInfoPayload"]):
+    """
+    A dataclass which represents stream information
+
+    Attributes
+    -----------
+    title: str
+        The stream title
+    subcategory_id: int
+        The ID of the game/category
+    subcategory_name: Optional[str]
+        The name of the game/category
+    language: str
+        The stream language
+    is_mature: bool
+        Whether the stream is marked as mature content
+    """
+
+    @property
+    def title(self) -> str:
+        return self._data["title"]
+
+    @property
+    def subcategory_id(self) -> int:
+        return self._data["subcategoryId"]
+
+    @property
+    def subcategory_name(self) -> str | None:
+        return self._data["subcategoryName"]
+
+    @property
+    def language(self) -> str:
+        return self._data["language"]
+
+    @property
+    def is_mature(self) -> bool:
+        return self._data["is_mature"]
+
+    def __repr__(self) -> str:
+        return f"<StreamInfo title={self.title!r} category={self.subcategory_name!r}>"
+
 
 
 class ClientUser(BaseUser):
