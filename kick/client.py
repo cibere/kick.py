@@ -232,7 +232,7 @@ class Client:
         DestinationInfo
         """
 
-        data = await self.http.get_stream_destination_url_and_key()
+        data = await self.http.fetch_stream_destination_url_and_key()
         return DestinationInfo(data=data)
 
     def dispatch(self, event_name: str, *args, **kwargs) -> None:
