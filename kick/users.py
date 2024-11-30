@@ -21,9 +21,34 @@ if TYPE_CHECKING:
         InnerUser,
         UserPayload,
         StreamInfoPayload,
+        DestinationInfoPayload
     )
 
-__all__ = ("User", "Socials", "PartialUser", "ClientUser", "StreamInfo")
+__all__ = ("User", "Socials", "PartialUser", "ClientUser", "StreamInfo",
+          "DestinationInfo")
+
+
+class DestinationInfo(BaseDataclass["DestinationInfoPayload"]):
+    """
+    Information about a user's stream destination
+
+    Attributes
+    -----------
+    stream_url: str
+        The URL for streaming
+    stream_key: str
+        The stream key
+    """
+
+    @property
+    def stream_url(self) -> str:
+        """The URL for streaming"""
+        return self._data["rtmp_publish_path"]
+
+    @property
+    def stream_key(self) -> str:
+        """The stream key"""
+        return self._data["rtmp_stream_token"]
 
 
 class Socials(BaseDataclass["InnerUser | ClientUserPayload"]):

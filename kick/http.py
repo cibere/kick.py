@@ -46,7 +46,12 @@ if TYPE_CHECKING:
         ReplyOriginalSender,
         V1MessageSentPayload,
     )
-    from .types.user import ChatterPayload, ClientUserPayload, UserPayload
+    from .types.user import (
+        ChatterPayload,
+        ClientUserPayload,
+        UserPayload,
+        DestinationInfoPayload,
+    )
     from .types.videos import GetVideosPayload
 
     T = TypeVar("T")
@@ -63,10 +68,9 @@ class="w-64 lg:w-[526px]"
 async def json_or_text(response: ClientResponse, /) -> Union[dict[str, Any], str]:
     text = await response.text()
     try:
-        try:
-            return json.loads(text)
-        except json.JSONDecodeError:
-            pass
+        return json.loads(text)
+    except json.JSONDecodeError:
+        pass
     except KeyError:
         pass
 
@@ -513,6 +517,7 @@ class HTTPClient:
     def get_me(self) -> Response[ClientUserPayload]:
         return self.request(Route.root("GET", "/api/v1/user"))
 
+      
     def search_categories(self, query: str) -> Response[CategorySearchResponse]:
         """Search for categories using the search API"""
         route = Route.search("GET", "/collections/subcategory_index/documents/search")
@@ -540,6 +545,10 @@ class HTTPClient:
             "language": language,
             "is_mature": is_mature
         })
+      
+    def fetch_stream_destination_url_and_key(self) -> Response[DestinationInfoPayload]:
+        return self.request(Route.root("GET", "/stream/publish_token"))
+
 
     async def get_asset(self, url: str) -> bytes:
         if self.__session is MISSING:
