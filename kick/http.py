@@ -4,6 +4,7 @@ import asyncio
 import json
 import logging
 from typing import TYPE_CHECKING, Any, Coroutine, Optional, TypeVar, Union
+from urllib.parse import urlencode, quote
 
 from aiohttp import ClientConnectionError, ClientResponse, ClientSession
 
@@ -20,7 +21,9 @@ from .utils import MISSING
 from .ws import PusherWebSocket
 
 if TYPE_CHECKING:
+    from .types.categories import CategorySearchResponse
     from types.emotes import EmotesPayload
+    from .types.user import StreamInfoPayload
 
     from typing_extensions import Self
 
@@ -95,11 +98,20 @@ async def error_or_nothing(data: Union[dict, str]) -> str:
 class Route:
     DOMAIN: str = "https://kick.com"
     BASE: str = f"{DOMAIN}/api/v2"
+    SEARCH: str = "https://search.kick.com"
 
     def __init__(self, method: str, path: str) -> None:
         self.path: str = path
         self.method: str = method
         self.url = self.BASE + self.path
+
+    @classmethod
+    def search(cls, method: str, path: str) -> Self:
+        self = cls.__new__(cls)
+        self.path = path
+        self.method = method
+        self.url = self.SEARCH + path
+        return self
 
     @classmethod
     def root(cls, method: str, path: str) -> Self:
@@ -217,14 +229,29 @@ class HTTPClient:
         headers["Accepts"] = "application/json"
 
         cookies = kwargs.pop("cookies", {})
+        base_url = kwargs.pop("url", route.url)
+
+        # Handle URL parameters
+        params = kwargs.get('params')
+        if params:
+            encoded_params = urlencode(params, doseq=True)
+            full_url = f"{base_url}?{encoded_params}"
+        else:
+            full_url = base_url
+
+        # Handle bypass URL construction
+        if not self.whitelisted:
+            url = f"{self.bypass_host}:{self.bypass_port}/request?url={quote(full_url)}"
+            # Remove params since they're now in URL
+            kwargs.pop('params', None)
+        else:
+            url = full_url
 
         if self.xsrf_token:
             headers["X-XSRF-TOKEN"] = self.xsrf_token
             cookies["XSRF-TOKEN"] = self.xsrf_token
         if self.token:
             headers["Authorization"] = f"Bearer {self.token}"
-
-        url = route.url
 
         if "json" in kwargs:
             headers["Content-Type"] = "application/json"
@@ -496,6 +523,34 @@ class HTTPClient:
 
     def fetch_stream_destination_url_and_key(self) -> Response[DestinationInfoPayload]:
         return self.request(Route.root("GET", "/stream/publish_token"))
+
+    def search_categories(self, query: str) -> Response[CategorySearchResponse]:
+        """Search for categories using the search API"""
+        route = Route.search("GET", "/collections/subcategory_index/documents/search")
+
+        headers = {
+            "X-TYPESENSE-API-KEY": "nXIMW0iEN6sMujFYjFuhdrSwVow3pDQu",
+        }
+
+        params = {
+            "q": query,
+            "collections": "subcategory",
+            "preset": "category_list",
+        }
+
+        return self.request(route, headers=headers, params=params)
+
+    def set_stream_info(self, title, category_name, category_id,
+                        language, is_mature) -> Response[StreamInfoPayload]:
+        """Update the stream information"""
+        route = Route.root("PUT", "/stream/info")
+        return self.request(route, json={
+            "title": title,
+            "subcategoryName": category_name,
+            "subcategoryId": category_id,
+            "language": language,
+            "is_mature": is_mature
+        })
 
     async def get_asset(self, url: str) -> bytes:
         if self.__session is MISSING:
