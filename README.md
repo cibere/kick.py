@@ -30,7 +30,7 @@ Our docs are being hosted on https://kickpy.cibere.dev
 Install from github _requires [git](https://git-scm.com/) to be installed_
 
 ```bash
-pip install git+https://github.com/cibere/kick.py
+pip install git+https://github.com/gub-7/kick.py
 ```
 
 If you are api whitelisted (meaning you are whitelisted from cloudflare), then you can pass `whitelisted=True` to your `Client` constructor. Otherwise you should setup the bypass script.
