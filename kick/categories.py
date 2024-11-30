@@ -230,11 +230,12 @@ class ParentCategory(HTTPDataclass["ParentCategoryPayload"]):
 class SearchCategory(BaseDataclass["CategoryDocument"]):
     """
     A dataclass which represents a searchable category on kick
-
     Attributes
     -----------
     category_id: int
-        The category's ID
+        The id of the parent category.
+    id: str
+        The id of the sub-category (game).
     name: str
         The category's name
     slug: str
@@ -249,11 +250,17 @@ class SearchCategory(BaseDataclass["CategoryDocument"]):
         The category's banner image URL
     srcset: str
         The category's responsive image srcset
+    parent: str
+        The name of the parent category.
     """
 
     @property
     def category_id(self) -> int:
         return self._data["category_id"]
+
+    @property
+    def id(self) -> str:
+        return self._data["id"]
 
     @property
     def name(self) -> str:
@@ -282,6 +289,10 @@ class SearchCategory(BaseDataclass["CategoryDocument"]):
     @property
     def srcset(self) -> str:
         return self._data["srcset"]
+
+    @property
+    def parent(self) -> str:
+        return self._data["parent"]
 
     def __repr__(self) -> str:
         return f"<SearchCategory name={self.name!r} slug={self.slug!r} is_live={self.is_live}>"

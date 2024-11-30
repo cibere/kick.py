@@ -247,6 +247,7 @@ class Client:
             Failed to update stream information
         """
 
+
         data = await self.http.set_stream_info(title, subcategory_name, subcategory_id, language, is_mature)
         return StreamInfo(data=data)
 

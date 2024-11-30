@@ -1,4 +1,4 @@
-from typing_extensions import Any, TypedDict, Optional
+from typing_extensions import Any, TypedDict
 
 from .assets import AssetSrcset, AssetUrl
 from .badges import ChatBadgePayload, SubscriberBadgePayload
@@ -110,7 +110,7 @@ class ClientUserStreamerChannelsPayload(TypedDict):
 class StreamInfoPayload(TypedDict):
     title: str
     subcategoryId: int
-    subcategoryName: Optional[str]
+    subcategoryName: None | str
     language: str
     is_mature: bool
 

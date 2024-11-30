@@ -1,4 +1,4 @@
-from typing import Any, Optional
+from typing import Any
 from typing_extensions import TypedDict
 
 class InnerCategory(TypedDict):
@@ -60,6 +60,6 @@ class Category(TypedDict):
     name: str
     slug: str
     tags: list[str]
-    description: Optional[str]
+    description: None | str
     deleted_at: None
     category: InnerCategory

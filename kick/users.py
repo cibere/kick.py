@@ -392,7 +392,7 @@ class StreamInfo(BaseDataclass["StreamInfoPayload"]):
 
     @property
     def subcategory_name(self) -> str | None:
-        return self._data["subcategoryName"]
+        return self._data.get("subcategoryName")
 
     @property
     def language(self) -> str:

@@ -259,7 +259,7 @@ class HTTPClient:
             while self.globally_locked is True:
                 await asyncio.sleep(2)
 
-            print(
+            LOGGER.debug(
                 f"Making request to {route.method} {url}. headers: {headers}, params: {kwargs.get('params', None)}, json: {kwargs.get('json', None)}"
             )
             try:
@@ -535,8 +535,8 @@ class HTTPClient:
         route = Route.root("PUT", "/stream/info")
         return self.request(route, json={
             "title": title,
-            "category_Name": category_name,
-            "category_Id": category_id,
+            "subcategoryName": category_name,
+            "subcategoryId": category_id,
             "language": language,
             "is_mature": is_mature
         })
