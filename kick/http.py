@@ -269,11 +269,7 @@ class HTTPClient:
             try:
                 res = await self.__session.request(
                     route.method,
-                    (
-                        url
-                        if self.whitelisted is True
-                        else f"{self.bypass_host}:{self.bypass_port}/request?url={url}"
-                    ),
+                    url,  # Use the already constructed URL
                     headers=headers,
                     cookies=cookies,
                     **kwargs,
