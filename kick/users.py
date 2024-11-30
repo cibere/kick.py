@@ -16,9 +16,33 @@ from .videos import Video
 if TYPE_CHECKING:
     from .chatroom import Chatroom
     from .http import HTTPClient
-    from .types.user import ClientUserPayload, InnerUser, UserPayload
+    from .types.user import (ClientUserPayload, InnerUser, UserPayload,
+                            DestinationInfoPayload)
 
-__all__ = ("User", "Socials", "PartialUser", "ClientUser")
+__all__ = ("DestinationInfo", "Socials", "PartialUser", "User", "ClientUser")
+
+
+class DestinationInfo(BaseDataclass["DestinationInfoPayload"]):
+    """
+    Information about a user's stream destination
+
+    Attributes
+    -----------
+    stream_url: str
+        The URL for streaming
+    stream_key: str
+        The stream key
+    """
+
+    @property
+    def stream_url(self) -> str:
+        """The URL for streaming"""
+        return self._data["rtmp_publish_path"]
+
+    @property
+    def stream_key(self) -> str:
+        """The stream key"""
+        return self._data["rtmp_stream_token"]
 
 
 class Socials(BaseDataclass["InnerUser | ClientUserPayload"]):
