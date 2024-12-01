@@ -1,16 +1,193 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING
 
 from .assets import Asset
-from .object import HTTPDataclass
+from .object import HTTPDataclass, BaseDataclass
 from .utils import cached_property
 
 if TYPE_CHECKING:
-    from .types.categories import Category as CategoryPayload
-    from .types.categories import InnerCategory as ParentCategoryPayload
+    from .types.categories import (
+        Category as CategoryPayload,
+        InnerCategory as ParentCategoryPayload,
+        CategoryDocument,
+        CategorySearchResponse,
+        TextHighlight as TextHighlightPayload,
+        SearchHighlight as SearchHighlightPayload,
+        TextMatchInfo as TextMatchInfoPayload,
+        CategorySearchHit as CategorySearchHitPayload,
+    )
 
-__all__ = ("Category", "ParentCategory")
+__all__ = ("Category", "ParentCategory", "SearchCategory",
+           "CategorySearchResult", "TextHighlight", "SearchHighlight",
+           "TextMatchInfo", "CategorySearchHit")
+
+
+class TextHighlight(BaseDataclass["TextHighlightPayload"]):
+    """
+    A dataclass representing text highlighting information
+
+    Attributes
+    -----------
+    matched_tokens: list[str]
+        List of tokens that matched
+    snippet: str
+        The highlighted text snippet
+    """
+
+    @property
+    def matched_tokens(self) -> list[str]:
+        """List of search tokens that matched in the text"""
+        return self._data["matched_tokens"]
+
+    @property
+    def snippet(self) -> str:
+        """The highlighted text snippet containing matches"""
+        return self._data["snippet"]
+
+    def __repr__(self) -> str:
+        return f"<TextHighlight matched_tokens={self.matched_tokens!r} snippet={self.snippet!r}>"
+
+
+class SearchHighlight(BaseDataclass["SearchHighlightPayload"]):
+    """
+    A dataclass representing search highlight information
+
+    Attributes
+    -----------
+    field: str
+        The field that was highlighted
+    matched_tokens: list[str]
+        List of tokens that matched
+    snippet: str
+        The highlighted text snippet
+    """
+
+    @property
+    def field(self) -> str:
+        """The field name where the match was found"""
+        return self._data["field"]
+
+    @property
+    def matched_tokens(self) -> list[str]:
+        """List of search tokens that matched in the field"""
+        return self._data["matched_tokens"]
+
+    @property
+    def snippet(self) -> str:
+        """The highlighted text snippet from the matched field"""
+        return self._data["snippet"]
+
+    def __repr__(self) -> str:
+        return f"<SearchHighlight field={self.field!r} matched_tokens={self.matched_tokens!r} snippet={self.snippet!r}>"
+
+
+class TextMatchInfo(BaseDataclass["TextMatchInfoPayload"]):
+    """
+    A dataclass representing text match scoring information
+
+    Attributes
+    -----------
+    best_field_score: str
+        Score of the best matching field
+    best_field_weight: int
+        Weight of the best matching field
+    fields_matched: int
+        Number of fields that matched
+    num_tokens_dropped: int
+        Number of tokens that were dropped
+    score: str
+        Overall match score
+    tokens_matched: int
+        Number of tokens that matched
+    typo_prefix_score: int
+        Score for typo/prefix matches
+    """
+
+    @property
+    def best_field_score(self) -> str:
+        """The score of the best matching field"""
+        return self._data["best_field_score"]
+
+    @property
+    def best_field_weight(self) -> int:
+        """The weight assigned to the best matching field"""
+        return self._data["best_field_weight"]
+
+    @property
+    def fields_matched(self) -> int:
+        """Number of fields that contained matches"""
+        return self._data["fields_matched"]
+
+    @property
+    def num_tokens_dropped(self) -> int:
+        """Number of search tokens that were ignored"""
+        return self._data["num_tokens_dropped"]
+
+    @property
+    def score(self) -> str:
+        """Overall match score for the search result"""
+        return self._data["score"]
+
+    @property
+    def tokens_matched(self) -> int:
+        """Number of search tokens that were matched"""
+        return self._data["tokens_matched"]
+
+    @property
+    def typo_prefix_score(self) -> int:
+        """Score adjustment for typos and prefix matches"""
+        return self._data["typo_prefix_score"]
+
+    def __repr__(self) -> str:
+        return f"<TextMatchInfo score={self.score!r} tokens_matched={self.tokens_matched} fields_matched={self.fields_matched}>"
+
+
+class CategorySearchHit(BaseDataclass["CategorySearchHitPayload"]):
+    """
+    A dataclass representing a category search hit result
+
+    Attributes
+    -----------
+    document: SearchCategory
+        The matching category document
+    highlight: dict[str, TextHighlight]
+        Highlights for each field
+    highlights: list[SearchHighlight]
+        List of all highlights
+    text_match: int
+        Text match score
+    text_match_info: TextMatchInfo
+        Detailed text match information
+    """
+
+    @cached_property
+    def document(self) -> SearchCategory:
+        """The matching category document"""
+        return SearchCategory(data=self._data["document"])
+
+    @cached_property
+    def highlight(self) -> dict[str, TextHighlight]:
+        """Dictionary of field names to their highlight information"""
+        return {k: TextHighlight(data=v) for k, v in self._data["highlight"].items()}
+
+    @cached_property
+    def highlights(self) -> list[SearchHighlight]:
+        """List of all highlight information across fields"""
+        return [SearchHighlight(data=h) for h in self._data["highlights"]]
+
+    @property
+    def text_match(self) -> int:
+        """Overall text match score"""
+        return self._data["text_match"]
+
+    @cached_property
+    def text_match_info(self) -> TextMatchInfo:
+        """Detailed information about the text matching"""
+        return TextMatchInfo(data=self._data["text_match_info"])
+
+    def __repr__(self) -> str:
+        return f"<CategorySearchHit document={self.document!r} text_match={self.text_match}>"
 
 
 class ParentCategory(HTTPDataclass["ParentCategoryPayload"]):
@@ -66,6 +243,120 @@ class ParentCategory(HTTPDataclass["ParentCategoryPayload"]):
 
     def __repr__(self) -> str:
         return f"<ParentCategory id={self.id!r} name={self.name!r} icon={self.icon!r}>"
+
+class SearchCategory(BaseDataclass["CategoryDocument"]):
+    """
+    A dataclass which represents a searchable category on kick
+    Attributes
+    -----------
+    category_id: int
+        The id of the parent category.
+    id: str
+        The id of the sub-category (game).
+    name: str
+        The category's name
+    slug: str
+        The category's slug
+    description: str
+        The category's description
+    is_live: bool
+        Whether the category is live
+    is_mature: bool
+        Whether the category is marked as mature
+    src: str
+        The category's banner image URL
+    srcset: str
+        The category's responsive image srcset
+    parent: str
+        The name of the parent category.
+    """
+
+    @property
+    def category_id(self) -> int:
+        """The ID of the parent category"""
+        return self._data["category_id"]
+
+    @property
+    def id(self) -> str:
+        """The unique identifier of the sub-category"""
+        return self._data["id"]
+
+    @property
+    def name(self) -> str:
+        """The name of the category"""
+        return self._data["name"]
+
+    @property
+    def slug(self) -> str:
+        """The URL-friendly version of the category name"""
+        return self._data["slug"]
+
+    @property
+    def description(self) -> str:
+        """The detailed description of the category"""
+        return self._data["description"]
+
+    @property
+    def is_live(self) -> bool:
+        """Whether the category currently has live streams"""
+        return self._data["is_live"]
+
+    @property
+    def is_mature(self) -> bool:
+        """Whether the category is marked as mature content"""
+        return self._data["is_mature"]
+
+    @property
+    def src(self) -> str:
+        """The URL of the category's banner image"""
+        return self._data["src"]
+
+    @property
+    def srcset(self) -> str:
+        """The responsive image srcset for different screen sizes"""
+        return self._data["srcset"]
+
+    @property
+    def parent(self) -> str:
+        """The name of the parent category"""
+        return self._data["parent"]
+
+    def __repr__(self) -> str:
+        return f"<SearchCategory name={self.name!r} slug={self.slug!r} is_live={self.is_live}>"
+
+
+class CategorySearchResult(BaseDataclass["CategorySearchResponse"]):
+    """
+    A dataclass which represents a category search response
+
+    Attributes
+    -----------
+    found: int
+        Total number of results found
+    hits: list[SearchCategory]
+        List of matching categories
+    page: int
+        Current page number
+    """
+
+    @property
+    def found(self) -> int:
+        """Total number of search results found"""
+        return self._data["found"]
+
+    @property
+    def page(self) -> int:
+        """Current page number in paginated results"""
+        return self._data["page"]
+
+    @cached_property
+    def hits(self) -> list[CategorySearchHit]:
+        """List of category search hits matching the search criteria"""
+        return [CategorySearchHit(data=hit) for hit in self._data["hits"]]
+
+    def __repr__(self) -> str:
+        return f"<CategorySearchResult found={self.found} page={self.page} hits={len(self.hits)}>"
+
 
 
 class Category(HTTPDataclass["CategoryPayload"]):
