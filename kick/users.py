@@ -124,16 +124,48 @@ class Socials(BaseDataclass["InnerUser | ClientUserPayload"]):
 
 
 class BaseUser:
+    """
+    Base class for all user types on Kick
+
+    Attributes
+    -----------
+    id: int
+        The user's ID
+    username: str
+        The user's username
+    http: HTTPClient
+        The HTTP client used for requests
+    """
     def __init__(self, *, id: int, username: str, http: HTTPClient) -> None:
         self.id = id
         self.username = username
         self.http = http
 
     async def fetch_videos(self) -> list[Video]:
+        """
+        |coro|
+
+        Fetches all videos for this user
+
+        Returns
+        --------
+        list[Video]
+            List of videos uploaded by the user
+        """
         data = await self.http.get_streamer_videos(self.username)
         return [Video(data=v, http=self.http) for v in data]
 
     async def fetch_gift_leaderboard(self) -> GiftLeaderboard:
+        """
+        |coro|
+
+        Fetches the gift leaderboard for this user's channel
+
+        Returns
+        --------
+        GiftLeaderboard
+            The gift leaderboard for this channel
+        """
         data = await self.http.get_channel_gift_leaderboard(self.username)
         leaderboard = GiftLeaderboard(data=data)
         leaderboard.streamer = self
@@ -248,6 +280,7 @@ class User:
 
     @property
     def id(self) -> int:
+        """The client user's ID"""
         return self._data["user_id"]
 
     @property
@@ -260,6 +293,7 @@ class User:
 
     @property
     def slug(self) -> str:
+        """The client user's slug (URL-friendly username)"""
         return self._data["slug"]
 
     @property
@@ -326,18 +360,22 @@ class User:
 
     @property
     def bio(self) -> str:
+        """The client user's bio"""
         return self._data["user"]["bio"]
 
     @property
     def agreed_to_terms(self) -> bool:
+        """Whether the user has agreed to Kick's terms of service"""
         return self._data["user"]["agreed_to_terms"]
 
     @cached_property
     def email_verified_at(self) -> datetime:
+        """When the user's email was verified"""
         return datetime.fromisoformat(self._data["user"]["email_verified_at"])
 
     @property
     def username(self) -> str:
+        """The client user's username"""
         return self._data["user"]["username"]
 
     @property
@@ -350,6 +388,7 @@ class User:
 
     @cached_property
     def socials(self) -> Socials:
+        """The user's connected social media accounts"""
         return Socials(data=self._data["user"])
 
     @cached_property
@@ -436,6 +475,34 @@ class StreamInfo(BaseDataclass["StreamInfoPayload"]):
 
 
 class ClientUser(BaseUser):
+    """
+    Represents the connected client user
+
+    Attributes
+    -----------
+    id: int
+        The client user's ID
+    username: str
+        The client user's username
+    slug: str
+        The client user's slug (URL-friendly username)
+    bio: str
+        The client user's bio
+    agreed_to_terms: bool
+        Whether the user has agreed to Kick's terms of service
+    email_verified_at: datetime
+        When the user's email was verified
+    country: str | None
+        The user's country
+    city: str | None
+        The user's city
+    state: str | None
+        The user's state/province
+    socials: Socials
+        The user's connected social media accounts
+    avatar: Asset | None
+        The user's avatar image
+    """
     def __init__(self, *, data: ClientUserPayload, http: HTTPClient) -> None:
         self._data = data
         self.http = http
@@ -466,14 +533,17 @@ class ClientUser(BaseUser):
 
     @property
     def country(self) -> str | None:
+        """The user's country"""
         return self._data["country"]
 
     @property
     def city(self) -> str | None:
+        """The user's city"""
         return self._data["city"]
 
     @property
     def state(self) -> str | None:
+        """The user's state/province"""
         return self._data["state"]
 
     @cached_property
@@ -482,6 +552,7 @@ class ClientUser(BaseUser):
 
     @cached_property
     def avatar(self) -> Asset | None:
+        """The user's avatar image"""
         url = self._data["profilepic"]
         if url is None:
             return

@@ -521,7 +521,6 @@ class HTTPClient:
         return self.request(Route.root("GET", "/stream/publish_token"))
 
     def search_categories(self, query: str) -> Response[CategorySearchResponse]:
-        """Search for categories using the search API"""
         route = Route.search("GET", "/collections/subcategory_index/documents/search")
 
         headers = {
@@ -538,7 +537,6 @@ class HTTPClient:
 
     def set_stream_info(self, title, category_name, category_id,
                         language, is_mature) -> Response[StreamInfoPayload]:
-        """Update the stream information"""
         route = Route.root("PUT", "/stream/info")
         return self.request(route, json={
             "title": title,

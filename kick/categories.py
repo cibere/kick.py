@@ -37,10 +37,12 @@ class TextHighlight(BaseDataclass["TextHighlightPayload"]):
 
     @property
     def matched_tokens(self) -> list[str]:
+        """List of search tokens that matched in the text"""
         return self._data["matched_tokens"]
 
     @property
     def snippet(self) -> str:
+        """The highlighted text snippet containing matches"""
         return self._data["snippet"]
 
     def __repr__(self) -> str:
@@ -63,14 +65,17 @@ class SearchHighlight(BaseDataclass["SearchHighlightPayload"]):
 
     @property
     def field(self) -> str:
+        """The field name where the match was found"""
         return self._data["field"]
 
     @property
     def matched_tokens(self) -> list[str]:
+        """List of search tokens that matched in the field"""
         return self._data["matched_tokens"]
 
     @property
     def snippet(self) -> str:
+        """The highlighted text snippet from the matched field"""
         return self._data["snippet"]
 
     def __repr__(self) -> str:
@@ -101,30 +106,37 @@ class TextMatchInfo(BaseDataclass["TextMatchInfoPayload"]):
 
     @property
     def best_field_score(self) -> str:
+        """The score of the best matching field"""
         return self._data["best_field_score"]
 
     @property
     def best_field_weight(self) -> int:
+        """The weight assigned to the best matching field"""
         return self._data["best_field_weight"]
 
     @property
     def fields_matched(self) -> int:
+        """Number of fields that contained matches"""
         return self._data["fields_matched"]
 
     @property
     def num_tokens_dropped(self) -> int:
+        """Number of search tokens that were ignored"""
         return self._data["num_tokens_dropped"]
 
     @property
     def score(self) -> str:
+        """Overall match score for the search result"""
         return self._data["score"]
 
     @property
     def tokens_matched(self) -> int:
+        """Number of search tokens that were matched"""
         return self._data["tokens_matched"]
 
     @property
     def typo_prefix_score(self) -> int:
+        """Score adjustment for typos and prefix matches"""
         return self._data["typo_prefix_score"]
 
     def __repr__(self) -> str:
@@ -151,22 +163,27 @@ class CategorySearchHit(BaseDataclass["CategorySearchHitPayload"]):
 
     @cached_property
     def document(self) -> SearchCategory:
+        """The matching category document"""
         return SearchCategory(data=self._data["document"])
 
     @cached_property
     def highlight(self) -> dict[str, TextHighlight]:
+        """Dictionary of field names to their highlight information"""
         return {k: TextHighlight(data=v) for k, v in self._data["highlight"].items()}
 
     @cached_property
     def highlights(self) -> list[SearchHighlight]:
+        """List of all highlight information across fields"""
         return [SearchHighlight(data=h) for h in self._data["highlights"]]
 
     @property
     def text_match(self) -> int:
+        """Overall text match score"""
         return self._data["text_match"]
 
     @cached_property
     def text_match_info(self) -> TextMatchInfo:
+        """Detailed information about the text matching"""
         return TextMatchInfo(data=self._data["text_match_info"])
 
     def __repr__(self) -> str:
@@ -256,42 +273,52 @@ class SearchCategory(BaseDataclass["CategoryDocument"]):
 
     @property
     def category_id(self) -> int:
+        """The ID of the parent category"""
         return self._data["category_id"]
 
     @property
     def id(self) -> str:
+        """The unique identifier of the sub-category"""
         return self._data["id"]
 
     @property
     def name(self) -> str:
+        """The name of the category"""
         return self._data["name"]
 
     @property
     def slug(self) -> str:
+        """The URL-friendly version of the category name"""
         return self._data["slug"]
 
     @property
     def description(self) -> str:
+        """The detailed description of the category"""
         return self._data["description"]
 
     @property
     def is_live(self) -> bool:
+        """Whether the category currently has live streams"""
         return self._data["is_live"]
 
     @property
     def is_mature(self) -> bool:
+        """Whether the category is marked as mature content"""
         return self._data["is_mature"]
 
     @property
     def src(self) -> str:
+        """The URL of the category's banner image"""
         return self._data["src"]
 
     @property
     def srcset(self) -> str:
+        """The responsive image srcset for different screen sizes"""
         return self._data["srcset"]
 
     @property
     def parent(self) -> str:
+        """The name of the parent category"""
         return self._data["parent"]
 
     def __repr__(self) -> str:
@@ -314,14 +341,17 @@ class CategorySearchResult(BaseDataclass["CategorySearchResponse"]):
 
     @property
     def found(self) -> int:
+        """Total number of search results found"""
         return self._data["found"]
 
     @property
     def page(self) -> int:
+        """Current page number in paginated results"""
         return self._data["page"]
 
     @cached_property
     def hits(self) -> list[CategorySearchHit]:
+        """List of category search hits matching the search criteria"""
         return [CategorySearchHit(data=hit) for hit in self._data["hits"]]
 
     def __repr__(self) -> str:
