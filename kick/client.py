@@ -235,6 +235,32 @@ class Client:
         data = await self.http.fetch_stream_destination_url_and_key()
         return DestinationInfo(data=data)
 
+    async def get_messages(self, chatroom_id: int, /) -> list[Message]:
+        """
+        |coro|
+
+        Fetches messages from a chatroom.
+
+        Parameters
+        -----------
+        chatroom_id: int
+            The ID of the chatroom to fetch messages from
+
+        Raises
+        -----------
+        HTTPException
+            Failed to fetch messages
+        NotFound
+            Chatroom with provided ID was not found
+
+        Returns
+        -----------
+        list[Message]
+            List of messages from the chatroom
+        """
+        data = await self.http.get_messages(chatroom_id)
+        return [Message(data=msg, http=self.http) for msg in data["data"]["messages"]]
+
     def dispatch(self, event_name: str, *args, **kwargs) -> None:
         event_name = f"on_{event_name}"
 

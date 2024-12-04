@@ -19,7 +19,7 @@ class AuthorPayload(TypedDict):
 
 class BaseMessagePayload(TypedDict):
     id: str
-    chatroom_id: int
+    chat_id: int
     content: str
     created_at: str
     sender: AuthorPayload
