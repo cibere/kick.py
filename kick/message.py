@@ -47,7 +47,7 @@ class Author(HTTPDataclass["AuthorPayload"]):
         """
 
         return self._data["slug"]
-    
+
     @property
     def username(self) -> str:
         """
@@ -201,12 +201,12 @@ class Message(HTTPDataclass["MessagePayload"]):
         return PartialMessage(data=data, http=self.http)
 
     @property
-    def chatroom_id(self) -> int:
+    def chat_id(self) -> int:
         """
         The id of the chatroom the message was sent in
         """
 
-        return self._data["chatroom_id"]
+        return self._data["chat_id"]
 
     @property
     def chatroom(self) -> Chatroom | PartialChatroom | None:
@@ -214,7 +214,7 @@ class Message(HTTPDataclass["MessagePayload"]):
         The chatroom the message was sent in.
         """
 
-        return self.http.client.get_chatroom(self.chatroom_id)
+        return self.http.client.get_chatroom(self.chat_id)
 
     @property
     def content(self) -> str:
@@ -244,4 +244,4 @@ class Message(HTTPDataclass["MessagePayload"]):
         return isinstance(other, self.__class__) and other.id == self.id
 
     def __repr__(self) -> str:
-        return f"<Message id={self.id!r} chatroom={self.chatroom_id!r} author={self.author!r}>"
+        return f"<Message id={self.id!r} chatroom={self.chat_id!r} author={self.author!r}>"
