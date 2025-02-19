@@ -1048,18 +1048,49 @@ username: str<br>
     </span>
     ClientUser
 </a>
-
+<br>
+Represents the connected client user<br>
+<br>
+<span class="h4">Attributes</span><br>
+id: int<br>
+<span style="margin-left: 30px">    The client user's ID</span><br>
+username: str<br>
+<span style="margin-left: 30px">    The client user's username</span><br>
+slug: str<br>
+<span style="margin-left: 30px">    The client user's slug (URL-friendly username)</span><br>
+bio: str<br>
+<span style="margin-left: 30px">    The client user's bio</span><br>
+agreed_to_terms: bool<br>
+<span style="margin-left: 30px">    Whether the user has agreed to Kick's terms of service</span><br>
+email_verified_at: datetime<br>
+<span style="margin-left: 30px">    When the user's email was verified</span><br>
+country: str | None<br>
+<span style="margin-left: 30px">    The user's country</span><br>
+city: str | None<br>
+<span style="margin-left: 30px">    The user's city</span><br>
+state: str | None<br>
+<span style="margin-left: 30px">    The user's state/province</span><br>
+socials: Socials<br>
+<span style="margin-left: 30px">    The user's connected social media accounts</span><br>
+avatar: Asset | None<br>
+<span style="margin-left: 30px">    The user's avatar image</span><br>
 
 ## Methods
 
 
 <a href="#ClientUser.fetch_videos" class="h3 hidden" id="ClientUser.fetch_videos">
-    <span class="def">
-        def 
+    <span class="async">
+        async def 
     </span>
     ClientUser.fetch_videos
 </a>
-
+<br>
+Fetches all videos for this user<br>
+<br>
+Returns<br>
+--------<br>
+list[Video]<br>
+<span style="margin-left: 30px">    List of videos uploaded by the user</span><br>
 
 <hr>
 
