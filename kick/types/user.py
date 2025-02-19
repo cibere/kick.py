@@ -107,6 +107,14 @@ class ClientUserStreamerChannelsPayload(TypedDict):
     verified: None  # Unknown
 
 
+class StreamInfoPayload(TypedDict):
+    title: str
+    subcategoryId: int
+    subcategoryName: None | str
+    language: str
+    is_mature: bool
+
+
 class ClientUserPayload(TypedDict):
     id: int
     email: str

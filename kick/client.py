@@ -10,11 +10,13 @@ from .chatter import PartialChatter
 from .http import HTTPClient
 from .livestream import PartialLivestream
 from .message import Message
-from .users import ClientUser, PartialUser, User, DestinationInfo
+from .users import ClientUser, PartialUser, User, StreamInfo, DestinationInfo
+from .categories import CategorySearchResult
 from .utils import MISSING, decorator, setup_logging
 
 if TYPE_CHECKING:
     from typing_extensions import Self
+    from .categories import CategorySearchResult
 
 EventT = TypeVar("EventT", bound=Callable[..., Coroutine[Any, Any, None]])
 LOGGER = getLogger(__name__)
@@ -234,6 +236,69 @@ class Client:
 
         data = await self.http.fetch_stream_destination_url_and_key()
         return DestinationInfo(data=data)
+
+    async def set_stream_info(
+        self,
+        title: str,
+        language: str,
+        subcategory_id: int,
+        subcategory_name: str | None = None,
+        is_mature: bool = False,
+    ) -> StreamInfo:
+        """
+        |coro|
+        Updates the stream information.
+        Parameters
+        -----------
+        title: str
+            The new stream title
+        language: str
+            The stream language (e.g. "English")
+        subcategory_id: int
+            The ID of the game/category
+        subcategory_name: Optional[str]
+            The name of the game/category (optional)
+        is_mature: bool
+            Whether the stream is marked as mature content
+
+        Raises
+        -----------
+        HTTPException
+            Failed to update stream information
+
+        Returns
+        -----------
+        StreamInfo
+            The stream info that was set to the logged in user's channel.
+        """
+
+        data = await self.http.set_stream_info(title, subcategory_name, subcategory_id, language, is_mature)
+        return StreamInfo(data=data)
+
+    async def search_categories(self, query: str, /) -> CategorySearchResult:
+        """
+        |coro|
+
+        Searches for categories/games on Kick.
+
+        Parameters
+        -----------
+        query: str
+            The search query string
+
+        Raises
+        -----------
+        HTTPException
+            Search request failed
+
+        Returns
+        -----------
+        SearchResponse
+            The search results containing matching categories
+        """
+
+        data = await self.http.search_categories(query)
+        return CategorySearchResult(data=data)
 
     def dispatch(self, event_name: str, *args, **kwargs) -> None:
         event_name = f"on_{event_name}"
