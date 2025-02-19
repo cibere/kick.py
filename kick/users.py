@@ -22,15 +22,6 @@ if TYPE_CHECKING:
 __all__ = ("DestinationInfo", "Socials", "PartialUser", "User", "ClientUser",
            "StreamInfo")
 
-from .types.user import (
-    ClientUserPayload,
-    InnerUser,
-    UserPayload,
-    StreamInfoPayload,
-    DestinationInfoPayload
-)
-
-
 class DestinationInfo(BaseDataclass["DestinationInfoPayload"]):
     """
     Information about a user's stream destination
