@@ -1,4 +1,4 @@
-from typing_extensions import Any, TypedDict
+from typing import Any, TypedDict
 
 from .assets import AssetSrcset, AssetUrl
 from .badges import ChatBadgePayload, SubscriberBadgePayload
