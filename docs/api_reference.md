@@ -330,7 +330,7 @@ one_time_password: Optional[str]<br>
     Asset
 </a>
 <br>
-A class which repersents a kick asset.<br>
+A class which represents a kick asset.<br>
 <br>
 <span class="h4">Attributes</span><br>
 url: str<br>
