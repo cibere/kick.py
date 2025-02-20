@@ -34,7 +34,7 @@ class PusherWebSocket:
 
         match raw_data["event"]:
             case "App\\Events\\ChatMessageEvent":
-                msg = Message(data=data["livestream"], http=self.http)
+                msg = Message(data=data, http=self.http)
                 self.http.client.dispatch("message", msg)
             case "App\\Events\\StreamerIsLive":
                 livestream = PartialLivestream(data=data, http=self.http)

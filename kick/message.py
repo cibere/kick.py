@@ -240,6 +240,25 @@ class Message(HTTPDataclass["MessagePayload"]):
 
         return Author(data=self._data["sender"], http=self.http)
 
+    @property
+    def reply_metadata(self) -> ReplyMetaData:
+        """
+        The metadata from message to reply
+        """
+        original_sender = {
+            "id": self.author.id,
+            "username": self.author.username
+        }
+        original_message = {
+            "id": self.id,
+            "content": self.content
+        }
+
+        return {
+            "original_message": original_message,
+            "original_sender": original_sender,
+        }
+
     def __eq__(self, other: object) -> bool:
         return isinstance(other, self.__class__) and other.id == self.id
 

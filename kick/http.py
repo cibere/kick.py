@@ -44,7 +44,7 @@ if TYPE_CHECKING:
         MessagePayload,
         ReplyOriginalMessage,
         ReplyOriginalSender,
-        V1MessageSentPayload,
+        V2MessageSentPayload,
     )
     from .types.user import (
         ChatterPayload,
@@ -214,7 +214,7 @@ class HTTPClient:
             self.__session = ClientSession()
 
         actual_ws = await self.__session.ws_connect(
-            f"wss://ws-us2.pusher.com/app/eb1d5f283081a78b932c?protocol=7&client=js&version=7.6.0&flash=false"
+            f"wss://ws-us2.pusher.com/app/32cbd69e4b950bf97679?protocol=7&client=js&version=8.4.0-rc2&flash=false"
         )
         self.ws = PusherWebSocket(actual_ws, http=self)
         self.client.dispatch("ready")
@@ -264,7 +264,7 @@ class HTTPClient:
                 await asyncio.sleep(2)
 
             LOGGER.debug(
-                f"Making request to {route.method} {url}. headers: {headers}, params: {kwargs.get('params', None)}, json: {kwargs.get('json', None)}"
+                f"Making request to {route.method} {url}. headers: {headers}, params: {kwargs.get('params', None)}, json: {kwargs.get('json', None)}, data: {kwargs.get('data', None)}"
             )
             try:
                 res = await self.__session.request(
@@ -337,15 +337,15 @@ class HTTPClient:
         raise RuntimeError("Unreachable situation occured in http handling")
 
     def send_message(
-        self, chatroom: int, content: str
-    ) -> Response[V1MessageSentPayload]:
-        # We use the V1 api here since I havn't gotten it to work with V2.
-        # Unfortunatly V1 only returns a confirmation, and not the message (unlike V2)
-
-        route = Route.root("POST", "/api/v1/chat-messages")
+        self, chatroom: int, content: str, metadata: None | dict, type: str
+    ) -> Response[V2MessageSentPayload]:
+        route = Route.root("POST", f"/api/v2/messages/send/{chatroom}")
+        data = {"content": content, "type": type}
+        if metadata is not None:
+            data["metadata"] = metadata
         return self.request(
             route,
-            data={"message": content, "chatroom_id": chatroom},
+            json=data,
         )
 
     def delete_message(self, chatroom: int, message_id: str) -> Response[Any]:
