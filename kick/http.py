@@ -337,10 +337,10 @@ class HTTPClient:
         raise RuntimeError("Unreachable situation occured in http handling")
 
     def send_message(
-        self, chatroom: int, content: str, metadata: None | dict, type: str
+        self, chatroom: int, content: str, metadata: None | dict = None, msg_type: str = "message"
     ) -> Response[V2MessageSentPayload]:
         route = Route.root("POST", f"/api/v2/messages/send/{chatroom}")
-        data = {"content": content, "type": type}
+        data = {"content": content, "type": msg_type}
         if metadata is not None:
             data["metadata"] = metadata
         return self.request(

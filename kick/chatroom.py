@@ -17,7 +17,6 @@ if TYPE_CHECKING:
     from .types.chatroom import BanEntryPayload
     from .types.user import ChatroomPayload
     from .users import User
-    from .message import ReplyMetaData
 
 __all__ = ("Chatroom", "BanEntry", "PartialChatroom")
 
@@ -185,33 +184,6 @@ class PartialChatroom:
         """
 
         await self.http.send_message(self.id, content)
-
-    async def reply(self, content: str, /, metadata: ReplyMetaData, type: str="reply") -> None:
-        """
-        |coro|
-
-        Reply to a message in the chatroom
-
-        Parameters
-        -----------
-        content: str
-            The message's content
-        metadata: 
-            Metadata of the message we are replying to
-        type: 
-            Type of message
-
-        Raises
-        -----------
-        NotFound
-            Streamer or chatter not found
-        HTTPException
-            Sending the message failed
-        Forbidden
-            You are unauthorized from sending the message
-        """
-
-        await self.http.send_message(self.id, content, metadata, type)
 
     async def fetch_chatter(self, chatter_name: str, /) -> Chatter:
         """

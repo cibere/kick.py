@@ -259,6 +259,30 @@ class Message(HTTPDataclass["MessagePayload"]):
             "original_sender": original_sender,
         }
 
+    async def reply(self, content: str, /) -> None:
+        """
+        |coro|
+
+        Reply to a current message in the chatroom
+
+        Parameters
+        -----------
+        content: str
+            The message's content
+
+        Raises
+        -----------
+        NotFound
+            Streamer or chatter not found
+        HTTPException
+            Sending the message failed
+        Forbidden
+            You are unauthorized from sending the message
+        """
+
+        await self.http.send_message(self.chatroom.id, content, self.reply_metadata)
+
+
     def __eq__(self, other: object) -> bool:
         return isinstance(other, self.__class__) and other.id == self.id
 
