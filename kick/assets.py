@@ -15,7 +15,7 @@ __all__ = ("Asset",)
 
 class Asset:
     """
-    A class which repersents a kick asset.
+    A class which represents a kick asset.
 
     Attributes
     -----------
