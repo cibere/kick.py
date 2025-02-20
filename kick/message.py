@@ -3,6 +3,8 @@ from __future__ import annotations
 from datetime import datetime
 from typing import TYPE_CHECKING
 
+from kick.types.message import BaseMessagePayload
+
 from .object import HTTPDataclass
 from .users import PartialUser, User
 from .utils import cached_property
@@ -259,7 +261,7 @@ class Message(HTTPDataclass["MessagePayload"]):
             "original_sender": original_sender,
         }
 
-    async def reply(self, content: str, /) -> None:
+    async def reply(self, content: str, /) -> Message:
         """
         |coro|
 
@@ -278,9 +280,18 @@ class Message(HTTPDataclass["MessagePayload"]):
             Sending the message failed
         Forbidden
             You are unauthorized from sending the message
-        """
 
-        await self.http.send_message(self.chatroom.id, content, self.reply_metadata)
+        Returns
+        -----------
+        Message
+            The message
+        """
+        data = await self.http.send_message(self.chatroom.id, 
+                                            content, 
+                                            metadata=self.reply_metadata, 
+                                            msg_type="reply")
+        message = Message(data=data, http=self.http)
+        return message
 
 
     def __eq__(self, other: object) -> bool:
