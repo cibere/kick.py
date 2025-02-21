@@ -3,8 +3,6 @@ from __future__ import annotations
 from datetime import datetime
 from typing import TYPE_CHECKING
 
-from kick.types.message import BaseMessagePayload
-
 from .object import HTTPDataclass
 from .users import PartialUser, User
 from .utils import cached_property
@@ -290,7 +288,7 @@ class Message(HTTPDataclass["MessagePayload"]):
                                             content, 
                                             metadata=self.reply_metadata, 
                                             msg_type="reply")
-        message = Message(data=data, http=self.http)
+        message = Message(data=data["data"], http=self.http)
         return message
 
 

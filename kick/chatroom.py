@@ -3,8 +3,8 @@ from __future__ import annotations
 from datetime import datetime
 from typing import TYPE_CHECKING, AsyncIterator, Optional
 
-from kick.http import HTTPClient
-from kick.message import Message
+from .http import HTTPClient
+from .message import Message
 
 from .emotes import Emote
 from .enums import ChatroomChatMode
@@ -189,7 +189,7 @@ class PartialChatroom:
             The message
         """
         data = await self.http.send_message(self.id, content)
-        message = Message(data=data, http=self.http)
+        message = Message(data=data.data, http=self.http)
         return message
 
     async def fetch_chatter(self, chatter_name: str, /) -> Chatter:
@@ -219,7 +219,7 @@ class PartialChatroom:
         from .chatter import Chatter
 
         data = await self.http.get_chatter(self.streamer_name, chatter_name)
-        chatter = Chatter(data=data, http=self.http, chatroom=self)
+        chatter = Chatter(data=data["data"], http=self.http, chatroom=self)
         return chatter
 
     async def fetch_rules(self) -> str:
