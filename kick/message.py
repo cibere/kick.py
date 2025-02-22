@@ -240,6 +240,58 @@ class Message(HTTPDataclass["MessagePayload"]):
 
         return Author(data=self._data["sender"], http=self.http)
 
+    @property
+    def reply_metadata(self) -> ReplyMetaData:
+        """
+        The metadata from message to reply
+        """
+        original_sender = {
+            "id": self.author.id,
+            "username": self.author.username
+        }
+        original_message = {
+            "id": self.id,
+            "content": self.content
+        }
+
+        return {
+            "original_message": original_message,
+            "original_sender": original_sender,
+        }
+
+    async def reply(self, content: str, /) -> Message:
+        """
+        |coro|
+
+        Reply to a current message in the chatroom
+
+        Parameters
+        -----------
+        content: str
+            The message's content
+
+        Raises
+        -----------
+        NotFound
+            Streamer or chatter not found
+        HTTPException
+            Sending the message failed
+        Forbidden
+            You are unauthorized from sending the message
+
+        Returns
+        -----------
+        Message
+            The message
+        """
+        data = await self.http.send_message(self.chatroom.id, 
+                                            content, 
+                                            metadata=self.reply_metadata, 
+                                            msg_type="reply")
+        message = Message(data=data["data"], http=self.http)
+        return message
+
+
     def __eq__(self, other: object) -> bool:
         return isinstance(other, self.__class__) and other.id == self.id
 

@@ -3,7 +3,8 @@ from __future__ import annotations
 from datetime import datetime
 from typing import TYPE_CHECKING, AsyncIterator, Optional
 
-from kick.http import HTTPClient
+from .http import HTTPClient
+from .message import Message
 
 from .emotes import Emote
 from .enums import ChatroomChatMode
@@ -162,7 +163,7 @@ class PartialChatroom:
         await self.http.ws.unsubscribe_to_chatroom(self.id)
         self.http.client._chatrooms.pop(self.id)
 
-    async def send(self, content: str, /) -> None:
+    async def send(self, content: str, /) -> Message:
         """
         |coro|
 
@@ -181,9 +182,15 @@ class PartialChatroom:
             Sending the message failed
         Forbidden
             You are unauthorized from sending the message
-        """
 
-        await self.http.send_message(self.id, content)
+        Returns
+        -----------
+        Message
+            The message
+        """
+        data = await self.http.send_message(self.id, content)
+        message = Message(data=data["data"], http=self.http)
+        return message
 
     async def fetch_chatter(self, chatter_name: str, /) -> Chatter:
         """
@@ -212,7 +219,7 @@ class PartialChatroom:
         from .chatter import Chatter
 
         data = await self.http.get_chatter(self.streamer_name, chatter_name)
-        chatter = Chatter(data=data, http=self.http, chatroom=self)
+        chatter = Chatter(data=data["data"], http=self.http, chatroom=self)
         return chatter
 
     async def fetch_rules(self) -> str:

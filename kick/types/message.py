@@ -67,5 +67,6 @@ class FetchMessagesPayload(TypedDict):
     data: FetchMessagesDataPayload
 
 
-class V1MessageSentPayload(StatusPayload):
-    ...
+class V2MessageSentPayload(StatusPayload):
+    status: StatusPayload
+    data: BaseMessagePayload
