@@ -189,7 +189,7 @@ class PartialChatroom:
             The message
         """
         data = await self.http.send_message(self.id, content)
-        message = Message(data=data.data, http=self.http)
+        message = Message(data=data["data"], http=self.http)
         return message
 
     async def fetch_chatter(self, chatter_name: str, /) -> Chatter:
